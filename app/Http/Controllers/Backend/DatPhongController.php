@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
+use App\Events\DatPhongCreated;
 
 class DatPhongController extends Controller
 {
@@ -74,6 +75,7 @@ class DatPhongController extends Controller
             'trang_thai'=> 1,
             'ghi_chu'=>null,
         ]);
+
         $datPhong->setPhongIdTemp($request->phong_id);
         $phongIds = Phong::where('trang_thai', 1)
         ->limit($datPhong->so_luong_phong)
@@ -86,6 +88,7 @@ class DatPhongController extends Controller
             $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong)-$khuyenMai->gia_tri_giam;
         }
         $datPhong->phongs()->attach($phongIds);
+        event(new DatPhongCreated($phongIds, '0'));
         $datPhong->update([
             'tong_tien' => $tong_tien
         ]);
@@ -120,7 +123,6 @@ class DatPhongController extends Controller
             'dat_phong_id' => $datPhong->id,
             'thanh_tien' => $tongTienMoi, // Tổng tiền mới cho chi tiết đặt phòng
         ]);
-
         return redirect()->route('admin.dat_phong.index')->with('success', 'Thêm mới dịch vụ thành công!');
     }
 

@@ -7,6 +7,7 @@ use App\Models\Phong;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DatPhongNoiPhong;
 use App\Models\Loai_phong;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;

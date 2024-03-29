@@ -40,11 +40,12 @@
                     <div class="form-group mt-3 mx-auto">
                         @for ($i = 0; $i < $so_luong_dich_vu; $i++)
                             <label for="dich_vu_ids_{{ $i }}">Dịch vụ {{ $i + 1 }}:</label>
-                            <select name="dich_vu_ids[{{ $i }}][id]" id="dich_vu_ids_{{ $i }}">
+                            <input type="text" name="dich_vu_ids[{{ $i }}][id]" id="dich_vu_ids_{{ $i }}" list="dich_vu">
+                            <datalist id="dich_vu">
                                 @foreach ($dich_vus as $dich_vu)
                                     <option value="{{ $dich_vu->id }}">{{ $dich_vu->ten_dich_vu }}</option>
                                 @endforeach
-                            </select>
+                            </datalist>
                             <label for="so_luong_{{ $i }}">Số lượng:</label>
                             <input type="number" name="dich_vu_ids[{{ $i }}][so_luong]" id="so_luong_{{ $i }}" value="0" min="0">
                         @endfor

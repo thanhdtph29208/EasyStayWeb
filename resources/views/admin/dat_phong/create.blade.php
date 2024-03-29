@@ -40,49 +40,56 @@
 
                             <div class="form-group mx-auto ">
                                 <label for="user_id">Email Khách Hàng</label>
-                                <select name="user_id" id="user_id" class="form-control">
+                                <input type="text" name="user_id" id="user_id" class="form-control" list="user">
+                                <datalist id="user">
                                     @foreach ($user as $id => $email)
                                         <option value="{{$id}}">{{$email}}</option>
                                     @endforeach
-                                </select>
+                                </datalist>
                                 <span class="text-danger error-user_id"></span>
                             </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="loai_phong_id">Loại Phòng</label>
-                                <select name="loai_phong_id" id="loai_phong_id" class="form-control">
-                                    @foreach ($loai_phong as $id => $ten)
-                                        <option value="{{$id}}">{{$ten}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-loai_phong_id"></span>
-                            </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="so_luong_phong">Số Lượng phòng</label>
-                                <input type="number" class="form-control" id="so_luong_phong" name="so_luong_phong">
-                                <span class="text-danger error-so_luong_phong"></span>
+                            <div>
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                    <label for="loai_phong_id">Loại Phòng</label>
+                                    <input type="text" name="loai_phong_id" id="loai_phong_id" class="form-control" list="loai_phong">
+                                    <datalist id="loai_phong">
+                                        @foreach ($loai_phong as $id => $ten)
+                                            <option value="{{$id}}">{{$ten}}</option>
+                                        @endforeach
+                                    </datalist>
+                                    <span class="text-danger error-loai_phong_id"></span>
+                                </div>
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                    <label for="so_luong_phong">Số Lượng phòng</label>
+                                    <input type="number" class="form-control" id="so_luong_phong" name="so_luong_phong">
+                                    <span class="text-danger error-so_luong_phong"></span>
+                                </div>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="so_luong_nguoi">Số Lượng người</label>
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="thoi_gian_den">Thời gian đến</label>
-                                <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
-                                <span class="text-danger error-thoi_gian_den"></span>
-                            </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="thoi_gian_di">Thời gian đi</label>
-                                <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
-                                <span class="text-danger error-thoi_gian_di"></span>
+                            <div>
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                    <label for="thoi_gian_den">Thời gian đến</label>
+                                    <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
+                                    <span class="text-danger error-thoi_gian_den"></span>
+                                </div>
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                    <label for="thoi_gian_di">Thời gian đi</label>
+                                    <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
+                                    <span class="text-danger error-thoi_gian_di"></span>
+                                </div>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="khuyen_mai_id">Khuyến mãi</label>
-                                <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control">
+                                <input type="text" name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" list="khuyen_mai">
+                                <datalist id="khuyen_mai">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
                                         <option value="{{$id}}">{{$ten_khuyen_mai}}</option>
                                     @endforeach
-                                </select>
+                                </datalist>
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
