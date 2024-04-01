@@ -68,17 +68,8 @@
                     <div class="cd-slider-wrapper">
                         <ul class="cd-slider">
                             <li class="selected"><img src="{{Storage::url($loaiPhong->anh)}}"></li>
-                            
-                            @foreach ($availableLoaiPhongs->anhPhong as $key => $item)
-                                <button type="button" data-bs-target="#carouselExampleIndicators"
-                                    data-bs-slide-to="{{ ++$key }}" class="thumbnail border rounded shadow-lg"
-                                    aria-label="Slide {{ ++$key }}">
-                                    <img src="{{ asset($item->anh) }}" class="d-block" alt="...">
-                                </button>
-                            @endforeach
-
-                            <!-- <li><img src="https://www.quackit.com/pix/byron_bay_225x169.jpg"></li>
-                            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzKg15DFyzKJ_hdFHNW4SmN0O7f5yPkg-G4Yx1F_4vTHFtDaoeoef7uKleSVZG93-YnQ0&usqp=CAU"></li> -->
+                            <li><img src="https://www.quackit.com/pix/byron_bay_225x169.jpg"></li>
+                            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzKg15DFyzKJ_hdFHNW4SmN0O7f5yPkg-G4Yx1F_4vTHFtDaoeoef7uKleSVZG93-YnQ0&usqp=CAU"></li>
                         </ul> <!-- cd-slider -->
 
                         <ul class="cd-slider-navigation">
