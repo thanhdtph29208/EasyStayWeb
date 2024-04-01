@@ -34,10 +34,10 @@ class BaiVietController extends Controller
 
     public function store(Request $request , User $user): RedirectResponse
     {
-        $request->validate([
-            'tieu_de' => 'required|max:225',
-            'anh' => 'required|nullable|image|max:1080',
-            'mo_ta_ngan' => 'required|nullable|max:225',
+        $rules = [
+            'tieu_de' => 'required|max:255',
+			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mo_ta_ngan' => 'required|max:225',
             'noi_dung' => 'required',
             'trang_thai' => [
                 Rule::in([
@@ -45,7 +45,39 @@ class BaiVietController extends Controller
                     Bai_viet::NHAP
                 ])
             ],
-        ]);
+        ];
+
+        $messages = [
+            'tieu_de.required' => 'Tiêu đề không được bỏ trống',
+            'tieu_de.max' => 'Tiêu đề tối đa 255 ký tự',
+
+            'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+
+            'mo_ta_ngan.required' => 'Mô tả ngắn không được bỏ trống',
+            'mo_ta_ngan.max' => 'Mô tả ngắn tối đa 255 ký tự',
+
+            'noi_dung.required' => 'Nội dung không được bỏ trống',
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+
+        // $request->validate([
+        //     'tieu_de' => 'required|max:225',
+        //     'anh' => 'required|nullable|image|max:1080',
+        //     'mo_ta_ngan' => 'required|max:225',
+        //     'noi_dung' => 'required',
+        //     'trang_thai' => [
+        //         Rule::in([
+        //             Bai_viet::XUAT_BAN,
+        //             Bai_viet::NHAP
+        //         ])
+        //     ],
+        // ]);
         
         $data = $request->except('anh');
 
@@ -55,7 +87,7 @@ class BaiVietController extends Controller
 
         Bai_viet::query()->create($data);
         
-        Toastr::success('Thêm sản phẩm thành công','success');
+        Toastr::success('Thêm bài viết thành công','Thành công');
         return redirect()->route('admin.bai_viet.index');
 
         // return back()->with('msg', 'Thêm thành công');
@@ -68,10 +100,10 @@ class BaiVietController extends Controller
 
     public function update(Request $request, Bai_viet $bai_viet , User $user)
     {
-        $request->validate([
-            'tieu_de' => 'required|max:225',
-            'anh' => 'required|image|max:1080',
-            'mo_ta_ngan' => 'required|nullable|max:225',
+        $rules = [
+            'tieu_de' => 'required|max:255',
+			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mo_ta_ngan' => 'required|max:225',
             'noi_dung' => 'required',
             'trang_thai' => [
                 Rule::in([
@@ -79,7 +111,38 @@ class BaiVietController extends Controller
                     Bai_viet::NHAP
                 ])
             ],
-        ]);
+        ];
+
+        $messages = [
+            'tieu_de.required' => 'Tiêu đề không được bỏ trống',
+            'tieu_de.max' => 'Tiêu đề tối đa 255 ký tự',
+
+            'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+
+            'mo_ta_ngan.required' => 'Mô tả ngắn không được bỏ trống',
+            'mo_ta_ngan.max' => 'Mô tả ngắn tối đa 255 ký tự',
+
+            'noi_dung.required' => 'Nội dung không được bỏ trống',
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+        // $request->validate([
+        //     'tieu_de' => 'required|max:225',
+        //     'anh' => 'required|image|max:1080',
+        //     'mo_ta_ngan' => 'required|nullable|max:225',
+        //     'noi_dung' => 'required',
+        //     'trang_thai' => [
+        //         Rule::in([
+        //             Bai_viet::XUAT_BAN,
+        //             Bai_viet::NHAP
+        //         ])
+        //     ],
+        // ]);
 
         $data = $request->except('anh');
 
@@ -92,7 +155,7 @@ class BaiVietController extends Controller
         }
 
         $bai_viet->update($data);
-        Toastr::success('Cập nhật sản phẩm thành công','success');
+        Toastr::success('Cập nhật bài viết thành công','Thành công');
         return redirect()->route('admin.bai_viet.index');
         // Toastr::error('Cập nhật không thành công', 'failed');
         // return back()->with('msg', 'Cập nhật thành công');

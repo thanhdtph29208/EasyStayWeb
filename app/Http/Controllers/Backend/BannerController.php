@@ -49,10 +49,24 @@ class BannerController extends Controller
             // abort(403);
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-		$request->validate([
-            // 'anh.*' => ['required', 'image'],
-			'anh' => 'required|image',
-        ]);
+
+		$rules = [
+			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+		];
+
+		$messages = [
+			'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+		];
+
+		$validated = $request->validate($rules, $messages);
+
+		// $request->validate([
+        //     // 'anh.*' => ['required', 'image'],
+		// 	'anh' => 'required|image',
+        // ]);
 
         $anh = $this->uploadMultiImage($request, 'anh', 'uploads/banner');
 
@@ -61,8 +75,8 @@ class BannerController extends Controller
             $banner->anh = $path;
             $banner->save();
         }
-		Toastr::success('Thêm banner thành công','success');
-        // return redirect()->route('admin.bai_viet.index');
+
+		Toastr::success('Thêm banner thành công','Thành công');
 
         return redirect()->back();
 

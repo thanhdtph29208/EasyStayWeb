@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Brian2694\Toastr\Facades\Toastr;
+
 class VaiTroController extends Controller
 {
     //
@@ -31,8 +33,28 @@ class VaiTroController extends Controller
         if (! Gate::allows('create', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
+        $rules = [
+           'ten_chuc_vu' => 'required|max:255|unique:vai_tros',
+           'mo_ta' => 'required|max:255',
+           'trang_thai' => 'required',
+        ];
+
+        $messages = [
+            'ten_chu_vu.required' => 'Tên chức vụ không được để trống',
+            'ten_chu_vu.max' => 'Tên chức vụ không được vượt quá 255 ký tự',
+            'ten_chu_vu.unique' => 'Tên chức vụ đã tồn tại',
+
+            'mo_ta.required' => 'Mô tả không được để trống',
+            'mo_ta.max' => 'Mô tả không được vượt quá 255 ký tự',
+
+            'trang_thai.required' => 'Trạng thái không được để trống',
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
         VaiTro::query()->create($request->all());
-        return back()->with('msg','Thêm thành công');
+        Toastr::success('Thêm vai trò thành công', 'Thành công');
+        return redirect()->route('admin.vai_tro.index');
     }
 
     /**
@@ -59,8 +81,27 @@ class VaiTroController extends Controller
         if (! Gate::allows('update', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
+        $rules = [
+            'ten_chuc_vu' => 'required|max:255|unique:vai_tros,ten_chuc_vu,' . $vai_tro->id,
+            'mo_ta' => 'required|max:255',
+            'trang_thai' => 'required',
+         ];
+ 
+         $messages = [
+             'ten_chu_vu.required' => 'Tên chức vụ không được để trống',
+             'ten_chu_vu.max' => 'Tên chức vụ không được vượt quá 255 ký tự',
+             'ten_chu_vu.unique' => 'Tên chức vụ đã tồn tại',
+ 
+             'mo_ta.required' => 'Mô tả không được để trống',
+             'mo_ta.max' => 'Mô tả không được vượt quá 255 ký tự',
+ 
+             'trang_thai.required' => 'Trạng thái không được để trống',
+         ];
+ 
+        $validated = $request->validate($rules, $messages);
         $vai_tro->update($request->all());
-        return back()->with('msg','Sửa thành công');
+        Toastr::success('Cập nhật vai trò thành công', 'Thành công');
+        return redirect()->route('admin.vai_tro.index');
     }
 
     /**
