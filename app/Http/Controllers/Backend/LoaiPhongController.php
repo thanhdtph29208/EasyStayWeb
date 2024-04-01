@@ -18,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
 use function Termwind\render;
+use Brian2694\Toastr\Facades\Toastr;
 
 class LoaiPhongController extends Controller
 {
@@ -79,8 +80,10 @@ class LoaiPhongController extends Controller
             $data['anh'] = Storage::put(self::PATH_UPLOAD, $request->file('anh'));
         }
         Loai_phong::query()->create($data);
-        return back()->with('success', 'Thêm thành công');
+        // return back()->with('success', 'Thêm thành công');
         // toastr('Thêm thành công', 'success');
+        Toastr::success('Cập nhật sản phẩm thành công','success');
+        return redirect()->route('admin.loai_phong.index');
     }
 
     /**
@@ -133,7 +136,11 @@ class LoaiPhongController extends Controller
             Storage::delete($oldAnh);
         }
         $loai_phong->update($data);
-        return back()->with('msg', 'Sửa thành công');
+
+        Toastr::success('Cập nhật sản phẩm thành công','success');
+        // toastr.error('Nội dung lỗi.', 'Gặp lỗi!')
+        return redirect()->route('admin.loai_phong.index');
+        // return back()->with('msg', 'Sửa thành công');
     }
 
     /**

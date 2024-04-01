@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-
+use Brian2694\Toastr\Facades\Toastr;
 class DichVuController extends Controller
 {
     /**
@@ -53,7 +53,8 @@ class DichVuController extends Controller
 
         DichVu::create($data);
 
-        return redirect()->route('admin.dich_vu.index')->with('success', 'Thêm mới dịch vụ thành công!');
+        Toastr::success('Thêm dịch vụ thành công','success');
+        return redirect()->route('admin.dich_vu.index');
     }
 
     /**
@@ -92,8 +93,8 @@ class DichVuController extends Controller
 
         $dichVu->update($request->all());
 
-        return redirect()->route('admin.dich_vu.index')->with('success', 'Cập nhật dịch vụ thành công!');
-    }
+        Toastr::success('Cập nhật dịch vụ thành công','success');
+        return redirect()->route('admin.dich_vu.index');    }
 
     /**
      * Remove the specified resource from storage.

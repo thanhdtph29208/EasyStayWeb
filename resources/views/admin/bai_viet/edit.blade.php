@@ -9,7 +9,7 @@
             ])
         </div>
 
-        <div class="mx-3">
+        <!-- <div class="mx-3">
             @if (\Session::has('msg'))
                 <div class="alert alert-success">
                     {{ \Session::get('msg') }}
@@ -25,7 +25,7 @@
                     </ul>
                 </div>
             @endif
-        </div>
+        </div> -->
 
         <div class="container">
             <div class="row justify-content-center">
@@ -41,29 +41,29 @@
                                 @csrf
                                 @method('put')
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="tieu_de" class="form-label">Tiêu đề:</label>
                                     <input type="text" name="tieu_de" id="tieu_de" class="form-control"
                                         value="{{ $bai_viet->tieu_de }}">
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="anh" class="form-label">Ảnh:</label>
                                     <input type="file" name="anh" id="anh" class="form-control">
                                     <img width="150px" src="{{ Storage::url($bai_viet->anh) }}" alt="ảnh miêu tả bài viết">
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="mo_ta_ngan" class="form-label">Mô tả ngắn:</label>
                                     <textarea name="mo_ta_ngan" id="mo_ta_ngan" cols="20" rows="5" class="form-control">{{ $bai_viet->mo_ta_ngan }}</textarea>
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
                                     <textarea name="noi_dung" id="noi_dung" cols="30" rows="10" class="form-control">{{ $bai_viet->noi_dung }}</textarea>
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label class="form-label">Trạng thái:</label> <br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="trang_thai" id="trang_thai1"

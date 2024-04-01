@@ -12,6 +12,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Contracts\Validation\Validator;
+
 class BaiVietController extends Controller
 {
     const PATH_VIEW = 'admin.bai_viet.';
@@ -33,8 +36,8 @@ class BaiVietController extends Controller
     {
         $request->validate([
             'tieu_de' => 'required|max:225',
-            'anh' => 'nullable|image|max:1080',
-            'mo_ta_ngan' => 'nullable|max:225',
+            'anh' => 'required|nullable|image|max:1080',
+            'mo_ta_ngan' => 'required|nullable|max:225',
             'noi_dung' => 'required',
             'trang_thai' => [
                 Rule::in([
@@ -43,6 +46,7 @@ class BaiVietController extends Controller
                 ])
             ],
         ]);
+        
         $data = $request->except('anh');
 
         if ($request->hasFile('anh')) {
@@ -50,8 +54,11 @@ class BaiVietController extends Controller
         }
 
         Bai_viet::query()->create($data);
+        
+        Toastr::success('Thêm sản phẩm thành công','success');
+        return redirect()->route('admin.bai_viet.index');
 
-        return back()->with('msg', 'Thêm thành công');
+        // return back()->with('msg', 'Thêm thành công');
     }
 
     public function edit(Bai_viet $bai_viet)
@@ -59,12 +66,12 @@ class BaiVietController extends Controller
         return view(self::PATH_VIEW . 'edit', compact('bai_viet'));
     }
 
-    public function update(Request $request, Bai_viet $bai_viet , User $user): RedirectResponse
+    public function update(Request $request, Bai_viet $bai_viet , User $user)
     {
         $request->validate([
             'tieu_de' => 'required|max:225',
-            'anh' => 'nullable|image|max:1080',
-            'mo_ta_ngan' => 'nullable|max:225',
+            'anh' => 'required|image|max:1080',
+            'mo_ta_ngan' => 'required|nullable|max:225',
             'noi_dung' => 'required',
             'trang_thai' => [
                 Rule::in([
@@ -85,8 +92,13 @@ class BaiVietController extends Controller
         }
 
         $bai_viet->update($data);
-        return back()->with('msg', 'Cập nhật thành công');
+        Toastr::success('Cập nhật sản phẩm thành công','success');
+        return redirect()->route('admin.bai_viet.index');
+        // Toastr::error('Cập nhật không thành công', 'failed');
+        // return back()->with('msg', 'Cập nhật thành công');
     }
+
+
 
     public function destroy(Bai_viet $bai_viet , User $user): RedirectResponse
     {
@@ -98,7 +110,6 @@ class BaiVietController extends Controller
         if (Storage::exists($bai_viet->anh)) {
             Storage::delete($bai_viet->anh);
         }
-
         return response(['trang_thai' => 'success']);
     }
 }

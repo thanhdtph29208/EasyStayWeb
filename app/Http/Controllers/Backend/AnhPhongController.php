@@ -12,7 +12,7 @@ use App\Traits\ImageUploadTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-
+use Brian2694\Toastr\Facades\Toastr;
 
 class AnhPhongController extends Controller
 {
@@ -45,7 +45,8 @@ class AnhPhongController extends Controller
                 return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
             }
         $request->validate([
-            'anh.*' => ['required', 'image'],
+            // 'anh.*' => ['required', 'image'],
+            'anh' => 'required|image',
         ]);
 
         $anh = $this->uploadMultiImage($request, 'anh', 'uploads/anh_phong');
@@ -56,6 +57,8 @@ class AnhPhongController extends Controller
             $anh_phong->loai_phong_id = $request->loai_phong_id;
             $anh_phong->save();
         }
+        Toastr::success('Thêm ảnh phòng thành công','success');
+        // return redirect()->route('admin.bai_viet.index');
 
         return redirect()->back();
     }
