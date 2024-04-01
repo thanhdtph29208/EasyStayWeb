@@ -15,7 +15,7 @@ use App\Traits\ImageUploadTrait;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-
+use Brian2694\Toastr\Facades\Toastr;
 
 use function Laravel\Prompts\alert;
 
@@ -50,7 +50,8 @@ class BannerController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 		$request->validate([
-            'anh.*' => ['required', 'image'],
+            // 'anh.*' => ['required', 'image'],
+			'anh' => 'required|image',
         ]);
 
         $anh = $this->uploadMultiImage($request, 'anh', 'uploads/banner');
@@ -60,6 +61,8 @@ class BannerController extends Controller
             $banner->anh = $path;
             $banner->save();
         }
+		Toastr::success('Thêm banner thành công','success');
+        // return redirect()->route('admin.bai_viet.index');
 
         return redirect()->back();
 

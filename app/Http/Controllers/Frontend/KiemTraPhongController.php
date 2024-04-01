@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\ChiTietDatPhong;
+use App\Models\Anh_phong;
 use App\Models\Phong;
 use App\Models\DatPhong;
 use App\Models\Loai_phong;
@@ -54,6 +55,9 @@ class KiemTraPhongController extends Controller
                 'available_rooms' => $availableRooms
             ];
         });
+
+        
+
 
         // dd($phongs);
         // return response()->json([
