@@ -9,7 +9,7 @@
         ])
     </div>
 
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -24,7 +24,7 @@
                 @endforeach
             </ul>
         </div>
-        @endif
+        @endif -->
     </div>
 
     <div class="container">

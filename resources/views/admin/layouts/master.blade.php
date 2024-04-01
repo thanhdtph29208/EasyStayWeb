@@ -79,13 +79,14 @@
         <!-- ckeditor -->
         <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 
+        @if ($errors->any())
+        @foreach ($errors->all() as $error)
         <script>
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    toastr.error("{{ $error }}")
-                @endforeach
-            @endif
+            toastr.error('{{ $error }}', 'Lỗi');
         </script>
+        @endforeach
+        @endif
+
         <!-- @if($errors->any())
             @foreach ($errors->all() as $error)
                 toastr.error("{{$error}}")

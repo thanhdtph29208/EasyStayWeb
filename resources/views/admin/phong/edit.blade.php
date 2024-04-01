@@ -8,7 +8,7 @@
         'key' => 'EasyStay',
         ])
     </div>
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -24,7 +24,7 @@
             </ul>
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="card">

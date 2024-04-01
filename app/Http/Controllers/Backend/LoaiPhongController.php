@@ -7,6 +7,7 @@ use App\DataTables\LoaiPhongDataTable;
 use App\Models\Loai_phong;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoaiPhongValidationRequest;
 use App\Models\Anh_phong;
 use App\Models\Phong;
 use App\Models\User;
@@ -61,18 +62,67 @@ class LoaiPhongController extends Controller
         if (!Gate::allows('create', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-        $request->validate([
-            'ten' => 'required|unique:loai_phongs',
-            'anh' => 'nullable', 'image',
-            'gia' => 'required',
-            'gia_ban_dau' => 'nullable',
-            'gioi_han_nguoi' => 'required',
-            'so_luong' => 'required',
-            'mo_ta_ngan' => 'required',
-            'mo_ta_dai' => 'required',
-            'trang_thai' => 'required',
+        $rules = [
+            'ten' => 'required|max:255|unique:loai_phongs',
+			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gia' => 'required|numeric|min:0',
+            'gia_ban_dau' => 'required|numeric|min:0',
+            'gioi_han_nguoi' => 'required|numeric|min:0',
+            'so_luong' => 'required|numeric|min:0',
+            'mo_ta_ngan' => 'required|max:255',
+            'mo_ta_dai' => 'required|max:1000',
+            'trang_thai' => 'required'
+        ];
 
-        ]);
+        $messages = [
+            'ten.required' => 'Tên không được để trống',
+            'ten.max' => 'Tên không được vượt quá 255 ký tự',
+            'ten.unique' => 'Tên loại phòng đã tồn tại',
+
+            'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+
+            'gia.required' => 'Giá không được để trống',
+            'gia.numeric' => 'Giá phải là 1 số',
+            'gia.min' => 'Giá phải là 1 số dương',
+
+            'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
+            'gia_ban_dau.numeric' => 'Giá ban đầu phải là 1 số',
+            'gia_ban_dau.min' => 'Giá ban đầu phải là 1 số dương',
+
+            'gioi_han_nguoi.required' => 'Giới hạn người không được để trống',
+            'gioi_han_nguoi.numeric' => 'Giới hạn người phải là 1 số',
+            'gioi_han_nguoi.min' => 'Giới hạn người phải là 1 số dương',
+
+            'so_luong.required' => 'Số lượng không được để trống',
+            'so_luong.numeric' => 'Số lượng phải là 1 số',
+            'so_luong.min' => 'Số lượng phải là 1 số dương',
+
+            'mo_ta_ngan.required' => 'Mô tả ngắn không được để trống',
+            'mo_ta_ngan.max' => 'Mô tả ngắn không được vượt quá 255 ký tự',
+
+            'mo_ta_dai.required' => 'Mô tả dài không được để trống',
+            'mo_ta_dai.max' => 'Mô tả dài không được vượt quá 1000 ký tự',
+
+            'trang_thai.required' => 'Trạng thái không được để trống',
+        ];
+
+        $validated = $request->validate($rules, $messages);
+        
+        // $request->validate([
+        //     'ten' => 'required|unique:loai_phongs',
+        //     'anh' => 'nullable', 'image',
+        //     'gia' => 'required',
+        //     'gia_ban_dau' => 'nullable',
+        //     'gioi_han_nguoi' => 'required',
+        //     'so_luong' => 'required',
+        //     'mo_ta_ngan' => 'required',
+        //     'mo_ta_dai' => 'required',
+        //     'trang_thai' => 'required',
+
+        // ]);
 
 
         $data = $request->except('anh');
@@ -80,9 +130,7 @@ class LoaiPhongController extends Controller
             $data['anh'] = Storage::put(self::PATH_UPLOAD, $request->file('anh'));
         }
         Loai_phong::query()->create($data);
-        // return back()->with('success', 'Thêm thành công');
-        // toastr('Thêm thành công', 'success');
-        Toastr::success('Cập nhật sản phẩm thành công','success');
+        Toastr::success('Thêm loại phòng thành công', 'Thành công');
         return redirect()->route('admin.loai_phong.index');
     }
 
@@ -115,18 +163,68 @@ class LoaiPhongController extends Controller
         if (!Gate::allows('update', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-        $request->validate([
-            'ten' => 'required|unique:loai_phongs,ten,' . $loai_phong->id,
-            'anh' => 'nullable', 'image',
-            'gia' => 'required',
-            'gia_ban_dau' => 'nullable',
-            'gioi_han_nguoi' => 'required',
-            'so_luong' => 'required',
-            'mo_ta_ngan' => 'required',
-            'mo_ta_dai' => 'required',
-            'trang_thai' => 'required',
 
-        ]);
+        $rules = [
+            'ten' => 'required|max:255|unique:loai_phongs,ten,' . $loai_phong->id,
+            'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gia' => 'required|numeric|min:0',
+            'gia_ban_dau' => 'required|numeric|min:0',
+            'gioi_han_nguoi' => 'required|numeric|min:0',
+            'so_luong' => 'required|numeric|min:0',
+            'mo_ta_ngan' => 'required|max:255',
+            'mo_ta_dai' => 'required|max:1000',
+            'trang_thai' => 'required'
+        ];
+
+        $messages = [
+            'ten.required' => 'Tên không được để trống',
+            'ten.max' => 'Tên không được vượt quá 255 ký tự',
+            'ten.unique' => 'Tên loại phòng đã tồn tại',
+
+            'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+
+            'gia.required' => 'Giá không được để trống',
+            'gia.numeric' => 'Giá phải là 1 số',
+            'gia.min' => 'Giá phải là 1 số dương',
+
+            'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
+            'gia_ban_dau.numeric' => 'Giá ban đầu phải là 1 số',
+            'gia_ban_dau.min' => 'Giá ban đầu phải là 1 số dương',
+
+            'gioi_han_nguoi.required' => 'Giới hạn người không được để trống',
+            'gioi_han_nguoi.numeric' => 'Giới hạn người phải là 1 số',
+            'gioi_han_nguoi.min' => 'Giới hạn người phải là 1 số dương',
+
+            'so_luong.required' => 'Số lượng không được để trống',
+            'so_luong.numeric' => 'Số lượng phải là 1 số',
+            'so_luong.min' => 'Số lượng phải là 1 số dương',
+
+            'mo_ta_ngan.required' => 'Mô tả ngắn không được để trống',
+            'mo_ta_ngan.max' => 'Mô tả ngắn không được vượt quá 255 ký tự',
+
+            'mo_ta_dai.required' => 'Mô tả dài không được để trống',
+            'mo_ta_dai.max' => 'Mô tả dài không được vượt quá 1000 ký tự',
+
+            'trang_thai.required' => 'Trạng thái không được để trống',
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+        // $request->validate([
+        //     'ten' => 'required|unique:loai_phongs,ten,' . $loai_phong->id,
+        //     'anh' => 'nullable', 'image',
+        //     'gia' => 'required',
+        //     'gia_ban_dau' => 'nullable',
+        //     'gioi_han_nguoi' => 'required',
+        //     'so_luong' => 'required',
+        //     'mo_ta_ngan' => 'required',
+        //     'mo_ta_dai' => 'required',
+        //     'trang_thai' => 'required',
+
+        // ]);
         $data = $request->except('anh');
         if ($request->hasFile('anh')) {
             $data['anh'] = Storage::put(self::PATH_UPLOAD, $request->file('anh'));
@@ -137,16 +235,23 @@ class LoaiPhongController extends Controller
         }
         $loai_phong->update($data);
 
-        Toastr::success('Cập nhật sản phẩm thành công','success');
-        // toastr.error('Nội dung lỗi.', 'Gặp lỗi!')
+        // if($request->fails()){
+        // 	$errors = $request->messages()->all();
+
+        // 	foreach($errors as $error){
+        // 		Toastr::error($error, 'Lỗi');
+        // 	}
+        // }
+
+        // Toastr::success('Cập nhật sản phẩm thành công', 'Thành công');
+        toastr()->success('Thành công !','Thông báo');
         return redirect()->route('admin.loai_phong.index');
-        // return back()->with('msg', 'Sửa thành công');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, User $user): RedirectResponse
+    public function destroy(string $id, User $user)
     {
         if (!Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
