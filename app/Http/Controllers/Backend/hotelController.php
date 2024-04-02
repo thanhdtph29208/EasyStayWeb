@@ -40,7 +40,7 @@ class hotelController extends Controller
 
         $rules = [
             'ten' => 'required|max:255',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'so_dien_thoai' => ['required','regex:/^0\d{9,10}$/'],
             'email' => 'required|email',
             'mo_ta' => 'nullable',
@@ -53,7 +53,7 @@ class hotelController extends Controller
         $messages = [
             'ten.requied' => 'Tên không được bỏ trống',
             
-            'logo.required' => 'Ảnh không được để trống',
+            // 'logo.required' => 'Ảnh không được để trống',
             'logo.image' => 'Ảnh không đúng định dạng',
             'logo.mimes' => 'Ảnh không đúng định dạng',
             'logo.max' => 'Ảnh quá kích thước 2048kb',

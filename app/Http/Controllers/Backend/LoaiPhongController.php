@@ -166,7 +166,7 @@ class LoaiPhongController extends Controller
 
         $rules = [
             'ten' => 'required|max:255|unique:loai_phongs,ten,' . $loai_phong->id,
-            'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'anh' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'gia' => 'required|numeric|min:0',
             'gia_ban_dau' => 'required|numeric|min:0',
             'gioi_han_nguoi' => 'required|numeric|min:0',
@@ -181,7 +181,7 @@ class LoaiPhongController extends Controller
             'ten.max' => 'Tên không được vượt quá 255 ký tự',
             'ten.unique' => 'Tên loại phòng đã tồn tại',
 
-            'anh.required' => 'Ảnh không được để trống',
+            // 'anh.required' => 'Ảnh không được để trống',
             'anh.image' => 'Ảnh không đúng định dạng',
             'anh.mimes' => 'Ảnh không đúng định dạng',
             'anh.max' => 'Ảnh quá kích thước 2048kb',

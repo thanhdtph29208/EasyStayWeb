@@ -48,7 +48,7 @@ class PhongController extends Controller
         }
 
         $rules = [
-            'ten_phong' => 'required|unique::phongs',
+            'ten_phong' => 'required|unique:phongs',
             'mo_ta' => 'nullable|max:255',
             'trang_thai' => 'required',
         ];
@@ -62,7 +62,7 @@ class PhongController extends Controller
             'trang_thai.required' => 'Trạng thái không được bỏ trống',
         ];
 
-        $validated = $request->validate($rules, $messages);
+		$validated = $request->validate($rules, $messages);
 
 
         // $request->validate([
@@ -77,7 +77,7 @@ class PhongController extends Controller
         //     // ],
         // ]);
         Phong::query()->create($request->all());
-        Toastr::success('Thêm loại phòng thành công', 'Thành công');
+        Toastr::success('Thêm mới phòng thành công', 'Thành công');
         return back();
     }
 
@@ -108,7 +108,7 @@ class PhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $rules = [
-            'ten_phong' => 'required|unique::phongs,ten_phong,' . $phong->id,
+            'ten_phong' => 'required|unique:phongs,ten_phong,' . $phong->id,
             'mo_ta' => 'nullable|max:255',
             'trang_thai' => 'required',
         ];
@@ -135,13 +135,14 @@ class PhongController extends Controller
         //     ],
         // ]);
         $phong->update($request->all());
+        Toastr::success('Cập nhật phòng thành công', 'Thành công');
         return back()->with('msg','Cập nhật thành công');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Phong $phong, User $user): RedirectResponse
+    public function destroy(Phong $phong, User $user)
     {
         if (! Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');

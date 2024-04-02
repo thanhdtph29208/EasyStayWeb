@@ -14,7 +14,16 @@
             <div class="card-header">
                 <h5>Chi tiết đặt phòng: {{$datPhong->id}}</h5>
             </div>
-            <h4>aaa</h4>
+            <table class="table">
+                <tr>
+                    <th>Id</th>
+                    <th>Thành tiền</th>            
+                </tr>
+                <tr>
+                    <th></th>
+                </tr>
+            </table>
+            
         </div>
         <a href="{{route('admin.dat_phong.index')}}" class="btn btn-danger mt-3">Quay lại</a>
     </div>
