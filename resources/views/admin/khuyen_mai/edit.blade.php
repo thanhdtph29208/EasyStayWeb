@@ -56,10 +56,10 @@
                         <input type="number" class="form-control" id="gia_tri_giam" name="gia_tri_giam" value="{{ $khuyenMai->gia_tri_giam }}" required>
                     </div>
 
-                    <div class="form-group mt-3">
+                    <!-- <div class="form-group mt-3">
                         <label for="so_luong">Số lượng</label>
                         <input type="number" class="form-control" id="so_luong" name="so_luong" value="{{ $khuyenMai->so_luong }}" required>
-                    </div>
+                    </div> -->
 
 
                     <div class="form-group mt-3">
