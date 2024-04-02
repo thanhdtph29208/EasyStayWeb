@@ -25,7 +25,7 @@ protected $fillable = [
     'loai_giam_gia',
     'gia_tri_giam',
     'mo_ta',
-    'so_luong',
+    // 'so_luong',
     'ngay_bat_dau',
     'ngay_ket_thuc',
     'trang_thai',

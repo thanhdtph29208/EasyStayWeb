@@ -53,7 +53,7 @@ class KhuyenMaiController extends Controller
             'ma_giam_gia' => 'required|string|max:255|unique:khuyen_mais,ma_giam_gia',
             'loai_giam_gia' => 'required|boolean',
             'gia_tri_giam' => 'required|numeric|min:0',
-            'so_luong' => 'required|integer|min:0',
+            // 'so_luong' => 'required|integer|min:0',
             'ngay_bat_dau' => 'required|date',
             'ngay_ket_thuc' => 'required|date|after:ngay_bat_dau',
             'trang_thai' => 'required|boolean',
@@ -76,9 +76,9 @@ class KhuyenMaiController extends Controller
             'gia_tri_giam.numeric' => 'Giá trị giảm phải là 1 số',
             'gia_tri_giam.min' => 'Giá trị giảm phải là 1 số dương',
 
-            'so_luong.required' => 'Số lượng không được bỏ trống',
-            'so_luong.integer' => 'Số lượng phải là 1 số nguyên',
-            'so_luong.min' => 'Số lượng phải là 1 số dương',
+            // 'so_luong.required' => 'Số lượng không được bỏ trống',
+            // 'so_luong.integer' => 'Số lượng phải là 1 số nguyên',
+            // 'so_luong.min' => 'Số lượng phải là 1 số dương',
 
             'ngay_bat_dau.required' => 'Ngày bắt đầu không được bỏ trống',
             'ngay_bat_dau.date' => 'Ngày bắt đầu không đúng định dạng ngày',
@@ -149,7 +149,7 @@ class KhuyenMaiController extends Controller
             'ma_giam_gia' => 'required|string|max:255|unique:khuyen_mais,ma_giam_gia,' . $khuyenMai->id,
             'loai_giam_gia' => 'required|boolean',
             'gia_tri_giam' => 'required|numeric|min:0',
-            'so_luong' => 'required|integer|min:0',
+            // 'so_luong' => 'required|integer|min:0',
             'ngay_bat_dau' => 'required|date',
             'ngay_ket_thuc' => 'required|date|after:ngay_bat_dau',
             'trang_thai' => 'required|boolean',
@@ -172,9 +172,9 @@ class KhuyenMaiController extends Controller
             'gia_tri_giam.numeric' => 'Giá trị giảm phải là 1 số',
             'gia_tri_giam.min' => 'Giá trị giảm phải là 1 số dương',
 
-            'so_luong.required' => 'Số lượng không được bỏ trống',
-            'so_luong.integer' => 'Số lượng phải là 1 số nguyên',
-            'so_luong.min' => 'Số lượng phải là 1 số dương',
+            // 'so_luong.required' => 'Số lượng không được bỏ trống',
+            // 'so_luong.integer' => 'Số lượng phải là 1 số nguyên',
+            // 'so_luong.min' => 'Số lượng phải là 1 số dương',
 
             'ngay_bat_dau.required' => 'Ngày bắt đầu không được bỏ trống',
             'ngay_bat_dau.date' => 'Ngày bắt đầu không đúng định dạng ngày',

@@ -82,9 +82,9 @@
 
 
                         <!-- <div class="form-group"> -->
-                        <label class="mt-3" for="so_luong">Số lượng</label>
+                        <!-- <label class="mt-3" for="so_luong">Số lượng</label>
                         <input type="number" class="form-control" id="so_luong" name="so_luong"
-                            placeholder="Nhập số lượng" required>
+                            placeholder="Nhập số lượng" required> -->
                         <!-- </div> -->
 
                         <div class="row">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('loai_giam_gia');
             $table->decimal('gia_tri_giam');
             // $table->string('mo_ta', 255);
-            $table->integer('so_luong');
+            // $table->integer('so_luong');
             $table->dateTime('ngay_bat_dau');
             $table->dateTime('ngay_ket_thuc');
             $table->boolean('trang_thai')->default(KhuyenMai::DANG_AP_DUNG);
