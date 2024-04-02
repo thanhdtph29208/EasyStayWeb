@@ -45,10 +45,10 @@ class DatPhong extends Model
     {
         return $this->belongsToMany(Phong::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
     }
-    protected function loai_phong()
+    protected function loaiPhongs()
     {
         // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(Loai_phong::class);
+        return $this->belongsTo(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id');
     }
     protected function khuyen_mai()
     {

@@ -16,6 +16,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DatPhongController extends Controller
 {
@@ -60,11 +62,11 @@ class DatPhongController extends Controller
         $khuyenMai = KhuyenMai::findOrFail($request->khuyen_mai_id);
         $datPhong=DatPhong::create([
             'user_id'=> $request->user_id,
-            'loai_phong_id'=> $request->loai_phong_id,
+            'loai_phong_id'=> null,
             'phong_id' => null,
             'don_gia'=>null,
+            'so_luong_phong'=>null,
             'so_luong_nguoi'=>$request->so_luong_nguoi,
-            'so_luong_phong'=>$request->so_luong_phong,
             'thoi_gian_den'=>$request->thoi_gian_den,
             'thoi_gian_di'=>$request->thoi_gian_di,
             'dich_vu_id' => null,
@@ -74,18 +76,41 @@ class DatPhongController extends Controller
             'trang_thai'=> 1,
             'ghi_chu'=>null,
         ]);
+        $ngay_bat_dau = strtotime($request->thoi_gian_den);
+        $ngay_ket_thuc = strtotime($request->thoi_gian_di);
+        $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
         $datPhong->setPhongIdTemp($request->phong_id);
-        $phongIds = Phong::where('trang_thai', 1)
+
+        foreach ($request->loai_phong_ids as $loaiPhongData) {
+            $loaiPhong = Loai_phong::find($loaiPhongData['id']);
+            if ($loaiPhong) {
+                $datPhong->loaiPhongs()->attach($loaiPhong->id, ['so_luong' => $loaiPhongData['so_luong']]);
+            }
+        }
+
+        $phongIds = DB::table('phongs as p')
+        ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
+        ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
+        ->whereNull('dp.phong_id')
+        ->orWhere(function($query) use ($datPhong) {
+            $query->whereNotNull('dp.phong_id')
+                  ->where('d.thoi_gian_di', '<=', $datPhong->thoi_gian_den);
+        })
         ->limit($datPhong->so_luong_phong)
-        ->pluck('id')
-        ->toArray();
+        ->pluck('p.id');
+        $datPhong->phongs()->attach($phongIds);
+
+
+
+
+
         if($request->khuyen_mai_id && $khuyenMai->loai_giam_gia == 1)
         {
-            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong-($loaiPhong->gia * $datPhong->so_luong_phong)*$khuyenMai->gia_tri_giam/100);
+            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong * $thoi_gian_o)-($loaiPhong->gia * $datPhong->so_luong_phong * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100;
         }else{
-            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong)-$khuyenMai->gia_tri_giam;
+            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
         }
-        $datPhong->phongs()->attach($phongIds);
+
         $datPhong->update([
             'tong_tien' => $tong_tien
         ]);
@@ -206,11 +231,5 @@ class DatPhongController extends Controller
         }
         $datPhong->delete();
         return response(['trang_thai' => 'success']);
-    }
-    public function searchKhuyenMai(Request $request)
-    {
-        $term = $request->input('term');
-        $khuyen_mai = KhuyenMai::where('ten_khuyen_mai', 'LIKE', '%'.$term.'%')->pluck('ten_khuyen_mai', 'id');
-        return response()->json($khuyen_mai);
     }
 }

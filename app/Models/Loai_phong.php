@@ -12,7 +12,7 @@ class Loai_phong extends Model
         SoftDeletes;
 
     const CON_PHONG = 1;
-    const HET_PHONG = 0;    
+    const HET_PHONG = 0;
     protected $fillable = [
         'ten',
         'anh',
@@ -32,19 +32,12 @@ class Loai_phong extends Model
     public function Phong(){
         return $this->hasMany(Phong::class);
     }
+    public function datPhongs()
+    {
+        return $this->belongsToMany(DatPhong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id');
+    }
 
-    // protected static function boot(){
-    //     parent::boot();
-    //     static::saved(function($loaiphongs){
-    //         //Kiem tra so luong phong trong cua loai phong
-    //         if($loaiphongs->available_phongs == 0){
-    //             //Cap nhat trang thai cua loai phong thanh het phong
-    //             $loaiphongs->trang_thai = 0;
-    //             $loaiphongs->save();
-    //         }
-    //     });
-    // }
 
-   
+
 
 }
