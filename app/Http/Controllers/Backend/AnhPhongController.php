@@ -12,7 +12,7 @@ use App\Traits\ImageUploadTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-
+use Brian2694\Toastr\Facades\Toastr;
 
 class AnhPhongController extends Controller
 {
@@ -32,8 +32,6 @@ class AnhPhongController extends Controller
      */
     public function create()
     {
-
-
     }
 
     /**
@@ -41,21 +39,37 @@ class AnhPhongController extends Controller
      */
     public function store(Request $request, User $user): RedirectResponse
     {
-        if (! Gate::allows('delete', $user)) {
-                return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
-            }
-        $request->validate([
-            'anh.*' => ['required', 'image'],
-        ]);
+        if (!Gate::allows('delete', $user)) {
+            return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
+        }
+        $rules = [
+            'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ];
+
+        $messages = [
+            'anh.required' => 'Ảnh không được để trống',
+            'anh.image' => 'Ảnh không đúng định dạng',
+            'anh.mimes' => 'Ảnh không đúng định dạng',
+            'anh.max' => 'Ảnh quá kích thước 2048kb',
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+        // $request->validate([
+        //     // 'anh.*' => ['required', 'image'],
+        //     'anh' => 'required|image',
+        // ]);
 
         $anh = $this->uploadMultiImage($request, 'anh', 'uploads/anh_phong');
 
-        foreach($anh as $path){
+        foreach ($anh as $path) {
             $anh_phong = new Anh_phong();
             $anh_phong->anh = $path;
             $anh_phong->loai_phong_id = $request->loai_phong_id;
             $anh_phong->save();
         }
+        Toastr::success('Thêm ảnh phòng thành công', 'success');
+        // return redirect()->route('admin.bai_viet.index');
 
         return redirect()->back();
     }
@@ -89,7 +103,7 @@ class AnhPhongController extends Controller
      */
     public function destroy(string $id, User $user): RedirectResponse
     {
-        if (! Gate::allows('delete', $user)) {
+        if (!Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $anh_phong = Anh_phong::findOrFail($id);
