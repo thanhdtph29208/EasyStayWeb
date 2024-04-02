@@ -60,7 +60,7 @@
 
                                 <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
-                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="10" class="form-control">{{ $bai_viet->noi_dung }}</textarea>
+                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="8" class="form-control">{{ $bai_viet->noi_dung }}</textarea>
                                 </div>
 
                                 <div class="mb-3 mx-auto ">
@@ -80,7 +80,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success">Gửi</button>
+                                    <button type="submit" class="btn btn-success">Cập nhật</button>
                                     <a class="btn btn-danger ms-3" href="{{ route('admin.bai_viet.index') }}">Quay lại</a>
                                 </div>
 

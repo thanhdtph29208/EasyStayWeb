@@ -104,9 +104,10 @@
                         value="{{\App\Models\KhuyenMai::KET_THUC}}">
                         <label for="trang_thai3">Kết thúc</label> <br><br>
                     </div>
-
-                    <button class="btn btn-success">GỬI</button>
-                    <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger">Quay lại</a>
+                    <div class="d-flex justify-content-center">
+                    <button class="btn btn-success">Cập nhật</button>
+                    <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger ms-3">Quay lại</a>
+                    </div>
                 </form>
             </div>
         </div>

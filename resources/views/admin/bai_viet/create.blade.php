@@ -55,7 +55,7 @@
 
                                 <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
-                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="8" class="form-control"></textarea>
                                 </div>
 
                                 <div class="mb-3 mx-auto ">
@@ -73,8 +73,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success">Gửi</button>
-                                    <a class="btn btn-danger ms-3" href="{{ route('admin.bai_viet.index') }}">Quay lại</a>
+                                    <button type="submit" class="btn btn-success">Thêm mới</button>
+                                    <a class="btn btn-danger ms-2" href="{{ route('admin.bai_viet.index') }}">Quay lại</a>
                                 </div>
 
 

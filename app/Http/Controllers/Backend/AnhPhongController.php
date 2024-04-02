@@ -43,13 +43,13 @@ class AnhPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $rules = [
-            'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'anh' => 'required|max:2048',
         ];
 
         $messages = [
             'anh.required' => 'Ảnh không được để trống',
-            'anh.image' => 'Ảnh không đúng định dạng',
-            'anh.mimes' => 'Ảnh không đúng định dạng',
+            // 'anh.image' => 'Ảnh không đúng định dạng',
+            // 'anh.mimes' => 'Ảnh không đúng định dạng',
             'anh.max' => 'Ảnh quá kích thước 2048kb',
         ];
 
@@ -101,7 +101,7 @@ class AnhPhongController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, User $user): RedirectResponse
+    public function destroy(string $id, User $user)
     {
         if (!Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');

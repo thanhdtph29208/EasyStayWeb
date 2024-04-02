@@ -33,7 +33,7 @@
                             <label class="mt-3" for="mo_ta">Mô tả</label>
                             <textarea name="mo_ta" id="mo_ta" cols="10" rows="6" class="form-control"></textarea>
 
-                            <label class="mt-3" class="mt-3" for="trang_thai">Trạng thái:</label>
+                            <label class="mt-3" class="mt-3" for="trang_thai">Trạng thái:</label> <br>
 
                             <input type="radio" name="trang_thai" id="trang_thai1" value="{{\App\Models\Phong::CON_PHONG}}">
                             <label for="trang_thai1">CÒN PHÒNG</label>
@@ -45,8 +45,8 @@
                                 <input type="file" class="form-control" multiple name="anh[]">
                                 <input type="hidden" value="{{ $loai_phong->id }}" name="loai_phong_id">
                             </div> -->
-                            <button type="submit" class="btn btn-success">Gửi</button>
-                            <a href="{{route('admin.loai_phong.index')}}" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-success">Thêm mới</button>
+                            <a href="{{route('admin.loai_phong.index')}}" class="btn btn-danger ms-3">Quay lại</a>
 
                         </form>
                         {{ $dataTable->table() }}
