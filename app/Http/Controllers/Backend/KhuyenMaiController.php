@@ -23,7 +23,24 @@ class KhuyenMaiController extends Controller
     {
 
         return $datatables->render('admin.khuyen_mai.index');
-        // $khuyenMaiList = KhuyenMai::all();
+        $khuyenmais = KhuyenMai::all();
+        foreach($khuyenmais as $khuyenmai){
+            $trang_thai = $khuyenmai->checkStatus();
+            switch($trang_thai){
+                case 0:
+                    echo "Chưa áp dụng";
+                    break;
+                case 1:
+                    echo "Đang áp dụng";
+                    break;
+                case 2:
+                    echo "Kết thúc";
+                    break;
+
+            }
+        }
+
+
         // return view('admin.khuyen_mai.index', compact('khuyenMaiList'));
     }
 
@@ -221,4 +238,6 @@ class KhuyenMaiController extends Controller
         // return back()->with('msg','Xóa thành công');
         return response(['trang_thai' => 'success']);
     }
+
+   
 }

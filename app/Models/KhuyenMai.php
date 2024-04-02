@@ -15,8 +15,9 @@ class KhuyenMai extends Model
     const GIAM_THEO_PHAN_TRAM = 1;
     const GIAM_THEO_VND = 0; 
     //TRẠNG THÁI
+    const CHUA_AP_DUNG = 0;
     const DANG_AP_DUNG = 1;
-    const KET_THUC = 0; 
+    const KET_THUC = 2; 
    
 protected $fillable = [
     'ten_khuyen_mai',
@@ -31,16 +32,20 @@ protected $fillable = [
     'trang_thai',
 ];
 
-protected $dates = ['ngay_bat_dau', 'ngay_ket_thuc'];
+// protected $dates = ['ngay_bat_dau', 'ngay_ket_thuc'];
 
-public function getTrangThaiAttribute($value)
-    {
-        if ($this->ngay_ket_thuc < Carbon::now()) {
-            return 1; // Kết thúc
-        } else {
-            return $value; // Đang áp dụng
-        }
+public function checkStatus()
+{
+    $now = Carbon::now();
+
+    if ($this->ngay_bat_dau > $now) {
+        return 0; // Chưa áp dụng
+    } elseif ($this->ngay_ket_thuc < $now) {
+        return 2; // Kết thúc
+    } else {
+        return 1; // Đang áp dụng
     }
+}
 
 
 public function loai_phong()

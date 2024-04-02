@@ -41,12 +41,15 @@ class KhuyenMaiDataTable extends DataTable
             })
             
             ->addColumn('trang_thai', function ($query) {
+                $activeafter = "<span class='badge text-bg-warning'>Chưa áp dụng</span>";
                 $active = "<span class='badge text-bg-success'>Đang áp dụng</span>";
                 $inActive = "<span class='badge text-bg-danger'>Kết thúc</span>";
-                if ($query->trang_thai == 1) {
-                    return $active;
-                } else {
+                if ($query->trang_thai == 0) {
+                    return $activeafter;
+                } else if ($query->trang_thai == 2) {
                     return $inActive;
+                } else {
+                    return $active;
                 }
             })
 
