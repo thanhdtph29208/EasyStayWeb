@@ -50,6 +50,83 @@
                         More info <i class="bi bi-link-45deg"></i></a>
                 </div><!--end::Small Box Widget 4-->
             </div><!--end::Col-->
+            <div class="container">
+                <h1>Thống kê số lượng đặt phòng theo ngày</h1>
+            
+                <form action="{{ route('admin.dashboard.index') }}" method="GET" class="form-inline">
+                  <div class="form-group">
+                    <label for="start_date">Từ ngày:</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control">
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="end_date">Đến ngày:</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control">
+                  </div>
+            
+                  <button type="submit" class="btn btn-primary">Lọc</button>
+                </form>
+            
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Ngày</th>
+                      <th>Số lượng đặt phòng</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($datPhongs as $datPhong)
+                      <tr>
+                        <td>{{ $datPhong->date }}</td>
+                        <td>{{ $datPhong->total_bookings }}</td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+         
+        
+           
+@endsection
 
+@section('styles')
+  <style>
+   body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
 
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-inline {
+  display: flex;
+  align-items: center;
+}
+
+.form-group {
+  margin-right: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #ddd;
+}
+
+  </style>
 @endsection
