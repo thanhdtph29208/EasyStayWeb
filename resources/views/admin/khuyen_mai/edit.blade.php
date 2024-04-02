@@ -24,8 +24,8 @@
                 @endforeach
             </ul>
         </div>
-        @endif -->
-    </div>
+        @endif
+    </div> -->
 
     <div class="container">
         <div class="card">
@@ -89,15 +89,20 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <label class="mt-3" for="trang_thai">Trạng thái: </label>
-                        <input type="radio" name="trang_thai" id="trang_thai1" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::DANG_AP_DUNG) checked @endif
+                        
+                        <label class="mt-3" for="trang_thai">Trạng thái: </label> <br>
+                        <input type="radio" name="trang_thai" id="trang_thai1" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::CHUA_AP_DUNG) checked @endif
+                        value="{{\App\Models\KhuyenMai::CHUA_AP_DUNG}}">
+                        <label for="trang_thai1">Chưa áp dụng</label>
+
+                        <input type="radio" name="trang_thai" id="trang_thai2" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::DANG_AP_DUNG) checked @endif
                         value="{{\App\Models\KhuyenMai::DANG_AP_DUNG}}">
-                        <label for="trang_thai1">Đang áp dụng</label>
+                        <label for="trang_thai2">Đang áp dụng</label>
 
 
-                        <input type="radio" name="trang_thai" id="trang_thai2" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::KET_THUC) checked @endif
+                        <input type="radio" name="trang_thai" id="trang_thai3" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::KET_THUC) checked @endif
                         value="{{\App\Models\KhuyenMai::KET_THUC}}">
-                        <label for="trang_thai2">Kết thúc</label> <br><br>
+                        <label for="trang_thai3">Kết thúc</label> <br><br>
                     </div>
 
                     <button class="btn btn-success">GỬI</button>

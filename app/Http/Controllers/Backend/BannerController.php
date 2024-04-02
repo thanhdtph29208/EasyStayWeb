@@ -51,13 +51,14 @@ class BannerController extends Controller
         }
 
 		$rules = [
-			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+			'anh' => 'required|max:2048',
+			// 'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 		];
 
 		$messages = [
 			'anh.required' => 'Ảnh không được để trống',
-            'anh.image' => 'Ảnh không đúng định dạng',
-            'anh.mimes' => 'Ảnh không đúng định dạng',
+            // 'anh.image' => 'Ảnh không đúng định dạng',
+            // 'anh.mimes' => 'Ảnh không đúng định dạng',
             'anh.max' => 'Ảnh quá kích thước 2048kb',
 		];
 

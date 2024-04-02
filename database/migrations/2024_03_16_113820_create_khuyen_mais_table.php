@@ -23,7 +23,8 @@ return new class extends Migration
             // $table->integer('so_luong');
             $table->dateTime('ngay_bat_dau');
             $table->dateTime('ngay_ket_thuc');
-            $table->boolean('trang_thai')->default(KhuyenMai::DANG_AP_DUNG);
+            $table->integer('trang_thai');
+            // $table->boolean('trang_thai')->default(KhuyenMai::DANG_AP_DUNG);
             $table->timestamps();
             $table->softDeletes();
         });
