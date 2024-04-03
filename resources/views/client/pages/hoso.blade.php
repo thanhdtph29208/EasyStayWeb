@@ -4,20 +4,19 @@
         <!-- Grid with Two Columns -->
         <div class="grid grid-cols-[300px_minmax(800px,_1fr)_100px] gap-4 mt-28">
             <!-- First Column -->
-            
-                <div class="bg-white rounded-lg overflow-hidden shadow-md">
-                    <div class="p-6">
-                        <div class="avatar size-24">
-                            <img class="rounded-full" src="" alt="avatar" />
-                        </div>
 
+            <div class="bg-white rounded-lg overflow-hidden shadow-md">
+                <div class="p-6">
+                    <div class="avatar size-24">
+                        <img class="rounded-full" src="" alt="avatar" />
                     </div>
+
                 </div>
-                <!-- Second Column -->
+            </div>
+            <!-- Second Column -->
 
 
-                @for ($users as $user)
-            
+            @foreach ($users as $user)
                 <div class="bg-white rounded-lg overflow-hidden shadow-md">
                     <p class="text-2xl font-semibold mt-4 ms-3">Thông tin cá nhân</p>
                     <div class="p-6 grid grid-cols-2 gap-4">
@@ -65,7 +64,7 @@
                         </label>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 @endsection
