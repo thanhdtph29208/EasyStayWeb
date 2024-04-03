@@ -7,8 +7,8 @@
     <div class="container relative">
         <div class="grid grid-cols-1 pb-8 text-center mt-10">
             <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Tra cứu: </h3>
-            <p class="text-white">Ngày bắt đầu: <?= $ngayBatDau?></p>
-            <p class="text-white">Ngày kết thúc: <?= $ngayKetThuc?></p>
+            <p class="text-white">Ngày bắt đầu: <?= $ngayBatDau ?></p>
+            <p class="text-white">Ngày kết thúc: <?= $ngayKetThuc ?></p>
         </div><!--end grid-->
     </div><!--end container-->
 
@@ -28,10 +28,9 @@
             <div class="lg:col-span-8 md:col-span-7">
                 @foreach($availableLoaiPhongs as $loaiPhong)
                 <div class="group rounded-md shadow dark:shadow-gray-700 my-6 gap-6">
-                    <div class="md:flex md:items-center">
-                        <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
-
-                            <img src="{{Storage::url($loaiPhong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
+                    <div class="md:flex md:items-center cd-item-parent">
+                        <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3 cd-item">
+                            <img src="{{Storage::url($loaiPhong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" data-id="{{$loaiPhong->id}}" alt="">
 
                             <div class="absolute top-0 start-0 p-4">
                                 <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">10% Off</span>
@@ -61,10 +60,40 @@
 
                             <!-- <button class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Chọn phòng</button> -->
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a>
-                           
+                            <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
+                <div class="cd-quick-view" data-id="{{$loaiPhong->id}}">
+                    <div class="cd-slider-wrapper">
+                        <ul class="cd-slider">
+                            <li class="selected"><img src="{{Storage::url($loaiPhong->anh)}}"></li>
+                            <li><img src="https://www.quackit.com/pix/byron_bay_225x169.jpg"></li>
+                            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzKg15DFyzKJ_hdFHNW4SmN0O7f5yPkg-G4Yx1F_4vTHFtDaoeoef7uKleSVZG93-YnQ0&usqp=CAU"></li>
+                        </ul> <!-- cd-slider -->
+
+                        <ul class="cd-slider-navigation">
+                            <li><a class="cd-next" href="#0">Prev</a></li>
+                            <li><a class="cd-prev" href="#0">Next</a></li>
+                        </ul> <!-- cd-slider-navigation -->
+                    </div> <!-- cd-slider-wrapper -->
+
+                    <div class="cd-item-info">
+                        <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
+                        <h2>{{$loaiPhong->ten}}</h2>
+                        <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5>
+                        <p class="text-slate-400">{{$loaiPhong->mo_ta_ngan}}</p>
+                        <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br>
+                        <p>Lưu ý: Không hoàn trả phí khi hủy phòng</p>
+
+                        <ul class="cd-item-action">
+                            <li>
+                                <button class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer">Đặt ngay</button>
+                            </li>
+                        </ul> <!-- cd-item-action -->
+                    </div> <!-- cd-item-info -->
+                    <a href="#0" class="cd-close">Đóng</a>
+                </div> <!-- cd-quick-view -->
                 @endforeach
             </div>
 
@@ -75,7 +104,7 @@
                             <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
                             <hr class="my-2">
                             <p>EasyStayHotel</p>
-                            <?= $ngayBatDau?>/<?= $ngayKetThuc?>
+                            <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
                         </div>
                         <hr class="my-2">
                         <div>
@@ -92,9 +121,59 @@
             </div>
         </div>
     </div>
+
 </section>
 
 
+<!-- <div>
+    <div>
+        <button id="button">Creat new articles</button>
+    </div>
+    <div id="popup">
+        <form id="btn-popup" class="show">
+            <h2>Create new article</h2>
+            <div class="group">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" />
+                <div class="error hidden"></div>
+            </div>
+            <div class="group">
+                <label for="image">Image</label>
+                <input id="btn-image" name="btn-image" type="text">
+                <div class="error hidden"></div>
+            </div>
+            <div class="group">
+                <label for="composer">Composer</label>
+                <input id="composer" name="composer" type="text">
+                <div class="error hidden"></div>
+            </div>
+            <div class="group">
+                <label for="btn-email">Email</label>
+                <input id="btn-email" name="btn-email" type="text">
+                <div class="error hidden"></div>
+            </div>
+            <div class="group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                <div class="error hidden"></div>
+            </div>
+            <button id="close">Đóng</button>
+            <button id="create">Tạo mới</button>
+        </form>
+    </div>
+</div> -->
+<!-- <script>
+    var button = document.getElementById('button');
+    var close = document.getElementById('close');
+    var popup = document.getElementById('popup');
 
+    button.addEventListener('click', () => {
+        popup.classList.add('show');
+    });
+
+    close.addEventListener('click', () => {
+        popup.classList.remove('show');
+    });
+</script>÷ -->
 
 @endsection

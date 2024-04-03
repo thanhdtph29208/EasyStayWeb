@@ -9,7 +9,7 @@
         ])
     </div>
 
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -25,7 +25,7 @@
             </ul>
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="card">
@@ -40,35 +40,37 @@
                     <label for="ten_nguoi_dung">Họ và tên</label>
                     <input type="text" id="ten_nguoi_dung" name="ten_nguoi_dung" class="form-control" value="{{$user->ten_nguoi_dung}}">
 
-                    <label class="mt-3"  for="email">Email</label>
+                    <label class="mt-3" for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-control" value="{{$user->email}}">
 
-                    <label class="mt-3"  for="dia_chi">Địa chỉ</label>
+                    <label class="mt-3" for="dia_chi">Địa chỉ</label>
                     <input type="text" id="dia_chi" name="dia_chi" class="form-control" value="{{$user->dia_chi}}">
 
-                    <label class="mt-3"  for="gioi_tinh">Giới tính</label>
+                    <label class="mt-3" for="gioi_tinh">Giới tính</label>
                     <select name="gioi_tinh" id="gioi_tinh" value="{{$user->gioi_tinh}}" class="form-control">
                         <option value="Nam">Nam</option>
                         <option value="Nữ">Nữ</option>
                     </select>
-                    <label class="mt-3"  for="ngay_sinh">Ngày sinh</label>
+                    <label class="mt-3" for="ngay_sinh">Ngày sinh</label>
                     <input type="date" id="ngay_sinh" name="ngay_sinh" class="form-control" value="{{$user->ngay_sinh}}">
 
-                    <label class="mt-3"  for="so_dien_thoai">Số điện thoại</label>
+                    <label class="mt-3" for="so_dien_thoai">Số điện thoại</label>
                     <input type="text" id="so_dien_thoai" name="so_dien_thoai" class="form-control" value="{{$user->so_dien_thoai}}">
 
-                    <label class="mt-3"  for="anh">Ảnh</label>
+                    <label class="mt-3" for="anh">Ảnh</label>
                     <input type="file" id="anh" name="anh" class="form-control" value="{{$user->anh}}">
 
-                    <label class="mt-3"  for="id_vai_tro">Tên chức vụ</label>
+                    <label class="mt-3" for="id_vai_tro">Tên chức vụ</label>
                     <select name="id_vai_tro" id="id_vai_tro" class="form-control" value="{{$user->id_vai_tro}}">
                         @foreach ($vaitro as $id => $ten_chuc_vu)
                         <option value="{{$id}}">{{$ten_chuc_vu}}</option>
                         @endforeach
                     </select>
 
-                    <button class="btn btn-success mt-3" >GỬI</button>
-                    <a href="{{route('admin.user.index')}}" class="btn btn-danger mt-3">Quay lại</a>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-success mt-3">Cập nhật</button>
+                        <a href="{{route('admin.user.index')}}" class="btn btn-danger mt-3 ms-3">Quay lại</a>
+                    </div>
 
                 </form>
             </div>

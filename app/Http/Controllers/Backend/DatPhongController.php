@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
+use App\Models\DatPhongNoiPhong;
 
 class DatPhongController extends Controller
 {
@@ -127,10 +128,11 @@ class DatPhongController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DatPhong $datPhong, ChiTietDatPhongDataTable $datatables)
+    public function show( ChiTietDatPhongDataTable $datatables, string $id)
     {
-        //
-        return $datatables->render('admin.dat_phong.show', compact('datPhong'));
+        $datPhong = DatPhong::findOrFail($id);
+        $phongDat = DatPhongNoiPhong::where('dat_phong_id', $id)->with('phong')->get();
+        return $datatables->render('admin.dat_phong.show', compact('datPhong','phongDat'));
     }
 
     /**

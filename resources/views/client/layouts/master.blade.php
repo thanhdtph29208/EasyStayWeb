@@ -29,6 +29,8 @@
     <link href="/assets/css/tailwind.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="stylesheet" href="/assets/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
 
 </head>
 
@@ -430,6 +432,10 @@
     <script src="/assets/libs/feather-icons/feather.min.js"></script>
     <script src="/assets/js/plugins.init.js"></script>
     <script src="/assets/js/app.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/assets/js/velocity.min.js"></script>
+    <script src="/assets/js/main.js"></script> <!-- Resource jQuery -->
     <!-- JAVASCRIPTS -->
 </body>
 
