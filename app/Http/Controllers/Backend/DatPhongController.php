@@ -19,6 +19,8 @@ use App\Models\ChiTietDatPhong;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+use function Livewire\store;
+
 class DatPhongController extends Controller
 {
     const PATH_VIEW = 'admin.dat_phong.';
@@ -42,12 +44,12 @@ class DatPhongController extends Controller
         // return response()->json(['loai_phongs' => $loai_phongs]);
         // return view(self::PATH_VIEW . __FUNCTION__, ['loai_phongs'=>$loai_phongs]);
 
+        $so_luong_loai_phong = Loai_phong::count();
         $user = User::query()->pluck('email','id')->toArray();
         $loai_phong = Loai_phong::query()->pluck('ten','id')->toArray();
         $phong = Phong::query()->pluck('ten_phong','id')->toArray();
         $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai','id')->toArray();
-
-        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai'));
+        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong'));
     }
 
     /**
@@ -58,6 +60,12 @@ class DatPhongController extends Controller
         if (! Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
+        $request->validate([
+            'loai_phong_ids' => 'required|array',
+            'loai_phong_ids.*.id' => 'required|numeric',
+            'loai_phong_ids.*.so_luong' => 'required|numeric|min:0',
+            'ghi_chu' => 'nullable|string',
+        ]);
         $loaiPhong = Loai_phong::findOrFail($request->loai_phong_id);
         $khuyenMai = KhuyenMai::findOrFail($request->khuyen_mai_id);
         $datPhong=DatPhong::create([
@@ -80,7 +88,7 @@ class DatPhongController extends Controller
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
         $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
         $datPhong->setPhongIdTemp($request->phong_id);
-
+        $datPhong->loaiPhongs()->detach();
         foreach ($request->loai_phong_ids as $loaiPhongData) {
             $loaiPhong = Loai_phong::find($loaiPhongData['id']);
             if ($loaiPhong) {
@@ -217,7 +225,6 @@ class DatPhongController extends Controller
                 $datPhong->dichVus()->attach($dichVu->id, ['so_luong' => $dichVuData['so_luong']]);
             }
         }
-
         return back()->with('msg', 'Cập nhật thành công');
     }
 
