@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('gia');
             $table->double('gia_ban_dau')->nullable();
             $table->integer('gioi_han_nguoi');
-            $table->integer('so_luong');
+            $table->integer('so_luong')->nullable();
             $table->text('mo_ta_ngan');
             $table->text('mo_ta_dai');
             $table->boolean('trang_thai');

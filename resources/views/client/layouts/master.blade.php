@@ -30,22 +30,42 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="stylesheet" href="/assets/css/reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
+
+    {{-- Bootstrap Icon --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+
+     {{-- Toastr css --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
 </head>
 
 <body class="dark:bg-slate-900">
-    <!-- Loader Start -->
-    <!-- <div id="preloader">
-            <div id="status">
-                <div class="spinner">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
-                </div>
-            </div>
-        </div> -->
-    <!-- Loader End -->
-    <!-- TAGLINE START-->
+
+    {{-- Jquery --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    {{-- Toastr js --}}
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+
+    {{-- Sweet Alert --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <script>
+        toastr.error('{{ $error }}', 'Lỗi');
+    </script>
+    @endforeach
+    @endif
+
     <div class="tagline bg-slate-900">
         <div class="container relative">
             <div class="grid grid-cols-1">
@@ -225,6 +245,14 @@
                         }
                     }
                     ?>
+                    <li>
+                        <a class="nav-link fs-5 px-md-3 position-relative" href="{{ route('chi_tiet_gio_hang') }}">
+                            <i class="bi bi-cart"></i>
+                            <span class="badge text-bg-danger position-absolute top-0 start-0" style="font-size: 10px" id="cart-count">
+                                {{ Cart::content()->count() }}
+                            </span>
+                        </a>
+                    </li>
 
 
                 </ul><!--end navigation menu-->

@@ -43,24 +43,33 @@
 
                         <div class="p-4 w-full">
                             <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
-                            <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
 
-                            <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5> <br>
+                            <form action="{{ route('them_gio_hang') }}" method="POST" class="book-cart">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$loaiPhong->id}}">
+                                <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
 
-                                <!-- <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/<?= $loaiPhong->id ?>" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a> -->
-                            </div>
+                                <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
+                                    <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5> <br>
+                                </div>
 
-                            <div>
-                                <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4" d="M8.67969 10.8203C8.77344 10.7266 8.77344 10.5703 8.67969 10.4688L7.21094 9L8.67969 7.53125C8.77344 7.42969 8.77344 7.27344 8.67969 7.17969L8.32031 6.82031C8.22656 6.72656 8.07031 6.72656 7.96875 6.82031L6.5 8.28906L5.03125 6.82031C4.92969 6.72656 4.77344 6.72656 4.67969 6.82031L4.32031 7.17969C4.22656 7.27344 4.22656 7.42969 4.32031 7.53125L5.79688 9L4.32031 10.4688C4.22656 10.5703 4.22656 10.7266 4.32031 10.8203L4.67969 11.1797C4.77344 11.2734 4.92969 11.2734 5.03125 11.1797L6.5 9.70313L7.96875 11.1797C8.07031 11.2734 8.22656 11.2734 8.32031 11.1797L8.67969 10.8203ZM1 13V5H12V13H1ZM4 3.5C4 3.64063 3.89062 3.75 3.75 3.75H3.25C3.10938 3.75 3 3.64063 3 3.5V1.25C3 1.10938 3.10938 1 3.25 1H3.75C3.89062 1 4 1.10938 4 1.25V3.5ZM10 3.5C10 3.64063 9.89062 3.75 9.75 3.75H9.25C9.10938 3.75 9 3.64063 9 3.5V1.25C9 1.10938 9.10938 1 9.25 1H9.75C9.89062 1 10 1.10938 10 1.25V3.5ZM13 3C13 2.45312 12.5469 2 12 2H11V1.25C11 0.5625 10.4375 0 9.75 0H9.25C8.5625 0 8 0.5625 8 1.25V2H5V1.25C5 0.5625 4.4375 0 3.75 0H3.25C2.5625 0 2 0.5625 2 1.25V2H1C0.453125 2 0 2.45312 0 3V13C0 13.5469 0.453125 14 1 14H12C12.5469 14 13 13.5469 13 13V3Z" fill="black"></path>
-                                </svg>
-                                <h5>Không hoàn trả phí khi hủy phòng</h5>
-                            </div>
+                                <div>
+                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4" d="M8.67969 10.8203C8.77344 10.7266 8.77344 10.5703 8.67969 10.4688L7.21094 9L8.67969 7.53125C8.77344 7.42969 8.77344 7.27344 8.67969 7.17969L8.32031 6.82031C8.22656 6.72656 8.07031 6.72656 7.96875 6.82031L6.5 8.28906L5.03125 6.82031C4.92969 6.72656 4.77344 6.72656 4.67969 6.82031L4.32031 7.17969C4.22656 7.27344 4.22656 7.42969 4.32031 7.53125L5.79688 9L4.32031 10.4688C4.22656 10.5703 4.22656 10.7266 4.32031 10.8203L4.67969 11.1797C4.77344 11.2734 4.92969 11.2734 5.03125 11.1797L6.5 9.70313L7.96875 11.1797C8.07031 11.2734 8.22656 11.2734 8.32031 11.1797L8.67969 10.8203ZM1 13V5H12V13H1ZM4 3.5C4 3.64063 3.89062 3.75 3.75 3.75H3.25C3.10938 3.75 3 3.64063 3 3.5V1.25C3 1.10938 3.10938 1 3.25 1H3.75C3.89062 1 4 1.10938 4 1.25V3.5ZM10 3.5C10 3.64063 9.89062 3.75 9.75 3.75H9.25C9.10938 3.75 9 3.64063 9 3.5V1.25C9 1.10938 9.10938 1 9.25 1H9.75C9.89062 1 10 1.10938 10 1.25V3.5ZM13 3C13 2.45312 12.5469 2 12 2H11V1.25C11 0.5625 10.4375 0 9.75 0H9.25C8.5625 0 8 0.5625 8 1.25V2H5V1.25C5 0.5625 4.4375 0 3.75 0H3.25C2.5625 0 2 0.5625 2 1.25V2H1C0.453125 2 0 2.45312 0 3V13C0 13.5469 0.453125 14 1 14H12C12.5469 14 13 13.5469 13 13V3Z" fill="black"></path>
+                                    </svg>
+                                    <h5>Không hoàn trả phí khi hủy phòng</h5>
+                                </div>
 
-                            <!-- <button class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Chọn phòng</button> -->
-                            <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a>
-                            <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
+                                <div>
+                                    <label for="so_luong">Số lượng:</label>
+                                    <input type="number" id="so_luong" min="1" value="1" name="so_luong">
+                                </div>
+
+                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Chọn phòng</button>
+                                <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
+                                <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
+
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -68,8 +77,9 @@
                     <div class="cd-slider-wrapper">
                         <ul class="cd-slider">
                             <li class="selected"><img src="{{Storage::url($loaiPhong->anh)}}"></li>
-                            <li><img src="https://www.quackit.com/pix/byron_bay_225x169.jpg"></li>
-                            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzKg15DFyzKJ_hdFHNW4SmN0O7f5yPkg-G4Yx1F_4vTHFtDaoeoef7uKleSVZG93-YnQ0&usqp=CAU"></li>
+
+                            <!-- <li><img src="https://www.quackit.com/pix/byron_bay_225x169.jpg"></li>
+                            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzKg15DFyzKJ_hdFHNW4SmN0O7f5yPkg-G4Yx1F_4vTHFtDaoeoef7uKleSVZG93-YnQ0&usqp=CAU"></li> -->
                         </ul> <!-- cd-slider -->
 
                         <ul class="cd-slider-navigation">
@@ -99,24 +109,24 @@
 
             <div class="lg:col-span-4 md:col-span-5">
                 <div class="px-3 rounded-md shadow dark:shadow-gray-700 sticky top-20">
-                    <form action="" method="post">
-                        <div class="mt-6">
-                            <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
-                            <hr class="my-2">
-                            <p>EasyStayHotel</p>
-                            <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
-                        </div>
+                    <!-- <form action="" method="post"> -->
+                    <div class="mt-6">
+                        <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
                         <hr class="my-2">
-                        <div>
-                            <h5>Thông tin phòng</h5>
-                            <p></p>
-                        </div>
-                        <hr class="my-2">
-                        <div class="pb-3">
-                            <p class="text-red-500">Tổng cộng: VNĐ</p>
-                            <button class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer">Đặt ngay</button>
-                        </div>
-                    </form>
+                        <p>EasyStayHotel</p>
+                        <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
+                    </div>
+                    <hr class="my-2">
+                    <div>
+                        <h5>Thông tin phòng</h5>
+                        <p></p>
+                    </div>
+                    <hr class="my-2">
+                    <div class="pb-3">
+                        <p class="text-red-500">Tổng cộng: VNĐ</p>
+                        <button class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer">Đặt ngay</button>
+                    </div>
+                    <!-- </form> -->
                 </div>
             </div>
         </div>
@@ -124,56 +134,45 @@
 
 </section>
 
-
-<!-- <div>
-    <div>
-        <button id="button">Creat new articles</button>
-    </div>
-    <div id="popup">
-        <form id="btn-popup" class="show">
-            <h2>Create new article</h2>
-            <div class="group">
-                <label for="title">Title</label>
-                <input id="title" name="title" type="text" />
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="image">Image</label>
-                <input id="btn-image" name="btn-image" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="composer">Composer</label>
-                <input id="composer" name="composer" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="btn-email">Email</label>
-                <input id="btn-email" name="btn-email" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="description">Description</label>
-                <textarea name="description" id="description" cols="30" rows="10"></textarea>
-                <div class="error hidden"></div>
-            </div>
-            <button id="close">Đóng</button>
-            <button id="create">Tạo mới</button>
-        </form>
-    </div>
-</div> -->
-<!-- <script>
-    var button = document.getElementById('button');
-    var close = document.getElementById('close');
-    var popup = document.getElementById('popup');
-
-    button.addEventListener('click', () => {
-        popup.classList.add('show');
-    });
-
-    close.addEventListener('click', () => {
-        popup.classList.remove('show');
-    });
-</script>÷ -->
-
 @endsection
+
+@push('scripts')
+
+<script>
+    $(document).ready(function() {
+        $('.book-cart').on('submit', function(e) {
+            e.preventDefault();
+
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                data: formData,
+                url: $(this).attr('action'),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        getCartCount();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Xảy ra lỗi trong khi thêm vào giỏ hàng.');
+                }
+            });
+        });
+
+        function getCartCount() {
+            $.ajax({
+                method: 'GET',
+                url: "{{ route('cart-count') }}",
+                success: function(data) {
+                    $('#cart-count').text(data);
+                }
+            });
+        }
+    });
+</script>
+
+
+@endpush
