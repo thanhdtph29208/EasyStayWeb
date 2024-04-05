@@ -18,6 +18,7 @@ use App\Http\Controllers\Backend\KhuyenMaiController;
 use App\Http\Controllers\Backend\DichVuController;
 use App\Http\Controllers\Backend\ThongKeController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ChiTietLoaiPhongController;
 use App\Http\Controllers\Frontend\HoSoController;
 use App\Http\Controllers\Frontend\KiemTraPhongController;
@@ -70,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 
     // Route::get('/profile', function () {
     //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
