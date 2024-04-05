@@ -42,7 +42,7 @@
                                 <label for="user_id">Email Khách Hàng</label>
                                 <select name="user_id" id="user_id" class="form-control">
                                     @foreach ($user as $id => $email)
-                                        <option value="{{$id}}">{{$email}}</option>
+                                    <option value="{{$id}}">{{$email}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-user_id"></span>
@@ -51,7 +51,7 @@
                                 <label for="loai_phong_id">Loại Phòng</label>
                                 <select name="loai_phong_id" id="loai_phong_id" class="form-control">
                                     @foreach ($loai_phong as $id => $ten)
-                                        <option value="{{$id}}">{{$ten}}</option>
+                                    <option value="{{$id}}">{{$ten}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-loai_phong_id"></span>
@@ -66,21 +66,23 @@
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="thoi_gian_den">Thời gian đến</label>
-                                <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
-                                <span class="text-danger error-thoi_gian_den"></span>
-                            </div>
-                            <div class="form-group mt-3 mx-auto ">
-                                <label for="thoi_gian_di">Thời gian đi</label>
-                                <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
-                                <span class="text-danger error-thoi_gian_di"></span>
+                            <div class="row">
+                                <div class="form-group mt-3 mx-auto col-6 ">
+                                    <label for="thoi_gian_den">Thời gian đến</label>
+                                    <input type="datetime-local" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
+                                    <span class="text-danger error-thoi_gian_den"></span>
+                                </div>
+                                <div class="form-group mt-3 mx-auto col-6 ">
+                                    <label for="thoi_gian_di">Thời gian đi</label>
+                                    <input type="datetime-local" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
+                                    <span class="text-danger error-thoi_gian_di"></span>
+                                </div>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="khuyen_mai_id">Khuyến mãi</label>
                                 <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
-                                        <option value="{{$id}}">{{$ten_khuyen_mai}}</option>
+                                    <option value="{{$id}}">{{$ten_khuyen_mai}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
