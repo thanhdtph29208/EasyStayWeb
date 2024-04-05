@@ -1,159 +1,166 @@
 @extends('client.layouts.master')
 @section('content')
-<!-- Start Hero -->
-<section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
-    <div class="container relative">
-        <div class="grid grid-cols-1 pb-8 text-center mt-10">
-            <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Chi tiết giỏ hàng
-            </h3>
-        </div><!--end grid-->
-    </div><!--end container-->
+    <!-- Start Hero -->
+    <section
+        class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
+        <div class="container relative">
+            <div class="grid grid-cols-1 pb-8 text-center mt-10">
+                <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Chi tiết giỏ hàng
+                </h3>
+            </div><!--end grid-->
+        </div><!--end container-->
 
-    <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
-        <ul class="tracking-[0.5px] mb-0 inline-block">
-            <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white/50 hover:text-white">
-                <a href="<?= env('APP_URL') ?>/">EasyStay</a>
-            </li>
-            <li class="inline-block text-base text-white/50 mx-0.5 ltr:rotate-0 rtl:rotate-180"><i class="mdi mdi-chevron-right"></i></li>
-            <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white" aria-current="page">Chi tiết giỏ hàng</li>
-        </ul>
-    </div>
-</section><!--end section-->
-<div class="container mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="col-span-2 mb-3 border-2">
-            <div class="bg-white border rounded-lg">
-                <div class="p-4 border-b">
-                    <h1 class="text-xl font-semibold">Chi tiết giỏ hàng</h1>
+        <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
+            <ul class="tracking-[0.5px] mb-0 inline-block">
+                <li
+                    class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white/50 hover:text-white">
+                    <a href="<?= env('APP_URL') ?>/">EasyStay</a>
+                </li>
+                <li class="inline-block text-base text-white/50 mx-0.5 ltr:rotate-0 rtl:rotate-180"><i
+                        class="mdi mdi-chevron-right"></i></li>
+                <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white"
+                    aria-current="page">Chi tiết giỏ hàng</li>
+            </ul>
+        </div>
+    </section><!--end section-->
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="col-span-2 mb-3 border-2">
+                <div class="bg-white border rounded-lg">
+                    <div class="p-4 border-b">
+                        <h1 class="text-xl font-semibold">Chi tiết giỏ hàng</h1>
+                    </div>
+                    <div class="p-4">
+                        <table class="w-full table-fixed">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">#</th>
+                                    <th class="px-4 py-2">Loại phòng</th>
+                                    <th class="px-4 py-2">Số lượng</th>
+                                    <th class="px-4 py-2">Giá</th>
+                                    <th class="px-4 py-2">Tổng tiền</th>
+                                    <th class="px-4 py-2">
+                                        <button class="btn btn-primary">Clear</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cartItems as $item)
+                                    <tr>
+                                        <td>
+                                            <img src="{{ Storage::url($item->image) }}" alt="" class="w-24 h-auto">
+                                        </td>
+                                        <td>
+                                            <p>{{ $item->name }}</p>
+                                        </td>
+                                        <td>
+                                            <div class="flex items-center">
+                                                <button class="btn btn-warning mr-1">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input type="text"
+                                                    class="form-control w-16 px-2 py-1 text-center phong-qty"
+                                                    value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}">
+                                                <button class="btn btn-success ml-1 product-increment">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
+                                        <td id="{{ $item->rowId }}">
+                                            {{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('chi_tiet_gio_hang.xoa_phong', $item->rowId) }}"
+                                                class="btn btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @if (count($cartItems) == 0)
+                                    <tr>
+                                        <td class="border-b-0">Bạn chưa chọn phòng nào !</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="p-4">
-                    <table class="w-full table-fixed">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2">#</th>
-                                <th class="px-4 py-2">Loại phòng</th>
-                                <th class="px-4 py-2">Số lượng</th>
-                                <th class="px-4 py-2">Giá</th>
-                                <th class="px-4 py-2">Tổng tiền</th>
-                                <th class="px-4 py-2">
-                                    <button class="btn btn-primary">Clear</button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cartItems as $item)
-                            <tr>
-                                <td>
-                                    <img src="{{ Storage::url($item->image)}}" alt="" class="w-24 h-auto">
-                                </td>
-                                <td>
-                                    <p>{{ $item->name }}</p>
-                                </td>
-                                <td>
-                                    <div class="flex items-center">
-                                        <button class="btn btn-warning mr-1">
-                                            <i class="bi bi-dash"></i>
-                                        </button>
-                                        <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}">
-                                        <button class="btn btn-success ml-1 product-increment">
-                                            <i class="bi bi-plus-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
-                                <td id="{{ $item->rowId }}">
-                                    {{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ
-                                </td>
-                                <td>
-                                    <a href="{{ route('chi_tiet_gio_hang.xoa_phong', $item->rowId) }}" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @if (count($cartItems) == 0)
-                            <tr>
-                                <td class="border-b-0">Bạn chưa chọn phòng nào !</td>
-                            </tr>
+            </div>
+            <div class="col">
+                <div class="bg-white border rounded-lg">
+                    <div class="p-4 border-b">
+                        <h5 class="text-lg font-semibold">Tổng tiền phòng</h5>
+                    </div>
+                    <div class="p-4">
+                        <form  class="mb-3">
+                            @csrf
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="font-semibold">Tổng tiền:</p>
+                                <p id="total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
+                                <input type="hidden" value="{{ $total }}" name="total">
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="font-semibold">Khuyến mãi:</p>
+                                <p id="discount" class="font-semibold">0VNĐ</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="font-semibold">Thành tiền:</p>
+                                <p id="cart_total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
+                                <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
+                            </div>
+                            @if (count($cartItems) != 0)
+                                <button
+                                    class="mt-4 py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer"
+                                    type="submit">Đặt phòng</button>
                             @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="bg-white border rounded-lg">
-                <div class="p-4 border-b">
-                    <h5 class="text-lg font-semibold">Tổng tiền phòng</h5>
-                </div>
-                <div class="p-4">
-                    <form action="{{ route('checkout')}}"  class="mb-3">
-                        @csrf
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="font-semibold">Tổng tiền:</p>
-                            <p id="total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
-                            <input type="hidden" value="{{ $total }}" name="total">
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="font-semibold">Khuyến mãi:</p>
-                            <p id="discount" class="font-semibold">0VNĐ</p>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <p class="font-semibold">Thành tiền:</p>
-                            <p id="cart_total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
-                            <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
-                        </div>
-                        @if (count($cartItems) != 0)
-                        <button class="mt-4 py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" type="submit">Đặt phòng</button>
-                        @endif
-                    </form>
-                    <form id="coupon_form" class="flex mb-3">
-                        <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text" placeholder="Mã khuyến mãi" name="coupon_code">
-                        <button class="btn btn-outline-success">Áp dụng</button>
-                    </form>
+                        </form>
+                        <form id="coupon_form" class="flex mb-3">
+                            <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text"
+                                placeholder="Mã khuyến mãi" name="coupon_code">
+                            <button class="btn btn-outline-success">Áp dụng</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('.product-increment').on('click', function() {
-            let input = $(this).siblings('.phong-qty')
-            let quantity = parseInt(input.val()) + 1;
-            console.log(quantity);
-            let rowId = input.data('rowid')
-            $.ajax({
-                url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
-                method: "POST",
-                data: {
-                    quantity: quantity,
-                    rowId: rowId
-                },
-                success: function(data) {
-                    console.log(data);
-                    if (data.status === 'success') {
-                        input.val(quantity)
-                        let id = "#" + rowId;
-                        toastr.success(data.message)
-                        $(id).text(data.phong_total + "VNĐ")
-                        VNĐ('#total').text(data.total + "VNĐ");
-                        calcCouponDiscount()
-                    } else if (data.status === 'error') {
-                        toastr.error(data.message)
+    <script>
+        $(document).ready(function() {
+            $('.product-increment').on('click', function() {
+                let input = $(this).siblings('.phong-qty')
+                let quantity = parseInt(input.val()) + 1;
+                console.log(quantity);
+                let rowId = input.data('rowid')
+                $.ajax({
+                    url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
+                    method: "POST",
+                    data: {
+                        quantity: quantity,
+                        rowId: rowId
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status === 'success') {
+                            input.val(quantity)
+                            let id = "#" + rowId;
+                            toastr.success(data.message)
+                            $(id).text(data.phong_total + "VNĐ")
+                            VNĐ('#total').text(data.total + "VNĐ");
+                            calcCouponDiscount()
+                        } else if (data.status === 'error') {
+                            toastr.error(data.message)
+                        }
                     }
-                }
+                })
             })
-        })
 
-        $('.product-decrement').on('click', function() {
+            $('.product-decrement').on('click', function() {
                 let input = $(this).siblings('.phong-qty')
                 let quantity = parseInt(input.val()) - 1;
                 if (quantity < 1) {
@@ -182,7 +189,7 @@
                 })
             })
 
-        function calcCouponDiscount() {
+            function calcCouponDiscount() {
                 $.ajax({
                     type: 'GET',
                     url: "{{ route('coupon-calc') }}",
@@ -198,6 +205,6 @@
                     }
                 })
             }
-    })
-</script>
+        })
+    </script>
 @endpush
