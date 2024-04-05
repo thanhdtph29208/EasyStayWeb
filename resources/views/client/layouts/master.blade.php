@@ -276,8 +276,8 @@
                                 <a href="#" class="text-[22px] focus:outline-none">
                                     <img src="assets/images/logo-light.png" alt="">
                                 </a>
-                                <p class="mt-6 text-gray-300">Planning for a trip? We will organize your trip with the
-                                    best places and within best budget!</p>
+                                <p class="mt-6 text-gray-300">Lập kế hoạch cho một chuyến đi? Chúng tôi sẽ tổ chức chuyến đi của bạn với
+                                    những nơi tốt nhất và trong ngân sách tốt nhất!</p>
                                 <ul class="list-none mt-6">
                                     <li class="inline"><a href="https://1.envato.market/travosy" target="_blank"
                                             class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
@@ -315,13 +315,13 @@
                             <div class="lg:col-span-3 md:col-span-4">
                                 <div class="lg:ms-8">
                                     <h5 class="tracking-[1px] text-gray-100 font-semibold">Office</h5>
-                                    <h5 class="tracking-[1px] text-gray-100 mt-6">Travosy Tour & Travels</h5>
+                                    <h5 class="tracking-[1px] text-gray-100 mt-6">Easystay Tour & Travels</h5>
 
                                     <div class="flex mt-4">
                                         <i data-feather="map-pin" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
-                                            <h6 class="text-gray-300">C/54 Northwest Freeway, <br> Suite 558, <br>
-                                                Houston, USA 485</h6>
+                                            <h6 class="text-gray-300">Cổng số 2, 13 P. Trịnh Văn Bô, <br>  Xuân Phương, <br>
+                                                Nam Từ Liêm, Hà Nội</h6>
                                         </div>
                                     </div>
 
@@ -329,7 +329,7 @@
                                         <i data-feather="mail" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
                                             <a href="mailto:contact@example.com"
-                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">contact@example.com</a>
+                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">easystay@gmail.com</a>
                                         </div>
                                     </div>
 
@@ -337,8 +337,8 @@
                                         <i data-feather="phone" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
                                             <a href="tel:+152534-468-854"
-                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">+152
-                                                534-468-854</a>
+                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">+84
+                                                981-978-061</a>
                                         </div>
                                     </div>
                                 </div>
@@ -346,37 +346,34 @@
 
                             <div class="lg:col-span-3 md:col-span-4">
                                 <div class="lg:ms-8">
-                                    <h5 class="tracking-[1px] text-gray-100 font-semibold">Company</h5>
+                                    <h5 class="tracking-[1px] text-gray-100 font-semibold">Công ty</h5>
                                     <ul class="list-none footer-list mt-6">
                                         <li><a href="aboutus.html"
                                                 class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> About us</a></li>
+                                                    class="mdi mdi-chevron-right"></i> Về chúng tôi</a></li>
                                         <li class="mt-[10px]"><a href="services.html"
                                                 class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Services</a></li>
+                                                    class="mdi mdi-chevron-right"></i> Dịch vụ</a></li>
                                         <li class="mt-[10px]"><a href="team.html"
                                                 class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Team</a></li>
+                                                    class="mdi mdi-chevron-right"></i> Đội nhóm</a></li>
                                         <li class="mt-[10px]"><a href="pricing.html"
                                                 class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Pricing</a></li>
+                                                    class="mdi mdi-chevron-right"></i> Định giá</a></li>
                                         <li class="mt-[10px]"><a href="blogs.html"
                                                 class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Blog</a></li>
-                                        <li class="mt-[10px]"><a href="login.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Login</a></li>
+                                                    class="mdi mdi-chevron-right"></i> Bài viết</a></li>
                                     </ul>
                                 </div>
                             </div><!--end col-->
 
                             <div class="lg:col-span-3 md:col-span-4">
-                                <h5 class="tracking-[1px] text-gray-100 font-semibold">Newsletter</h5>
-                                <p class="mt-6">Sign up and receive the latest tips via email.</p>
+                                <h5 class="tracking-[1px] text-gray-100 font-semibold">Bản tin</h5>
+                                <p class="mt-6">Đăng ký và nhận những lời khuyên mới nhất qua email.</p>
                                 <form>
                                     <div class="grid grid-cols-1">
                                         <div class="my-3">
-                                            <label class="form-label">Write your email <span
+                                            <label class="form-label">địa chỉ email của bạn<span
                                                     class="text-red-600">*</span></label>
                                             <div class="form-icon relative mt-2">
                                                 <i data-feather="mail" class="size-4 absolute top-3 start-4"></i>
@@ -387,7 +384,7 @@
                                         </div>
 
                                         <button type="submit" id="submitsubscribe" name="send"
-                                            class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Subscribe</button>
+                                            class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đặt mua</button>
                                     </div>
                                 </form>
                             </div><!--end col-->
