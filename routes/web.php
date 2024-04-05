@@ -17,6 +17,7 @@ use App\Http\Controllers\Backend\ExportController;
 use App\Http\Controllers\Backend\KhuyenMaiController;
 use App\Http\Controllers\Backend\DichVuController;
 use App\Http\Controllers\Backend\ThongKeController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\ChiTietLoaiPhongController;
 use App\Http\Controllers\Frontend\HoSoController;
 use App\Http\Controllers\Frontend\KiemTraPhongController;
@@ -53,12 +54,24 @@ Route::get('chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFECont
 
 Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.lien_he');
 
-Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+// Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+
+Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
+Route::get('chi_tiet_gio_hang',[CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
+Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
+Route::get('chi_tiet_gio_hang/xoa_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_phong');
+Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
+Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+
     // Route::get('/profile', function () {
     //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
     //     if (auth()->check()) {

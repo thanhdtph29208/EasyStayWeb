@@ -66,9 +66,9 @@ class LoaiPhongController extends Controller
             'ten' => 'required|max:255|unique:loai_phongs',
 			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gia' => 'required|numeric|min:0',
-            'gia_ban_dau' => 'required|numeric|min:0',
+            'gia_ban_dau' => 'nullable|numeric|min:0',
             'gioi_han_nguoi' => 'required|numeric|min:0',
-            'so_luong' => 'required|numeric|min:0',
+            'so_luong' => 'nullable|numeric|min:0',
             'mo_ta_ngan' => 'required|max:255',
             'mo_ta_dai' => 'required|max:1000',
             'trang_thai' => 'required'
@@ -88,7 +88,7 @@ class LoaiPhongController extends Controller
             'gia.numeric' => 'Giá phải là 1 số',
             'gia.min' => 'Giá phải là 1 số dương',
 
-            'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
+            // 'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
             'gia_ban_dau.numeric' => 'Giá ban đầu phải là 1 số',
             'gia_ban_dau.min' => 'Giá ban đầu phải là 1 số dương',
 
@@ -96,7 +96,7 @@ class LoaiPhongController extends Controller
             'gioi_han_nguoi.numeric' => 'Giới hạn người phải là 1 số',
             'gioi_han_nguoi.min' => 'Giới hạn người phải là 1 số dương',
 
-            'so_luong.required' => 'Số lượng không được để trống',
+            // 'so_luong.required' => 'Số lượng không được để trống',
             'so_luong.numeric' => 'Số lượng phải là 1 số',
             'so_luong.min' => 'Số lượng phải là 1 số dương',
 
@@ -144,7 +144,11 @@ class LoaiPhongController extends Controller
 
     public function show(Loai_phong $loai_phong)
     {
-        return view('admin.loai_phong.show', compact('loai_phong'));
+        $so_luong = Phong::select('Loai_phongs.ten', DB::raw('COUNT(phongs.id) as so_luong'))
+            ->join('Loai_phongs', 'Phongs.loai_phong_id', '=', 'Loai_phongs.id')
+            ->groupBy('Loai_phongs.ten')
+            ->get();
+        return view('admin.loai_phong.show', compact('loai_phong','so_luong'));
     }
 
     /**
@@ -152,6 +156,7 @@ class LoaiPhongController extends Controller
      */
     public function edit(Loai_phong $loai_phong)
     {
+        
         return view('admin.loai_phong.edit', compact('loai_phong'));
     }
 
@@ -168,9 +173,9 @@ class LoaiPhongController extends Controller
             'ten' => 'required|max:255|unique:loai_phongs,ten,' . $loai_phong->id,
             'anh' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'gia' => 'required|numeric|min:0',
-            'gia_ban_dau' => 'required|numeric|min:0',
+            'gia_ban_dau' => 'nullable|numeric|min:0',
             'gioi_han_nguoi' => 'required|numeric|min:0',
-            'so_luong' => 'required|numeric|min:0',
+            'so_luong' => 'nullable|numeric|min:0',
             'mo_ta_ngan' => 'required|max:255',
             'mo_ta_dai' => 'required|max:1000',
             'trang_thai' => 'required'
@@ -190,7 +195,7 @@ class LoaiPhongController extends Controller
             'gia.numeric' => 'Giá phải là 1 số',
             'gia.min' => 'Giá phải là 1 số dương',
 
-            'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
+            // 'gia_ban_dau.required' => 'Giá ban đầu không được để trống',
             'gia_ban_dau.numeric' => 'Giá ban đầu phải là 1 số',
             'gia_ban_dau.min' => 'Giá ban đầu phải là 1 số dương',
 
@@ -198,7 +203,7 @@ class LoaiPhongController extends Controller
             'gioi_han_nguoi.numeric' => 'Giới hạn người phải là 1 số',
             'gioi_han_nguoi.min' => 'Giới hạn người phải là 1 số dương',
 
-            'so_luong.required' => 'Số lượng không được để trống',
+            // 'so_luong.required' => 'Số lượng không được để trống',
             'so_luong.numeric' => 'Số lượng phải là 1 số',
             'so_luong.min' => 'Số lượng phải là 1 số dương',
 

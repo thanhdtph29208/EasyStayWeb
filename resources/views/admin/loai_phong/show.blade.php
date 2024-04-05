@@ -39,7 +39,13 @@
                         <td>{{ $loai_phong->gia }}</td>
                         <td>{{ $loai_phong->gia_ban_dau }}</td>
                         <td>{{ $loai_phong->gioi_han_nguoi }}</td>
-                        <td>{{ $loai_phong->so_luong }}</td>
+                        <td>
+                            @foreach($so_luong as $item)
+                            @if($item->ten === $loai_phong->ten)
+                            {{ $item->so_luong }}
+                            @endif
+                            @endforeach
+                        </td>
                         <td>{{ $loai_phong->mo_ta_ngan }}</td>
                         <td>{{ $loai_phong->mo_ta_dai }}</td>
                         <td>{{ $loai_phong->trang_thai ? 'Còn phòng' : 'Hết phòng' }}</td>
