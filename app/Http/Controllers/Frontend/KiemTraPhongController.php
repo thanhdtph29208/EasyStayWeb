@@ -19,8 +19,8 @@ class KiemTraPhongController extends Controller
     function checkPhong(Request $request)
     {
         try {
-        $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
-        $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
+            $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
+            $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
@@ -39,7 +39,6 @@ class KiemTraPhongController extends Controller
                 })
                 ->exists();
             return $availableRooms;
-            
         });
 
         $phongs = $availableLoaiPhongs->map(function ($loaiPhong) use ($ngayBatDau, $ngayKetThuc) {
@@ -56,20 +55,65 @@ class KiemTraPhongController extends Controller
             ];
         });
 
-        
-
-
         // dd($phongs);
         // return response()->json([
-        //                 'success' => true,
-        //                 'available_loai_phongs' => $phongs,
-        //                 'ngay_bat_dau' => $ngayBatDau,
-        //                 'ngay_ket_thuc' => $ngayKetThuc
-        //             ]);
-        return view('client.pages.checkPhong', compact('availableLoaiPhongs','phongs', 'ngayBatDau', 'ngayKetThuc'));
-
-        
+        //     'success' => true,
+        //     'available_loai_phongs' => $phongs,
+        //     'ngay_bat_dau' => $ngayBatDau,
+        //     'ngay_ket_thuc' => $ngayKetThuc
+        // ]);
+        return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc'));
     }
+
+    // function checkPhong(Request $request)
+    // {
+    //     try {
+    //         $ngayBatDau = Carbon::parse($request->input('ngay_bat_dau'))->setTime(14, 0);
+    //         $ngayKetThuc = $ngayBatDau->copy()->addDay()->setTime(12, 0);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Lỗi định dạng ngày tháng.'
+    //         ], 400);
+    //     }
+
+    //     $phongs = [];
+
+    //     $currentTime = $ngayBatDau->copy();
+    //     while ($currentTime->lessThanOrEqualTo($ngayKetThuc)) {
+    //         $availableLoaiPhongs = Loai_phong::all()->filter(function ($loaiPhong) use ($currentTime) {
+    //             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
+    //                 ->whereDoesntHave('datPhong', function ($query) use ($currentTime) {
+    //                     $query->where('thoi_gian_den', '<=', $currentTime)
+    //                         ->where('thoi_gian_di', '>=', $currentTime->copy()->addHour());
+    //                 })
+    //                 ->exists();
+
+    //             return $availableRooms;
+    //         });
+
+    //         $phongs[$currentTime->format('Y-m-d H:i')] = $availableLoaiPhongs->map(function ($loaiPhong) use ($currentTime) {
+    //             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
+    //                 ->whereDoesntHave('datPhong', function ($query) use ($currentTime) {
+    //                     $query->where('thoi_gian_den', '<=', $currentTime)
+    //                         ->where('thoi_gian_di', '>=', $currentTime->copy()->addHour());
+    //                 })
+    //                 ->get();
+
+    //             return [
+    //                 'loai_phong' => $loaiPhong,
+    //                 'available_rooms' => $availableRooms,
+    //                 'all_rooms' => Phong::where('loai_phong_id', $loaiPhong->id)->get() // Lấy tất cả phòng thuộc loại phòng
+    //             ];
+    //         });
+
+    //         $currentTime->addHour();
+    //     }
+    //     //   dd($phongs);
+
+    //     return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc'));
+    // }
+
 }
 
 

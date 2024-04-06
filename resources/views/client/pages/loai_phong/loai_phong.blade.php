@@ -38,7 +38,7 @@
 
             <div class="p-4 w-full">
                 <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
-                <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$room->ten}}</a>
+                <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out" >{{$room->ten}}</a>
 
             
 
