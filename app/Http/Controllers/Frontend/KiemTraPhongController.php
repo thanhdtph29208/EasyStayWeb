@@ -18,15 +18,15 @@ class KiemTraPhongController extends Controller
 
     function checkPhong(Request $request)
     {
-        try {
+        // try {
             $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
             $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi định dạng ngày tháng.'
-            ], 400);
-        }
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Lỗi định dạng ngày tháng.'
+        //     ], 400);
+        // }
 
         $loaiPhongs = Loai_phong::all();
 
@@ -48,10 +48,12 @@ class KiemTraPhongController extends Controller
                         ->where('thoi_gian_di', '>', $ngayBatDau);
                 })
                 ->get();
+            $allRooms = Phong::where('loai_phong_id', $loaiPhong->id)->get();
 
             return [
                 'loai_phong' => $loaiPhong,
-                'available_rooms' => $availableRooms
+                'available_rooms' => $availableRooms,
+                'all_rooms' => $allRooms
             ];
         });
 
@@ -62,7 +64,9 @@ class KiemTraPhongController extends Controller
         //     'ngay_bat_dau' => $ngayBatDau,
         //     'ngay_ket_thuc' => $ngayKetThuc
         // ]);
-        return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc'));
+
+        return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc', 'loaiPhongs'));
+
     }
 
     // function checkPhong(Request $request)
@@ -115,6 +119,3 @@ class KiemTraPhongController extends Controller
     // }
 
 }
-
-
-

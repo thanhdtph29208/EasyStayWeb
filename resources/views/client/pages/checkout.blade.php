@@ -21,29 +21,28 @@
     </div>
 </section><!--end section-->
 <div class="container mx-auto py-5">
-    <form action="" method="">
+    <form action="{{route('checkout')}}" method="post">
         @csrf
         <div class="flex flex-row">
             <div class="w-3/4">
                 <div class=" shadow-md rounded px-4 py-5">
                     <h1 class="text-xl font-bold mb-4">Thông tin người đặt phòng</h1>
                     <hr class="my-2 ">
-                    @csrf
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="block text-sm font-medium mb-1">Họ và tên</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail1" value="{{ Auth::user()->ten_nguoi_dung }}" required name="name">
+                        <input type="text" class="form-input w-full" id="exampleInputEmail1" value="{{ Auth::user()->ten_nguoi_dung }}" required name="ten">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail2" class="block text-sm font-medium mb-1">Số điện thoại</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail2" required name="telephone">
+                        <input type="text" class="form-input w-full" id="exampleInputEmail2" required name="order_sdt">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Email</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail3" required name="address" value="{{ Auth::user()->email }}">
+                        <input type="text" class="form-input w-full" id="exampleInputEmail3" required name="email" value="{{ Auth::user()->email }}">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Payments</label>
-                        <select class="form-select w-full" aria-label="Default select example" id="payments" name="payments">
+                        <select class="form-select w-full" aria-label="Default select example" id="payment" name="payment">
                             <option value="1">COD</option>
                             <option value="2">VNPay</option>
                         </select>
@@ -52,7 +51,7 @@
             </div>
             <div class="w-1/4 ms-5 px-4 py-5 shadow-md">
                 <div>
-                    <h5 class="text-xl font-bold mb-2">Yêu cầu đặt phòng của bạn</h5>
+                    <h5 class="text-xl font-bold mb-2">Yêu cầu đặt phòng</h5>
                     <hr class="my-3">
                     <p class="text-base font-medium mb-2">Khách sạn EasyStay</p>
                     <p class="text-base font-medium mb-2">Nhận phòng:</p>
@@ -62,7 +61,7 @@
                 <div>
                     <h5 class="text-xl font-bold my-2">Thông tin phòng</h5>
                     @foreach ($cartItems as $item )
-                    <p class="text-base">Tên phòng: {{$item->name}}</p>
+                    <p class="text-base">Tên loại phòng: {{$item->name}}</p>
                     <p class="text-base">Số lượng: {{ $item->qty }}</p>
                     <p class="text-base">Giá phòng: {{ number_format($item->price, 0, '.', '.') }} VNĐ</p>
                     <p class="text-red-600 text-right text-base font-bold"> {{ number_format($item->price * $item->qty, 0, '.', '.') }} VNĐ</p>

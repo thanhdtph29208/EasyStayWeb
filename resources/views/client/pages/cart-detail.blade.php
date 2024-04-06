@@ -42,7 +42,7 @@
                                     <th class="px-2 py-2">Giá</th>
                                     <th class="px-2 py-2">Tổng tiền</th>
                                     <th class="px-2 py-2">
-                                        <button class="btn btn-primary">Clear</button>
+                                        <button class="btn btn-primary ">Clear</button>
                                     </th>
                                 </tr>
                             </thead>
@@ -57,13 +57,13 @@
                                         </td>
                                         <td>
                                             <div class="flex items-center">
-                                                <button class="btn btn-warning mr-1">
+                                                <button class="btn btn-warning mr-1 room-decrement">
                                                     <i class="bi bi-dash"></i>
                                                 </button>
                                                 <input type="text"
                                                     class="form-control w-16 px-2 py-1 text-center phong-qty"
                                                     value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}">
-                                                <button class="btn btn-success ml-1 product-increment">
+                                                <button class="btn btn-success ml-1 room-increment">
                                                     <i class="bi bi-plus-lg"></i>
                                                 </button>
                                             </div>
@@ -73,7 +73,7 @@
                                             {{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ
                                         </td>
                                         <td>
-                                            <a href="{{ route('chi_tiet_gio_hang.xoa_phong', $item->rowId) }}"
+                                            <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}"
                                                 class="btn btn-danger">
                                                 <i class="bi bi-trash"></i>
                                             </a>
@@ -98,7 +98,7 @@
                     <h5 class="text-lg font-semibold">THÔNG TIN ĐẶT PHÒNG</h5>
                 </div>
                 <div class="p-4">
-                    <form class="mb-3">
+                    <form action="{{'checkout'}}" method="get"  class="mb-3">
                         @csrf
                         {{-- <label class="block">
                             <span class="font-semibold">Họ và Tên: <span class="text-red-500">(*)</span></span>
@@ -176,7 +176,8 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('.product-increment').on('click', function() {
+            $('.room-increment').on('click', function() {
+                alert(123);
                 let input = $(this).siblings('.phong-qty')
                 let quantity = parseInt(input.val()) + 1;
                 console.log(quantity);
@@ -204,7 +205,7 @@
                 })
             })
 
-            $('.product-decrement').on('click', function() {
+            $('.room-decrement').on('click', function() {
                 let input = $(this).siblings('.phong-qty')
                 let quantity = parseInt(input.val()) - 1;
                 if (quantity < 1) {
@@ -229,6 +230,40 @@
                             $('#total').text(data.total + "VNĐ");
                             calcCouponDiscount()
                         }
+                    }
+                })
+            })
+
+            $('.clear-cart').on('click', function() {
+                Swal.fire({
+                    title: 'Bạn có muốn xóa?',
+                    text: "Hành động này sẽ xóa loại phòng!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            type: 'GET',
+                            url: "{{ route('clear-cart') }}",
+                            success: function(data) {
+                                console.log(data);
+                                if (data.status == 'success') {
+                                    Swal.fire(
+                                        'Xóa!',
+                                        data.message,
+                                        'success'
+                                    )
+                                    window.location.reload();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(error);
+                            }
+                        })
                     }
                 })
             })
