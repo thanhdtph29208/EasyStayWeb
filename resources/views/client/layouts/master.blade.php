@@ -33,9 +33,10 @@
     <link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
 
     {{-- Bootstrap Icon --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
 
-     {{-- Toastr css --}}
+    {{-- Toastr css --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -56,14 +57,14 @@
     {!! Toastr::message() !!}
 
     {{-- Sweet Alert --}}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @if ($errors->any())
-    @foreach ($errors->all() as $error)
-    <script>
-        toastr.error('{{ $error }}', 'Lỗi');
-    </script>
-    @endforeach
+        @foreach ($errors->all() as $error)
+            <script>
+                toastr.error('{{ $error }}', 'Lỗi');
+            </script>
+        @endforeach
     @endif
 
     <div class="tagline bg-slate-900">
@@ -169,15 +170,20 @@
                         <div class="dropdown-menu absolute end-0 m-0 mt-4 z-10 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden"
                             onclick="event.stopPropagation();">
                             <ul class="py-2 text-start">
-        
-                                    <li>
-                                        <a href=" {{ route('client.pages.hoso') }}"
-                                            class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                            <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
-                                        </a>
-                                    </li>
-                            
 
+                                <li>
+                                    <a href=" {{ route('client.pages.hoso') }}"
+                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href=" {{ route('client.pages.password-change') }}"
+                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        <i data-feather="user" class="size-4 me-2"></i>Đổi mật khẩu
+                                    </a>
+                                </li>
                                 <li>
                                     <a href=""
                                         class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
@@ -238,17 +244,18 @@
                     if (auth()->check()) {
                         if (auth()->user()->id_vai_tro === 2 || auth()->user()->id_vai_tro === 3) {
                             echo '<li>
-                                                                                                                                        <a href="' .
+                                                                                                                                                                                                                                                                <a href="' .
                                 url('admin/dashboard') .
                                 '" class="sub-menu-item">Admin</a>
-                                                                                                                                    </li>';
+                                                                                                                                                                                                                                                            </li>';
                         }
                     }
                     ?>
                     <li>
                         <a class="nav-link fs-5 px-md-3 position-relative" href="{{ route('chi_tiet_gio_hang') }}">
                             <i class="bi bi-cart"></i>
-                            <span class="badge text-bg-danger position-absolute top-0 start-0" style="font-size: 10px" id="cart-count">
+                            <span class="badge text-bg-danger position-absolute top-0 start-0" style="font-size: 10px"
+                                id="cart-count">
                                 {{ Cart::content()->count() }}
                             </span>
                         </a>
@@ -276,7 +283,8 @@
                                 <a href="#" class="text-[22px] focus:outline-none">
                                     <img src="assets/images/logo-light.png" alt="">
                                 </a>
-                                <p class="mt-6 text-gray-300">Lập kế hoạch cho một chuyến đi? Chúng tôi sẽ tổ chức chuyến đi của bạn với
+                                <p class="mt-6 text-gray-300">Lập kế hoạch cho một chuyến đi? Chúng tôi sẽ tổ chức
+                                    chuyến đi của bạn với
                                     những nơi tốt nhất và trong ngân sách tốt nhất!</p>
                                 <ul class="list-none mt-6">
                                     <li class="inline"><a href="https://1.envato.market/travosy" target="_blank"
@@ -320,8 +328,10 @@
                                     <div class="flex mt-4">
                                         <i data-feather="map-pin" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
-                                            <h6 class="text-gray-300">Cổng số 2, 13 P. Trịnh Văn Bô, <br>  Xuân Phương, <br>
-                                                Nam Từ Liêm, Hà Nội</h6>
+                                            <h6 class="text-gray-300">Cổng số 2, 13 P. Trịnh Văn Bô, <br> Xuân Phương,
+                                                <br>
+                                                Nam Từ Liêm, Hà Nội
+                                            </h6>
                                         </div>
                                     </div>
 
@@ -384,7 +394,8 @@
                                         </div>
 
                                         <button type="submit" id="submitsubscribe" name="send"
-                                            class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đặt mua</button>
+                                            class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đặt
+                                            mua</button>
                                     </div>
                                 </form>
                             </div><!--end col-->
