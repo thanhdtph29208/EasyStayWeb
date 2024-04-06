@@ -98,35 +98,9 @@
                     <h5 class="text-lg font-semibold">THÔNG TIN ĐẶT PHÒNG</h5>
                 </div>
                 <div class="p-4">
-                    <form action="{{'checkout'}}" method="get"  class="mb-3">
+
+                    <form class="mb-3" action="{{ route('checkout') }}" method="get">
                         @csrf
-                        {{-- <label class="block">
-                            <span class="font-semibold">Họ và Tên: <span class="text-red-500">(*)</span></span>
-                            <input
-                                class="form-input mb-2 w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                        </label>
-
-                        <label class="block mt-2">
-                            <span class="font-semibold">Số điện thoại: <span class="text-red-500">(*)</span></span>
-                            <input
-                                class="form-input mb-2 w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                        </label>
-
-                        <label class="block mt-2">
-                            <span class="font-semibold">Địa chỉ: <span class="text-red-500">(*)</span></span>
-                            <input
-                                class="form-input mb-2 w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                        </label>
-
-                        <label class="block mt-2">
-                            <span class="font-semibold">Email: <span class="text-red-500">(*)</span></span>
-                            <input
-                                class="form-input mb-2 w-full rounded-lg border border-slate-300 bg-transparent px-2 py-1 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                type="text" />
-                        </label> --}}
 
                         <div class="flex items-center justify-between mb-2 mt-2">
                             <p class="font-semibold">Tổng tiền:</p>
@@ -145,6 +119,19 @@
                             <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                         </div>
 
+                        <div class="mt-3">
+                            <span class="font-semibold">Áp dụng mã giảm giá</span>
+
+                            {{-- <form id="coupon_form" class="flex mb-3 mt-2"> --}}
+
+                            <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text"
+                                placeholder="Mã khuyến mãi" name="coupon_code">
+                            <button
+                                class="py-1 px-2 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Áp
+                                dụng</button>
+                            {{-- </form> --}}
+                        </div>
+
                         @if (count($cartItems) != 0)
                             <button
                                 class="mt-4 py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer"
@@ -153,18 +140,7 @@
 
                     </form>
 
-                    <div>
-                        <span class="font-semibold">Áp dụng mã giảm giá</span>
 
-                        <form id="coupon_form" class="flex mb-3 mt-2">
-
-                            <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text"
-                                placeholder="Mã khuyến mãi" name="coupon_code">
-                            <button
-                                class="py-1 px-2 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Áp
-                                dụng</button>
-                        </form>
-                    </div>
 
                 </div>
             </div>

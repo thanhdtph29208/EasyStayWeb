@@ -55,7 +55,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    @yield('styles')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+   
 </head><!--end::Head--><!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary"><!--begin::App Wrapper-->

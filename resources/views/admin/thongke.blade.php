@@ -63,68 +63,36 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Lọc</button>
-      </form>
+      </form> 
 
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Ngày</th>
-            <th>Số lượng đặt phòng</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($datPhongs as $datPhong)
-          <tr>
-            <td>{{ $datPhong->date }}</td>
-            <td>{{ $datPhong->total_bookings }}</td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<canvas  id="mychart" style="width: 400px; height: 200px;"></canvas>
 
-@endsection
+  <script>
+    const labels = @json($labels);
+    const data = @json($data);
 
-@section('styles')
-<style>
-  /* body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-} */
-
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  .form-inline {
-    display: flex;
-    align-items: center;
-  }
-
-  .form-group {
-    margin-right: 10px;
-  }
-
-  .btn-primary {
-    margin-left: 10px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th,
-  td {
-    padding: 10px;
-    text-align: center;
-  }
-
-  th {
-    background-color: #ddd;
-  }
-</style>
+    const chart = new Chart('mychart', {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Số đơn đặt hàng ',
+          data: data,
+          backgroundColor: '#FF8633',
+          borderColor: '#FF8633',
+        }
+      
+    ]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  </script>
 @endsection

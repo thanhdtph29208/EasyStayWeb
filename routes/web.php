@@ -68,6 +68,9 @@ Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-c
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
 
 
+// thanh toán 
+Route::post('/vnpay_payment', [CheckoutController::class, 'vnpay_payment']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
