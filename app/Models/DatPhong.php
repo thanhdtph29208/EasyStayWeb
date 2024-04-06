@@ -90,6 +90,10 @@ class DatPhong extends Model
         return $this->dichVuIdTemp;
     }
 
+    public function loaiPhongs() {
+        return $this->belongsToMany(Loai_phong::class)->withPivot('so_luong');
+    }
+
 
     // public function getPhongIdsAttribute($value)
     // {

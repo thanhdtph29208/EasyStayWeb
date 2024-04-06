@@ -23,7 +23,7 @@ class DatPhongController extends Controller
     const PATH_VIEW = 'admin.dat_phong.';
 
 
-    public function index(Request $request, DatPhongDataTable $datatables )
+    public function index(Request $request, DatPhongDataTable $datatables)
     {
         // $datphong = DatPhong::query()->latest()->paginate(7);
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
@@ -41,50 +41,50 @@ class DatPhongController extends Controller
         // return response()->json(['loai_phongs' => $loai_phongs]);
         // return view(self::PATH_VIEW . __FUNCTION__, ['loai_phongs'=>$loai_phongs]);
 
-        $user = User::query()->pluck('email','id')->toArray();
-        $loai_phong = Loai_phong::query()->pluck('ten','id')->toArray();
-        $phong = Phong::query()->pluck('ten_phong','id')->toArray();
-        $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai','id')->toArray();
+        $user = User::query()->pluck('email', 'id')->toArray();
+        $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
+        $phong = Phong::query()->pluck('ten_phong', 'id')->toArray();
+        $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai', 'id')->toArray();
 
-        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('user', 'datPhong', 'loai_phong', 'phong', 'khuyen_mai'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request , User $user, Loai_phong $loaiPhong, KhuyenMai $khuyenMai): RedirectResponse
+    public function store(Request $request, User $user, Loai_phong $loaiPhong, KhuyenMai $khuyenMai): RedirectResponse
     {
-        if (! Gate::allows('create-A&NV', $user)) {
+        if (!Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $loaiPhong = Loai_phong::findOrFail($request->loai_phong_id);
         $khuyenMai = KhuyenMai::findOrFail($request->khuyen_mai_id);
-        $datPhong=DatPhong::create([
-            'user_id'=> $request->user_id,
-            'loai_phong_id'=> $request->loai_phong_id,
+
+        $datPhong = DatPhong::create([
+            'user_id' => $request->user_id,
+            'loai_phong_id' => $request->loai_phong_id,
             'phong_id' => null,
-            'don_gia'=>null,
-            'so_luong_nguoi'=>$request->so_luong_nguoi,
-            'so_luong_phong'=>$request->so_luong_phong,
-            'thoi_gian_den'=>$request->thoi_gian_den,
-            'thoi_gian_di'=>$request->thoi_gian_di,
+            'don_gia' => null,
+            'so_luong_nguoi' => $request->so_luong_nguoi,
+            'so_luong_phong' => $request->so_luong_phong,
+            'thoi_gian_den' => $request->thoi_gian_den,
+            'thoi_gian_di' => $request->thoi_gian_di,
             'dich_vu_id' => null,
-            'khuyen_mai_id'=>$request->khuyen_mai_id,
-            'tong_tien'=>null,
-            'payment'=>$request->payment,
-            'trang_thai'=> 1,
-            'ghi_chu'=>null,
+            'khuyen_mai_id' => $request->khuyen_mai_id,
+            'tong_tien' => null,
+            'payment' => $request->payment,
+            'trang_thai' => 1,
+            'ghi_chu' => null,
         ]);
         $datPhong->setPhongIdTemp($request->phong_id);
         $phongIds = Phong::where('trang_thai', 1)
-        ->limit($datPhong->so_luong_phong)
-        ->pluck('id')
-        ->toArray();
-        if($request->khuyen_mai_id && $khuyenMai->loai_giam_gia == 1)
-        {
-            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong-($loaiPhong->gia * $datPhong->so_luong_phong)*$khuyenMai->gia_tri_giam/100);
-        }else{
-            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong)-$khuyenMai->gia_tri_giam;
+            ->limit($datPhong->so_luong_phong)
+            ->pluck('id')
+            ->toArray();
+        if ($request->khuyen_mai_id && $khuyenMai->loai_giam_gia == 1) {
+            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong - ($loaiPhong->gia * $datPhong->so_luong_phong) * $khuyenMai->gia_tri_giam / 100);
+        } else {
+            $tong_tien = ($loaiPhong->gia * $datPhong->so_luong_phong) - $khuyenMai->gia_tri_giam;
         }
         $datPhong->phongs()->attach($phongIds);
         $datPhong->update([
@@ -93,7 +93,7 @@ class DatPhongController extends Controller
 
 
 
-        if($datPhong->dich_vu_id != null){
+        if ($datPhong->dich_vu_id != null) {
 
             $dichVuIds = explode(',', $datPhong->dich_vu_id);
 
@@ -110,8 +110,7 @@ class DatPhongController extends Controller
 
             // Tính tổng tiền mới cho chi tiết đặt phòng
             $tongTienMoi = $tongTienDatPhong + $tongDichVu;
-
-        }else{
+        } else {
             $tongTienDatPhong = $datPhong->tong_tien;
 
             $tongTienMoi = $tongTienDatPhong;
@@ -125,14 +124,56 @@ class DatPhongController extends Controller
         return redirect()->route('admin.dat_phong.index')->with('success', 'Thêm mới dịch vụ thành công!');
     }
 
+    public function bookOnline(Request $request)
+    {
+        $loai_phong = Loai_phong::findOrFail($request->loai_phong_id);
+        $khuyen_mai = KhuyenMai::findOrFail($request->khuyen_mai_id);
+
+        $datPhong = DatPhong::create([
+            'user_id' => $request->user_id,
+            // 'loai_phong_id' => $request->loai_phong_id,
+            // 'loai_phong' => null,
+            'order_sdt' => $request->order_sdt,
+            // 'so_luong_phong' => $request->so_luong_phong,
+            'so_luong_nguoi' => null,
+            'thoi_gian_den' => $request->thoi_gian_den,
+            'thoi_gian_di' => $request->thoi_gian_di,
+            'dich_vu_id' => null,
+            'khuyen_mai_id' => null,
+            'tong_tien' => null,
+            'payment' => $request->payment,
+            'trang_thai' => 1,
+            'ghi_chu' => null,
+        ]);
+
+        foreach ($request->loai_phong as $index => $loai_phong_id) {
+            $loaiPhong = Loai_phong::find($loai_phong_id);
+            $so_luong = $request->so_luong[$index];
+            $gia_phong = $loaiPhong->gia;
+
+            $phong = DatPhong::create([
+                'dat_phong_id' => $datPhong->id,
+                'loai_phong_id' => $loai_phong_id,
+                'so_luong' => $so_luong,
+                'gia_phong' => $gia_phong,
+                // Các trường thông tin khác của phòng nếu cần
+            ]);
+        }
+
+        foreach ($request->loai_phong_id as $index => $loai_phong_id1) {
+            $datPhong->loaiPhongs()->attach($loai_phong_id1, ['so_luong' => $request->so_luong[$index]]);
+        }
+    }
+
+
     /**
      * Display the specified resource.
      */
-    public function show( ChiTietDatPhongDataTable $datatables, string $id)
+    public function show(ChiTietDatPhongDataTable $datatables, string $id)
     {
         $datPhong = DatPhong::findOrFail($id);
         $phongDat = DatPhongNoiPhong::where('dat_phong_id', $id)->with('phong')->get();
-        return $datatables->render('admin.dat_phong.show', compact('datPhong','phongDat'));
+        return $datatables->render('admin.dat_phong.show', compact('datPhong', 'phongDat'));
     }
 
     /**
@@ -144,8 +185,7 @@ class DatPhongController extends Controller
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
         $user = User::query()->pluck('ten_nguoi_dung', 'id')->toArray();
         $dich_vus = DichVu::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus','so_luong_dich_vu'));
-
+        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu'));
     }
 
     /**
@@ -153,7 +193,7 @@ class DatPhongController extends Controller
      */
     public function update(Request $request, DatPhong $datPhong, User $user): RedirectResponse
     {
-        if (! Gate::allows('update-A&NV', $user)) {
+        if (!Gate::allows('update-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $request->validate([
@@ -203,7 +243,7 @@ class DatPhongController extends Controller
      */
     public function destroy(DatPhong $datPhong, User $user): RedirectResponse
     {
-        if (! Gate::allows('delete-A&NV', $user)) {
+        if (!Gate::allows('delete-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $datPhong->delete();
@@ -212,7 +252,7 @@ class DatPhongController extends Controller
     public function searchKhuyenMai(Request $request)
     {
         $term = $request->input('term');
-        $khuyen_mai = KhuyenMai::where('ten_khuyen_mai', 'LIKE', '%'.$term.'%')->pluck('ten_khuyen_mai', 'id');
+        $khuyen_mai = KhuyenMai::where('ten_khuyen_mai', 'LIKE', '%' . $term . '%')->pluck('ten_khuyen_mai', 'id');
         return response()->json($khuyen_mai);
     }
 }
