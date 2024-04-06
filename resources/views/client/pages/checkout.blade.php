@@ -53,7 +53,7 @@
                             <select class="form-select w-full" aria-label="Default select example" id="payments"
                                 name="payments">
                                 <option value="1">COD</option>
-                                <option value="2">VNPay</option>
+                                <option value="2" name="billpayment">VNPay</option>
                             </select>
                         </div>
                     </div>
@@ -72,16 +72,16 @@
                         @foreach ($cartItems as $item)
                             <p class="text-base">Tên phòng: {{ $item->name }}</p>
                             <p class="text-base">Số lượng: {{ $item->qty }}</p>
-                            <p class="text-base">Giá phòng: {{ number_format($item->price, 0, '.', '.') }} VNĐ</p>
+                            <p class="text-base">Giá phòng: {{ number_format($item->price, 0, ',', ',') }} VNĐ</p>
                             <p class="text-red-600 text-right text-base font-bold">
-                                {{ number_format($item->price * $item->qty, 0, '.', '.') }} VNĐ</p>
+                                {{ number_format($item->price * $item->qty, 0, ',', ',') }} VNĐ</p>
                             <hr>
                         @endforeach
                     </div>
 
                     <div class="flex justify-between mt-3">
                         <p class="font-bold text-lg">Tổng giá:</p>
-                        <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal, 0, '.', '.') }} VNĐ</p>
+                        <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal, 0, ',', ',') }} VNĐ</p>
                     </div>
 
                     <div class="mt-2">
@@ -93,7 +93,7 @@
             </div>
         </form>
 
-        <form action="{{ url('/vnpay_payment') }}" method="POST" >
+        <form action="{{ url('/vnpay_payment') }}" method="POST">
             @csrf
             <button type="submit" name="redirect"
                 class="bg-blue-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded w-full mt-4">Thanh
