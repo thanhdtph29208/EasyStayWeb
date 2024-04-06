@@ -23,6 +23,7 @@ use App\Http\Controllers\Frontend\ChiTietLoaiPhongController;
 use App\Http\Controllers\Frontend\HoSoController;
 use App\Http\Controllers\Frontend\KiemTraPhongController;
 use App\Http\Controllers\Frontend\LienHeController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -70,21 +71,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('client.pages.password-change');
+    Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
+    
+    
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 
-    // Route::get('/profile', function () {
-    //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    //     if (auth()->check()) {
-    //         // Người dùng đã đăng nhập, trả về view của trang profile
-    //         return view('profile');
-    //     } else {
-    //         // Người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
-    //         return redirect('/login');
-    //     }
-    // });
+  
 });
-
 
 
 require __DIR__ . '/auth.php';
