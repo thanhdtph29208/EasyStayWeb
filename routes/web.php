@@ -66,6 +66,9 @@ Route::get('chi_tiet_gio_hang/xoa_phong/{rowId}', [CartController::class, 'remov
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
 
+// thanh toán 
+Route::post('/vnpay_payment', [CheckoutController::class, 'vnpay_payment']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
