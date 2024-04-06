@@ -134,56 +134,45 @@
 
 </section>
 
+@endsection
 
-<!-- <div>
-    <div>
-        <button id="button">Creat new articles</button>
-    </div>
-    <div id="popup">
-        <form id="btn-popup" class="show">
-            <h2>Create new article</h2>
-            <div class="group">
-                <label for="title">Title</label>
-                <input id="title" name="title" type="text" />
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="image">Image</label>
-                <input id="btn-image" name="btn-image" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="composer">Composer</label>
-                <input id="composer" name="composer" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="btn-email">Email</label>
-                <input id="btn-email" name="btn-email" type="text">
-                <div class="error hidden"></div>
-            </div>
-            <div class="group">
-                <label for="description">Description</label>
-                <textarea name="description" id="description" cols="30" rows="10"></textarea>
-                <div class="error hidden"></div>
-            </div>
-            <button id="close">Đóng</button>
-            <button id="create">Tạo mới</button>
-        </form>
-    </div>
-</div> -->
-<!-- <script>
-    var button = document.getElementById('button');
-    var close = document.getElementById('close');
-    var popup = document.getElementById('popup');
+@push('scripts')
 
-    button.addEventListener('click', () => {
-        popup.classList.add('show');
+<script>
+    $(document).ready(function() {
+        $('.book-cart').on('submit', function(e) {
+            e.preventDefault();
+
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                data: formData,
+                url: $(this).attr('action'),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        getCartCount();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Xảy ra lỗi trong khi thêm vào giỏ hàng.');
+                }
+            });
+        });
+
+        function getCartCount() {
+            $.ajax({
+                method: 'GET',
+                url: "{{ route('cart-count') }}",
+                success: function(data) {
+                    $('#cart-count').text(data);
+                }
+            });
+        }
     });
+</script>
 
-    close.addEventListener('click', () => {
-        popup.classList.remove('show');
-    });
-</script>÷ -->
 
 @endpush
