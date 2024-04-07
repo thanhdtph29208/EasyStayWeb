@@ -21,7 +21,7 @@
     </div>
 </section><!--end section-->
 <div class="container mx-auto py-5">
-    <form action="{{url('/vnpay_payment')}}" method="post">
+    <form action="{{route('pay')}}" method="get">
         @csrf
         <div class="flex flex-row">
             <div class="w-3/4">
@@ -42,10 +42,10 @@
                         <input type="text" class="form-input w-full" id="exampleInputEmail3" required name="address" value="{{ Auth::user()->email }}">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Payments</label>
-                        <select class="form-select w-full" aria-label="Default select example" id="payments" name="payments">
-                            <option value="1">COD</option>
-                            <option value="2" name="billpayment">VNPay</option>
+                        <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Hình thức thanh toán</label>
+                        <select class="form-select w-full" aria-label="Default select example" id="payment" name="payment">
+                            <option value="1" name="billpayment">VNPay</option>
+                            <option value="2">Momo</option>
                         </select>
                     </div>
                 </div>
