@@ -20,6 +20,6 @@ class DichVu extends Model
     ];
     public function datPhongs()
     {
-        return $this->belongsToMany(DatPhong::class, 'dat_phong_dich_vus', 'phong_id', 'dich_vu_id');
+        return $this->belongsToMany(DatPhong::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
     }
 }

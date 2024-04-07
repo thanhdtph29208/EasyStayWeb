@@ -176,7 +176,7 @@
 
                 </li>
 
-            
+
 
             </li>
 
@@ -217,8 +217,8 @@
                         <li class="nav-item"><a href="{{ route('admin.exportUser') }}" class="nav-link"><i class="nav-icon bi bi-circle"></i>
                                 <p>User</p>
                             </a></li>
-                        <li class="nav-item"><a href="" class="nav-link"><i class="nav-icon bi bi-circle"></i>
-                                <p>Tạo mới</p>
+                        <li class="nav-item"><a href="{{ route('admin.exportHoaDon') }}" class="nav-link"><i class="nav-icon bi bi-circle"></i>
+                                <p>Hóa đơn</p>
                             </a></li>
 
                     </ul>
