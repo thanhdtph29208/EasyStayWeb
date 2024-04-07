@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 use App\Exports\UsersExport;
+use App\Exports\DatPhongsExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
@@ -14,6 +15,10 @@ class ExportController extends Controller
     public function exportUser()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+    public function exportHoaDon()
+    {
+        return Excel::download(new DatPhongsExport, 'hoadon.pdf');
     }
 
 }

@@ -43,32 +43,47 @@
                                 <input type="text" name="user_id" id="user_id" class="form-control" list="user">
                                 <datalist id="user">
                                     @foreach ($user as $id => $email)
-                                        <option value="{{$id}}">{{$email}}</option>
+                                    <option value="{{$id}}">{{$email}}</option>
                                     @endforeach
                                 </datalist>
                                 <span class="text-danger error-user_id"></span>
                             </div>
-                            @for ($i = 0; $i < $so_luong_loai_phong; $i++)
+
+                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <label for="loai_phong_id">Loại Phòng</label>
+                                <select name="loai_phong_id" id="loai_phong_id" class="form-control">
+                                    @foreach ($loai_phong as $id => $ten)
+                                        <option value="{{$id}}">{{$ten}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger error-loai_phong_id"></span>
+                            </div> -->
+
+                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <label for="so_luong_phong">Số Lượng phòng</label>
+                                <input type="number" class="form-control" name="so_luong_phong" id="so_luong_phong" value="0" min="0">
+                                <span class="text-danger error-so_luong_phong"></span>
+                            </div> -->
+
+                            <div id="dynamic-form">
                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                    <label for="loai_phong_ids_{{ $i }}">Loại Phòng {{ $i + 1 }}</label>
-                                    <input type="text" name="loai_phong_ids{{ $i }}[id]" id="loai_phong_ids_{{ $i }}" class="form-control" list="loai_phong">
-                                    <datalist id="loai_phong">
+                                    <label for="loai_phong_ids_{{$i}}">Loại Phòng</label>
+                                    <select name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control">
                                         @foreach ($loai_phong as $id => $ten)
-                                            <option value="{{$id}}">{{$ten}}</option>
+                                        <option value="{{$id}}">{{$ten}}</option>
                                         @endforeach
-                                    </datalist>
-                                    <span class="text-danger error-loai_phong_id"></span>
+                                    </select>
+                                    <span class="text-danger error-loai_phong_id_{{$i}}"></span>
                                 </div>
 
                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                    <label for="so_luong_phong_{{ $i }}">Số Lượng phòng</label>
-                                    <input type="number" class="form-control" name="loai_phong_ids{{ $i }}[so_luong_phong]" id="so_luong_phong_{{ $i }}" value="0" min="0">
+                                    <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label>
+                                    <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
                                     <span class="text-danger error-so_luong_phong"></span>
                                 </div>
                             </div>
-                                @break;
-                            @endfor
-                            <button type="button" id="add-input" class="btn btn-primary">Thêm</button>
+
+                            <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="so_luong_nguoi">Số Lượng người</label>
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
@@ -87,12 +102,15 @@
                                 </div>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
-                                <label for="khuyen_mai_id">Khuyến mãi</label>
-                                <input type="text" name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" list="khuyen_mai">
+                                <label for="khuyen_mai_input">Khuyến mãi</label>
+                                <!-- <input type="text" name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" list="khuyen_mai"> -->
+                                <input list="khuyen_mai" id="khuyen_mai_input" class="form-control">
+                                <input id="khuyen_mai_id" name="khuyen_mai_id" hidden>
                                 <datalist id="khuyen_mai">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
-                                        <option value="{{$id}}">{{$ten_khuyen_mai}}</option>
+                                    <option value="{{$ten_khuyen_mai}}" data-id="{{$id}}" id="option_km_{{$ten_khuyen_mai}}">{{$ten_khuyen_mai}}</option>
                                     @endforeach
+
                                 </datalist>
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
                             </div>
@@ -106,7 +124,7 @@
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="ghi_chu">Ghi chú</label>
-                                <input type="number" class="form-control" id="ghi_chu" name="ghi_chu">
+                                <textarea type="number" class="form-control" id="ghi_chu" name="ghi_chu"></textarea>
                                 <span class="text-danger error-ghi_chu"></span>
                             </div>
                             <div class="d-flex justify-content-center">
@@ -122,54 +140,41 @@
         </div>
     </div>
 </main>
-<!-- <script>
-    document.getElementById('add-input').addEventListener('click', function(event) {
-        // Ngăn chặn hành động mặc định của nút
-        event.preventDefault();
-
-        // Clone container của inputs và thêm vào
-        var inputsContainer = document.getElementById('inputs-container');
-        var newInputsContainer = inputsContainer.cloneNode(true);
-
-        // Reset giá trị của inputs trong container mới
-        var inputs = newInputsContainer.querySelectorAll('input');
-        inputs.forEach(function(input) {
-            input.value = '';
-        });
-
-        // Thêm container mới vào cuối
-        var addButton = document.getElementById('add-input');
-        addButton.insertAdjacentElement('beforebegin', newInputsContainer);
-    });
-</script> -->
-
 <script>
-    var soLuongLoaiPhong = 0;
+    var i = 1;
 
     document.getElementById('add-button').addEventListener('click', function() {
         var form = document.getElementById('dynamic-form');
-        var i = soLuongLoaiPhong++;
-
         var html = `
-            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                <label for="loai_phong_ids_${i}">Loại Phòng ${i + 1}</label>
-                <input type="text" name="loai_phong_ids${i}[id]" id="loai_phong_ids_${i}" class="form-control" list="loai_phong">
-                <datalist id="loai_phong">
-                    @foreach ($loai_phong as $id => $ten)
-                        <option value="${id}">${ten}</option>
-                    @endforeach
-                </datalist>
-                <span class="text-danger error-loai_phong_id"></span>
-            </div>
+             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                 <label for="loai_phong_ids_${i}">Loại Phòng</label>
+                 <select name="loai_phong_ids[${i}][id]" id="loai_phong_ids_${i}" class="form-control" list="loai_phong">
+                     @foreach ($loai_phong as $id => $ten)
+                         <option value="{{$id}}">{{$ten}}</option>
+                     @endforeach
+                 </select>
+                 <span class="text-danger error-loai_phong_ids_${i}"></span>
+             </div>
 
-            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                <label for="so_luong_phong_${i}">Số Lượng phòng</label>
-                <input type="number" class="form-control" name="loai_phong_ids${i}[so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
-                <span class="text-danger error-so_luong_phong"></span>
-            </div>
-        `;
+             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                 <label for="so_luong_phong_${i}">Số Lượng phòng</label>
+                 <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
+                 <span class="text-danger error-so_luong_phong"></span>
+             </div>
+         `;
 
         form.insertAdjacentHTML('beforeend', html);
+        i++;
+    });
+    document.getElementById('khuyen_mai_input').addEventListener('input', function() {
+        var selectedOption = document.getElementById('option_km_' + this.value);
+        // console.log(this.value);
+        // console.log(selectedOption);
+        if (selectedOption) {
+            var id = selectedOption.getAttribute('data-id');
+            // console.log(id);
+            document.getElementById('khuyen_mai_id').value = id;
+        }
     });
 </script>
 @endsection

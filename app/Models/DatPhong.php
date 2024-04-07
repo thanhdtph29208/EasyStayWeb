@@ -33,35 +33,63 @@ class DatPhong extends Model
         'trang_thai',
         'ghi_chu',
     ];
-    protected function user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function phong()
+    {
+        return $this->belongsTo(Phong::class);
+    }
+
     public function phongs()
     {
         return $this->belongsToMany(Phong::class, 'dat_phong_noi_phongs', 'dat_phong_id', 'phong_id');
     }
-    public function dichvus()
-    {
-        return $this->belongsToMany(Phong::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
-    }
-    protected function loaiPhongs()
-    {
-        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id');
-    }
-    protected function khuyen_mai()
-    {
-        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(KhuyenMai::class);
-    }
-    protected function dich_vu()
+
+    public function dichVu()
     {
         // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
         return $this->belongsTo(DichVu::class);
     }
 
-    protected $phongIdTemp;
+    public function dichVus()
+    {
+        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
+    }
+
+    public function loaiPhong()
+    {
+        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
+        return $this->belongsTo(Loai_phong::class);
+    }
+
+    public function loaiPhongs()
+    {
+        return $this->belongsToMany(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id')->withPivot('so_luong_phong');
+    }
+
+    public function khuyen_mai()
+    {
+        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
+        return $this->belongsTo(KhuyenMai::class);
+    }
+
+    public $loaiPhongIdTemp;
+    public function setLoaiPhongIdTemp($loaiPhongId)
+    {
+        $this->loaiPhongIdTemp = $loaiPhongId;
+        return $this;
+    }
+
+    // Phương thức để lấy phong_id tạm thời
+    public function getLoaiPhongIdTemp()
+    {
+        return $this->loaiPhongIdTemp;
+    }
+
+    public $phongIdTemp;
 
     // Phương thức để gán phong_id tạm thời
     public function setPhongIdTemp($phongId)
@@ -75,7 +103,7 @@ class DatPhong extends Model
     {
         return $this->phongIdTemp;
     }
-    protected $dichVuIdTemp;
+    public $dichVuIdTemp;
 
     // Phương thức để gán phong_id tạm thời
     public function setDichVuIdTemp($dichVuId)
@@ -89,6 +117,7 @@ class DatPhong extends Model
     {
         return $this->dichVuIdTemp;
     }
+
 
 
     // public function getPhongIdsAttribute($value)

@@ -34,7 +34,7 @@ class Loai_phong extends Model
     }
     public function datPhongs()
     {
-        return $this->belongsToMany(DatPhong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id');
+        return $this->belongsToMany(DatPhong::class, 'dat_phong_loai_phongs', 'loai_phong_id', 'dat_phong_id')->withPivot('so_luong_phong');
     }
 
 
