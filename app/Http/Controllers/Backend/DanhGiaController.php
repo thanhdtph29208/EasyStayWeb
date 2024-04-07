@@ -83,7 +83,7 @@ class DanhGiaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, User $user): RedirectResponse
+    public function destroy(string $id, User $user)
     {
         if (!Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');

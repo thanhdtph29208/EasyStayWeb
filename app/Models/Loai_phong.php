@@ -14,6 +14,7 @@ class Loai_phong extends Model
     const CON_PHONG = 1;
     const HET_PHONG = 0;
     protected $fillable = [
+        'id',
         'ten',
         'anh',
         'gia',
@@ -37,7 +38,9 @@ class Loai_phong extends Model
         return $this->belongsToMany(DatPhong::class, 'dat_phong_loai_phongs', 'loai_phong_id', 'dat_phong_id')->withPivot('so_luong_phong');
     }
 
-
-
+    public function Loai_phong()
+    {
+        return $this->belongsTo(Loai_phong::class, 'id');
+    }
 
 }

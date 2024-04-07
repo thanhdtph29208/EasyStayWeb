@@ -147,16 +147,18 @@
                         <div class="dropdown-menu absolute end-0 m-0 mt-4 z-10 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden"
                             onclick="event.stopPropagation();">
                             <ul class="py-2 text-start">
+                                
+                                    <li>
+                                        <a href=" {{ route('client.pages.hoso') }}"
+                                            class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                            <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
+                                        </a>
+                                    </li>
+                            
                                 <li>
-                                    <a href="{{ route('client.pages.hoso') }}"
+                                <a href=" {{ route('client.pages.lich_su_dat_phong') }}"
                                         class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href=""
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="help-circle" class="size-4 me-2"></i>Trung tâm trợ giúp
+                                        <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
                                     </a>
                                 </li>
                                 <li>
@@ -213,10 +215,10 @@
                     if (auth()->check()) {
                         if (auth()->user()->id_vai_tro === 2 || auth()->user()->id_vai_tro === 3) {
                             echo '<li>
-                                                                                                <a href="' .
+                                                                                                                                        <a href="' .
                                 url('admin/dashboard') .
                                 '" class="sub-menu-item">Admin</a>
-                                                                                            </li>';
+                                                                                                                                    </li>';
                         }
                     }
                     ?>

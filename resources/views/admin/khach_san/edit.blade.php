@@ -9,7 +9,7 @@
         ])
     </div>
 
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -25,7 +25,7 @@
             </ul>
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="row justify-content-center">
@@ -49,7 +49,7 @@
 
                             <div class="form-group mt-3">
                                 <label for="logo">Logo</label>
-                                <input type="file" id="logo" name="logo" class="form-control">
+                                <input type="file" id="logo" name="logo" class="form-control" value="{{ $khach_san->logo }}" >
                                 @if ($khach_san->logo)
                                     <img class="mt-3" width="150px" src="{{ Storage::url($khach_san->logo) }}"
                                         alt="">
@@ -94,8 +94,8 @@
                                     value="{{ $khach_san->twitter }}">
                             </div>
 
-                            <button type="submit" class="btn btn-success mt-3">Gửi</button>
-                            <a class="btn btn-danger mt-3" href="{{route('admin.khach_san.index')}}">Quay lại</a>
+                            <button type="submit" class="btn btn-success mt-3">Cập nhật</button>
+                            <a class="btn btn-danger mt-3 ms-3" href="{{route('admin.khach_san.index')}}">Quay lại</a>
 
                         </form>
                     </div>

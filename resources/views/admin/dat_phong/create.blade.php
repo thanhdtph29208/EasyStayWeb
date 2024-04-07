@@ -53,7 +53,7 @@
                                 <label for="loai_phong_id">Loại Phòng</label>
                                 <select name="loai_phong_id" id="loai_phong_id" class="form-control">
                                     @foreach ($loai_phong as $id => $ten)
-                                        <option value="{{$id}}">{{$ten}}</option>
+                                    <option value="{{$id}}">{{$ten}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-loai_phong_id"></span>
@@ -98,6 +98,7 @@
                                 <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
                                     <label for="thoi_gian_di">Thời gian đi</label>
                                     <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
+
                                     <span class="text-danger error-thoi_gian_di"></span>
                                 </div>
                             </div>
@@ -109,6 +110,7 @@
                                 <datalist id="khuyen_mai">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
                                     <option value="{{$ten_khuyen_mai}}" data-id="{{$id}}" id="option_km_{{$ten_khuyen_mai}}">{{$ten_khuyen_mai}}</option>
+
                                     @endforeach
 
                                 </datalist>

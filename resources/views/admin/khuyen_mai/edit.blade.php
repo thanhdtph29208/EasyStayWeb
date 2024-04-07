@@ -9,7 +9,7 @@
         ])
     </div>
 
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -25,7 +25,7 @@
             </ul>
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="card">
@@ -56,10 +56,10 @@
                         <input type="number" class="form-control" id="gia_tri_giam" name="gia_tri_giam" value="{{ $khuyenMai->gia_tri_giam }}" required>
                     </div>
 
-                    <div class="form-group mt-3">
+                    <!-- <div class="form-group mt-3">
                         <label for="so_luong">Số lượng</label>
                         <input type="number" class="form-control" id="so_luong" name="so_luong" value="{{ $khuyenMai->so_luong }}" required>
-                    </div>
+                    </div> -->
 
 
                     <div class="form-group mt-3">
@@ -89,19 +89,25 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <label class="mt-3" for="trang_thai">Trạng thái: </label>
-                        <input type="radio" name="trang_thai" id="trang_thai1" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::DANG_AP_DUNG) checked @endif
+                        
+                        <label class="mt-3" for="trang_thai">Trạng thái: </label> <br>
+                        <input type="radio" name="trang_thai" id="trang_thai1" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::CHUA_AP_DUNG) checked @endif
+                        value="{{\App\Models\KhuyenMai::CHUA_AP_DUNG}}">
+                        <label for="trang_thai1">Chưa áp dụng</label>
+
+                        <input type="radio" name="trang_thai" id="trang_thai2" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::DANG_AP_DUNG) checked @endif
                         value="{{\App\Models\KhuyenMai::DANG_AP_DUNG}}">
-                        <label for="trang_thai1">Đang áp dụng</label>
+                        <label for="trang_thai2">Đang áp dụng</label>
 
 
-                        <input type="radio" name="trang_thai" id="trang_thai2" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::KET_THUC) checked @endif
+                        <input type="radio" name="trang_thai" id="trang_thai3" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::KET_THUC) checked @endif
                         value="{{\App\Models\KhuyenMai::KET_THUC}}">
-                        <label for="trang_thai2">Kết thúc</label> <br><br>
+                        <label for="trang_thai3">Kết thúc</label> <br><br>
                     </div>
-
-                    <button class="btn btn-success">GỬI</button>
-                    <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger">Quay lại</a>
+                    <div class="d-flex justify-content-center">
+                    <button class="btn btn-success">Cập nhật</button>
+                    <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger ms-3">Quay lại</a>
+                    </div>
                 </form>
             </div>
         </div>

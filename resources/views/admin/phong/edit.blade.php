@@ -8,7 +8,7 @@
         'key' => 'EasyStay',
         ])
     </div>
-    <div class="mx-3">
+    <!-- <div class="mx-3">
         @if (\Session::has('msg'))
         <div class="alert alert-success">
             {{ \Session::get('msg') }}
@@ -24,7 +24,7 @@
             </ul>
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="card">
@@ -62,8 +62,8 @@
                     value="{{\App\Models\Phong::HET_PHONG}}">
                     <label for="trang_thai2">HẾT PHÒNG</label> <br><br>
 
-                    <button class="btn btn-success">GỬI</button>
-                    <a class="btn btn-primary" href="{{route('admin.phong.index')}}">Quay lại</a>
+                    <button class="btn btn-success">Cập nhật</button>
+                    <a class="btn btn-danger ms-3" href="{{route('admin.loai_phong.index')}}">Quay lại</a>
 
                 </form>
             </div>

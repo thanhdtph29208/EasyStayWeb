@@ -9,7 +9,7 @@
             ])
         </div>
 
-        <div class="mx-3">
+        <!-- <div class="mx-3">
             @if (\Session::has('msg'))
                 <div class="alert alert-success">
                     {{ \Session::get('msg') }}
@@ -25,7 +25,7 @@
                     </ul>
                 </div>
             @endif
-        </div>
+        </div> -->
         <div class="container">
             <div class="row justify-content-center">
                 <div class="">
@@ -38,27 +38,27 @@
                             <form action="{{ route('admin.bai_viet.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="tieu_de" class="form-label">Tiêu đề:</label>
                                     <input type="text" name="tieu_de" id="tieu_de" class="form-control">
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="anh" class="form-label">Ảnh:</label>
                                     <input type="file" name="anh" id="anh" class="form-control">
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="mo_ta_ngan" class="form-label">Mô tả ngắn:</label>
                                     <textarea name="mo_ta_ngan" id="mo_ta_ngan" cols="20" rows="5" class="form-control"></textarea>
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
-                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="8" class="form-control"></textarea>
                                 </div>
 
-                                <div class="mb-3 mx-auto w-50">
+                                <div class="mb-3 mx-auto ">
                                     <label class="form-label">Trạng thái:</label> <br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="trang_thai" id="trang_thai1"
@@ -73,8 +73,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success">Gửi</button>
-                                    <a class="btn btn-danger ms-3" href="{{ route('admin.bai_viet.index') }}">Quay lại</a>
+                                    <button type="submit" class="btn btn-success">Thêm mới</button>
+                                    <a class="btn btn-danger ms-2" href="{{ route('admin.bai_viet.index') }}">Quay lại</a>
                                 </div>
 
 

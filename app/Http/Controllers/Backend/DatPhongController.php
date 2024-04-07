@@ -23,12 +23,13 @@ use Carbon\Carbon;
 use function Laravel\Prompts\alert;
 use function Livewire\store;
 
+
 class DatPhongController extends Controller
 {
     const PATH_VIEW = 'admin.dat_phong.';
 
 
-    public function index(Request $request, DatPhongDataTable $datatables )
+    public function index(Request $request, DatPhongDataTable $datatables)
     {
         // $datphong = DatPhong::query()->latest()->paginate(7);
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
@@ -57,12 +58,12 @@ class DatPhongController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request , User $user, Loai_phong $loaiPhong, KhuyenMai $khuyenMai): RedirectResponse
+    public function store(Request $request, User $user, Loai_phong $loaiPhong, KhuyenMai $khuyenMai): RedirectResponse
     {
-        if (! Gate::allows('create-A&NV', $user)) {
+        if (!Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-        dd($request);
+        //dd($request);
         // $request->validate([
         //     'loai_phong_ids' => 'required|array',
         //     'loai_phong_ids.*.id' => 'required|numeric',
@@ -135,7 +136,9 @@ class DatPhongController extends Controller
         ]);
 
 
-        if($datPhong->dich_vu_id != null){
+
+
+        if ($datPhong->dich_vu_id != null) {
 
             $dichVuIds = explode(',', $datPhong->dich_vu_id);
 
@@ -152,8 +155,7 @@ class DatPhongController extends Controller
 
             // Tính tổng tiền mới cho chi tiết đặt phòng
             $tongTienMoi = $tongTienDatPhong + $tongDichVu;
-
-        }else{
+        } else {
             $tongTienDatPhong = $datPhong->tong_tien;
 
             $tongTienMoi = $tongTienDatPhong;
@@ -167,13 +169,56 @@ class DatPhongController extends Controller
         return redirect()->route('admin.dat_phong.index')->with('success', 'Thêm mới dịch vụ thành công!');
     }
 
+    public function bookOnline(Request $request)
+    {
+        $loai_phong = Loai_phong::findOrFail($request->loai_phong_id);
+        $khuyen_mai = KhuyenMai::findOrFail($request->khuyen_mai_id);
+
+        $datPhong = DatPhong::create([
+            'user_id' => $request->user_id,
+            // 'loai_phong_id' => $request->loai_phong_id,
+            // 'loai_phong' => null,
+            'order_sdt' => $request->order_sdt,
+            // 'so_luong_phong' => $request->so_luong_phong,
+            'so_luong_nguoi' => null,
+            'thoi_gian_den' => $request->thoi_gian_den,
+            'thoi_gian_di' => $request->thoi_gian_di,
+            'dich_vu_id' => null,
+            'khuyen_mai_id' => null,
+            'tong_tien' => null,
+            'payment' => $request->payment,
+            'trang_thai' => 1,
+            'ghi_chu' => null,
+        ]);
+
+        foreach ($request->loai_phong as $index => $loai_phong_id) {
+            $loaiPhong = Loai_phong::find($loai_phong_id);
+            $so_luong = $request->so_luong[$index];
+            $gia_phong = $loaiPhong->gia;
+
+            $phong = DatPhong::create([
+                'dat_phong_id' => $datPhong->id,
+                'loai_phong_id' => $loai_phong_id,
+                'so_luong' => $so_luong,
+                'gia_phong' => $gia_phong,
+                // Các trường thông tin khác của phòng nếu cần
+            ]);
+        }
+
+        foreach ($request->loai_phong_id as $index => $loai_phong_id1) {
+            $datPhong->loaiPhongs()->attach($loai_phong_id1, ['so_luong' => $request->so_luong[$index]]);
+        }
+    }
+
+
     /**
      * Display the specified resource.
      */
-    public function show(DatPhong $datPhong, ChiTietDatPhongDataTable $datatables)
+    public function show(ChiTietDatPhongDataTable $datatables, string $id)
     {
-        //
-        return $datatables->render('admin.dat_phong.show', compact('datPhong'));
+        $datPhong = DatPhong::findOrFail($id);
+        $phongDat = DatPhongNoiPhong::where('dat_phong_id', $id)->with('phong')->get();
+        return $datatables->render('admin.dat_phong.show', compact('datPhong', 'phongDat'));
     }
 
     /**
@@ -185,8 +230,7 @@ class DatPhongController extends Controller
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
         $user = User::query()->pluck('ten_nguoi_dung', 'id')->toArray();
         $dich_vus = DichVu::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus','so_luong_dich_vu'));
-
+        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu'));
     }
 
     /**
@@ -195,7 +239,7 @@ class DatPhongController extends Controller
     public function update(Request $request, DatPhong $datPhong, User $user): RedirectResponse
     {
 
-        if (! Gate::allows('update-A&NV', $user)) {
+        if (!Gate::allows('update-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 
@@ -245,63 +289,12 @@ class DatPhongController extends Controller
      */
     public function destroy(DatPhong $datPhong, User $user): RedirectResponse
     {
-        if (! Gate::allows('delete-A&NV', $user)) {
+        if (!Gate::allows('delete-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $datPhong->delete();
         return response(['trang_thai' => 'success']);
     }
+
 }
 
-// ----------------------------------------------------------------Form của create add nhiều loại phòng cùng lúc--------------------------------------------------------------------------
-
-// <div id="dynamic-form">
-//                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-//                                     <label for="loai_phong_ids_{{$i}}">Loại Phòng</label>
-//                                 <input type="text" name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control" list="loai_phong">
-//                                     <datalist id="loai_phong">
-//                                         @foreach ($loai_phong as $id => $ten)
-//                                             <option value="{{$id}}">{{$ten}}</option>
-//                                         @endforeach
-//                                     </datalist>
-//                                     <span class="text-danger error-loai_phong_id_{{$i}}"></span>
-//                                 </div>
-
-//                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-//                                     <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label>
-//                                     <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
-//                                     <span class="text-danger error-so_luong_phong"></span>
-//                                 </div>
-//                             </div> -->
-
-//                             <!-- <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
-
-
-
-//--------------------------------------------------------------------Js của form trên---------------------------------------------------------------------------
-
-// <script>
-//     document.getElementById('add-button').addEventListener('click', function() {
-//         var form = document.getElementById('dynamic-form');
-//         var html = `
-//             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-//                 <label for="loai_phong_ids_{{$i}}">Loại Phòng</label>
-//                 <input type="text" name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control" list="loai_phong">
-//                 <datalist id="loai_phong">
-//                     @foreach ($loai_phong as $id => $ten)
-//                         <option value="{{$id}}">{{$ten}}</option>
-//                     @endforeach
-//                 </datalist>
-//                 <span class="text-danger error-loai_phong_ids_{{$i}}"></span>
-//             </div>
-
-//             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-//                 <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label>
-//                 <input type="number" class="form-control" name="so_luong_phong[{{ $i }}][so_luong_phong]" id="so_luong_phong_{{ $i }}" value="0" min="0">
-//                 <span class="text-danger error-so_luong_phong"></span>
-//             </div>
-//         `;
-
-//         form.insertAdjacentHTML('beforeend', html);
-//     });
-// </script>

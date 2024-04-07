@@ -17,10 +17,14 @@ use App\Http\Controllers\Backend\ExportController;
 use App\Http\Controllers\Backend\KhuyenMaiController;
 use App\Http\Controllers\Backend\DichVuController;
 use App\Http\Controllers\Backend\ThongKeController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ChiTietLoaiPhongController;
 use App\Http\Controllers\Frontend\HoSoController;
 use App\Http\Controllers\Frontend\KiemTraPhongController;
 use App\Http\Controllers\Frontend\LienHeController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\LichSuDatPhongController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -42,7 +46,9 @@ Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'home'])->
 
 
 
-Route::get('ho_so', [HoSoController::class, 'index'])->name('client.pages.hoso');
+Route::get('ho_so', [ProfileController::class, 'index'])->name('client.pages.hoso');
+Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
+
 
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');
@@ -53,24 +59,34 @@ Route::get('chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFECont
 
 Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.lien_he');
 
-Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+// Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+
+Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
+Route::get('chi_tiet_gio_hang',[CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
+Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
+Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
+Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
+Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
+Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
+
+
+// thanh toán 
+Route::post('/vnpay_payment', [CheckoutController::class, 'vnpay_payment']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Route::get('/profile', function () {
-    //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    //     if (auth()->check()) {
-    //         // Người dùng đã đăng nhập, trả về view của trang profile
-    //         return view('profile');
-    //     } else {
-    //         // Người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
-    //         return redirect('/login');
-    //     }
-    // });
-});
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('client.pages.password-change');
+    Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
+    
+    
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+  
+});
 
 
 require __DIR__ . '/auth.php';
