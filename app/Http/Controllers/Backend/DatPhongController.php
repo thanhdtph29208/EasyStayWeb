@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
 use App\Models\DatPhongLoaiPhong;
 use Illuminate\Support\Facades\DB;
+use App\Models\DatPhongNoiPhong;
 use Carbon\Carbon;
 
 use function Laravel\Prompts\alert;
