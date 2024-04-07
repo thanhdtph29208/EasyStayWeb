@@ -20,6 +20,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
+
         'ten_nguoi_dung',
         'email',
         'password',
@@ -52,6 +54,10 @@ class User extends Authenticatable
     ];
     protected function vaiTro(){
         return $this->belongsTo(VaiTro::class, 'id_vai_tro', 'id');
+    }
+    public function User()
+    {
+        return $this->belongsTo(User::class, 'id');
     }
 }
 

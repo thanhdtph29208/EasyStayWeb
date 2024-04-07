@@ -24,6 +24,7 @@ use App\Http\Controllers\Frontend\HoSoController;
 use App\Http\Controllers\Frontend\KiemTraPhongController;
 use App\Http\Controllers\Frontend\LienHeController;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\LichSuDatPhongController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -46,6 +47,8 @@ Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'home'])->
 
 
 Route::get('ho_so', [ProfileController::class, 'index'])->name('client.pages.hoso');
+Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
+
 
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');

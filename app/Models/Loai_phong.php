@@ -14,6 +14,7 @@ class Loai_phong extends Model
     const CON_PHONG = 1;
     const HET_PHONG = 0;    
     protected $fillable = [
+        'id',
         'ten',
         'anh',
         'gia',
@@ -45,6 +46,9 @@ class Loai_phong extends Model
     //     });
     // }
 
-   
+    public function Loai_phong()
+    {
+        return $this->belongsTo(Loai_phong::class, 'id');
+    }
 
 }

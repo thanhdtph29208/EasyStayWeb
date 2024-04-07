@@ -33,9 +33,9 @@ class DatPhong extends Model
         'trang_thai',
         'ghi_chu',
     ];
-    protected function user()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
     public function phongs()
     {
@@ -50,10 +50,9 @@ class DatPhong extends Model
         // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
         return $this->belongsTo(Loai_phong::class);
     }
-    protected function khuyen_mai()
+    public function khuyen_mai()
     {
-        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(KhuyenMai::class);
+        return $this->belongsTo(KhuyenMai::class, 'khuyen_mai_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
     protected function dich_vu()
     {
@@ -104,4 +103,10 @@ class DatPhong extends Model
     // {
     //     $this->attributes['phongIds'] = implode(',', $value);
     // }
+
+   
+    public function DatPhong()
+    {
+        return $this->belongsTo(DatPhong::class); // Giả sử có mối quan hệ many-to-one với model Room
+    }
 }

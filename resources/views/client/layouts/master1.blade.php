@@ -156,9 +156,9 @@
                                     </li>
                             
                                 <li>
-                                    <a href=""
+                                <a href=" {{ route('client.pages.lich_su_dat_phong') }}"
                                         class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="help-circle" class="size-4 me-2"></i>Trung tâm trợ giúp
+                                        <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
                                     </a>
                                 </li>
                                 <li>
