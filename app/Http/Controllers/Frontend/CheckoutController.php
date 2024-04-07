@@ -32,7 +32,7 @@ class CheckoutController extends Controller
         $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
         $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 20000 * 100;
+        $vnp_Amount = (float)$request['cart_total'] * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -86,11 +86,25 @@ class CheckoutController extends Controller
         $returnData = array(
             'code' => '00', 'message' => 'success', 'data' => $vnp_Url
         );
-        if (isset($_POST['redirect'])) {
+        if (isset($request['redirect'])) {
             header('Location: ' . $vnp_Url);
             die();
         } else {
-            echo json_encode($returnData);
+            echo json_encode($returnData);  
+        }
+    }
+
+    public function pay(Request $request){
+        $request['cart_total'] = (float)$request->cart_total;
+        // var_dump($request->cart_total);
+        $request->validate([
+            'order_sdt' => ['required', 'min:9'],
+        ]);
+
+        if($request['payment'] == 2){
+            return redirect()->route('vnpay',[$request]);
+
+            
         }
     }
 }
