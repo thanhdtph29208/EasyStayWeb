@@ -72,7 +72,8 @@ Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart
 
 
 // thanh toán 
-Route::post('/vnpay_payment', [CheckoutController::class, 'vnpay_payment']);
+Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
+Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
 
 
 Route::middleware('auth')->group(function () {

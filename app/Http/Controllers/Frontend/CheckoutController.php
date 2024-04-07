@@ -9,6 +9,8 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
+use function Laravel\Prompts\alert;
+
 class CheckoutController extends Controller
 {
 
@@ -17,6 +19,19 @@ class CheckoutController extends Controller
         $cartItems = Cart::content();
         $cartTotal = $request['cart_total'];
         return view('client.pages.checkout', compact('cartItems', 'cartTotal'));
+    }
+
+    public function pay(Request $request){
+        $request['cart_total'] = (float)$request->cart_total;
+        // var_dump($request->cart_total);
+        $request->validate([
+            'order_sdt' => ['required', 'min:9'],
+        ]);
+
+        if($request['payment'] == 1){
+            return redirect()->route('vnpay_payment',[$request]);         
+        }
+     
     }
 
     public function vnpay_payment(Request $request)
@@ -37,7 +52,6 @@ class CheckoutController extends Controller
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
-
 
 
         $inputData = array(
@@ -94,17 +108,7 @@ class CheckoutController extends Controller
         }
     }
 
-    public function pay(Request $request){
-        $request['cart_total'] = (float)$request->cart_total;
-        // var_dump($request->cart_total);
-        $request->validate([
-            'order_sdt' => ['required', 'min:9'],
-        ]);
 
-        if($request['payment'] == 2){
-            return redirect()->route('vnpay',[$request]);
 
-            
-        }
-    }
+   
 }
