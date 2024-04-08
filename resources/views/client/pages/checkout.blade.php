@@ -25,7 +25,7 @@
         </div>
     </section><!--end section-->
     <div class="container mx-auto py-5">
-        <form action="" method="">
+        <form action="{{ route('pay') }}" method="get">
             @csrf
             <div class="flex flex-row">
                 <div class="w-3/4">
@@ -41,7 +41,7 @@
                         <div class="mb-3">
                             <label for="exampleInputEmail2" class="block text-sm font-medium mb-1">Số điện thoại</label>
                             <input type="text" class="form-input w-full" id="exampleInputEmail2" required
-                                name="telephone">
+                                name="order_sdt">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Email</label>
@@ -49,11 +49,12 @@
                                 value="{{ Auth::user()->email }}">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Payments</label>
-                            <select class="form-select w-full" aria-label="Default select example" id="payments"
-                                name="payments">
-                                <option value="1">COD</option>
-                                <option value="2" name="billpayment">VNPay</option>
+                            <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Hình thức thanh
+                                toán</label>
+                            <select class="form-select w-full" aria-label="Default select example" id="payment"
+                                name="payment">
+                                <option value="1" name="billpayment">VNPay</option>
+                                <option value="2" name="payUrl" >Momo</option>
                             </select>
                         </div>
                     </div>
@@ -74,7 +75,8 @@
                             <p class="text-base">Số lượng: {{ $item->qty }}</p>
                             <p class="text-base">Giá phòng: {{ number_format($item->price, 0, ',', ',') }} VNĐ</p>
                             <p class="text-red-600 text-right text-base font-bold">
-                                {{ number_format($item->price * $item->qty, 0, ',', ',') }} VNĐ</p>
+                                {{ number_format($item->price * $item->qty, 0, ',', ',') }} VNĐ
+                            </p>
                             <hr>
                         @endforeach
                     </div>
@@ -91,13 +93,17 @@
                     </div>
                 </div>
             </div>
-        </form>
 
-        <form action="{{ url('/vnpay_payment') }}" method="POST">
-            @csrf
-            <button type="submit" name="redirect"
-                class="bg-blue-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded w-full mt-4">Thanh
-                toán</button>
+
+        
+        
+            <div>
+                <input type="hidden" name="cart_total" value="{{ $cartTotal }}">
+                <button type="submit" name="redirect"
+                    class="bg-blue-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded w-full mt-4">Thanh
+                    toán</button>
+            </div>
+            
         </form>
     </div>
 @endsection
