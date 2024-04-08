@@ -56,7 +56,7 @@ class DatPhong extends Model
 
     public function dichVus()
     {
-        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
+        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id')->withPivot('so_luong');
     }
 
     public function loaiPhong()
