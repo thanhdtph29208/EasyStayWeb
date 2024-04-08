@@ -52,6 +52,17 @@
                                 <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                                     <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5> <br>
                                 </div>
+                                <div>
+                                    @foreach($phongs as $phong)
+                                    @if($phong['loai_phong']->id == $loaiPhong->id) <ul>
+                                        <p>Phòng trống: {{ $phong['available_rooms']->count() }}</p>
+                                        @foreach($phong['available_rooms'] as $room)
+                                        <li class="hidden">Phòng số: {{ $room->ten_phong }}</li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
+                                    @endforeach
+                                </div>
 
                                 <div>
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +78,9 @@
 
                                 <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Chọn phòng</button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
-                                
+
+
+
                             </form>
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
                         </div>
@@ -93,7 +106,18 @@
                         <h2>{{$loaiPhong->ten}}</h2>
                         <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5>
                         <p class="text-slate-400">{{$loaiPhong->mo_ta_ngan}}</p>
-                        <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br>
+
+                        @foreach($phongs as $phong)
+                        @if($phong['loai_phong']->id == $loaiPhong->id) <ul>
+                            <p class="text-slate-400">Phòng trống: {{ $phong['available_rooms']->count() }}</p>
+                            @foreach($phong['available_rooms'] as $room)
+                            <li class="hidden">Phòng số: {{ $room->ten_phong }}</li>
+                            @endforeach
+                        </ul>
+                        @endif
+                        @endforeach
+                        
+                        <!-- <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br> -->
                         <p>Lưu ý: Không hoàn trả phí khi hủy phòng</p>
 
                         <ul class="cd-item-action">

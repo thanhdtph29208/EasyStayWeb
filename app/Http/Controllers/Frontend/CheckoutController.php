@@ -9,6 +9,8 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
+use function Laravel\Prompts\alert;
+
 class CheckoutController extends Controller
 {
 
@@ -19,8 +21,7 @@ class CheckoutController extends Controller
         return view('client.pages.checkout', compact('cartItems', 'cartTotal'));
     }
 
-    public function pay(Request $request)
-    {
+    public function pay(Request $request){
         $request['cart_total'] = (float)$request->cart_total;
         // var_dump($request->cart_total);
         $request->validate([
@@ -109,6 +110,7 @@ class CheckoutController extends Controller
 
 
     // xây dựng hàm thanh toán bằng vnpay
+
     public function vnpay_payment(Request $request)
     {
         // error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
@@ -179,7 +181,11 @@ class CheckoutController extends Controller
             header('Location: ' . $vnp_Url);
             die();
         } else {
-            echo json_encode($returnData);
+            echo json_encode($returnData);  
         }
     }
+
+
+
+   
 }

@@ -26,9 +26,6 @@ class DatPhongDataTable extends DataTable
             ->addColumn('ten_khach_hang', function($query){
                 return $query->user->ten_nguoi_dung;
             })
-            ->addColumn('loai_phong_id', function($query){
-                return $query->loai_phong->ten;
-            })
             ->addColumn('email', function($query){
                 return $query->user->email;
             })
@@ -121,7 +118,6 @@ class DatPhongDataTable extends DataTable
             Column::make('ten_khach_hang'),
             Column::make('email'),
             Column::make('so_dien_thoai'),
-            Column::make('loai_phong_id'),
             // Column::make('phong_id'),
             // Column::make('don_gia'),
             // Column::make('so_luong_nguoi'),

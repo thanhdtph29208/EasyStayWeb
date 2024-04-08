@@ -33,35 +33,62 @@ class DatPhong extends Model
         'trang_thai',
         'ghi_chu',
     ];
-    protected function user()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
+
+    public function phong()
+    {
+        return $this->belongsTo(Phong::class);
+    }
+
     public function phongs()
     {
         return $this->belongsToMany(Phong::class, 'dat_phong_noi_phongs', 'dat_phong_id', 'phong_id');
     }
-    public function dichvus()
-    {
-        return $this->belongsToMany(Phong::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
-    }
-    protected function loai_phong()
-    {
-        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(Loai_phong::class);
-    }
-    protected function khuyen_mai()
-    {
-        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
-        return $this->belongsTo(KhuyenMai::class);
-    }
-    protected function dich_vu()
+
+    public function dichVu()
     {
         // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
         return $this->belongsTo(DichVu::class);
     }
 
-    protected $phongIdTemp;
+    public function dichVus()
+    {
+        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id')->withPivot('so_luong');
+    }
+
+    public function loaiPhong()
+    {
+        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
+        return $this->belongsTo(Loai_phong::class);
+    }
+
+    public function loaiPhongs()
+    {
+        return $this->belongsToMany(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id')->withPivot('so_luong_phong');
+    }
+
+    public function khuyen_mai()
+    {
+        return $this->belongsTo(KhuyenMai::class, 'khuyen_mai_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
+    }
+
+    public $loaiPhongIdTemp;
+    public function setLoaiPhongIdTemp($loaiPhongId)
+    {
+        $this->loaiPhongIdTemp = $loaiPhongId;
+        return $this;
+    }
+
+    // Phương thức để lấy phong_id tạm thời
+    public function getLoaiPhongIdTemp()
+    {
+        return $this->loaiPhongIdTemp;
+    }
+
+    public $phongIdTemp;
 
     // Phương thức để gán phong_id tạm thời
     public function setPhongIdTemp($phongId)
@@ -75,7 +102,7 @@ class DatPhong extends Model
     {
         return $this->phongIdTemp;
     }
-    protected $dichVuIdTemp;
+    public $dichVuIdTemp;
 
     // Phương thức để gán phong_id tạm thời
     public function setDichVuIdTemp($dichVuId)
@@ -91,6 +118,8 @@ class DatPhong extends Model
     }
 
 
+
+
     // public function getPhongIdsAttribute($value)
     // {
     //     return explode(',', $value);
@@ -100,4 +129,10 @@ class DatPhong extends Model
     // {
     //     $this->attributes['phongIds'] = implode(',', $value);
     // }
+
+
+    public function DatPhong()
+    {
+        return $this->belongsTo(DatPhong::class); // Giả sử có mối quan hệ many-to-one với model Room
+    }
 }
