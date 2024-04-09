@@ -56,7 +56,7 @@ class DatPhong extends Model
 
     public function dichVus()
     {
-        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id');
+        return $this->belongsToMany(DichVu::class, 'dat_phong_dich_vus', 'dat_phong_id', 'dich_vu_id')->withPivot('so_luong');
     }
 
     public function loaiPhong()
@@ -69,6 +69,12 @@ class DatPhong extends Model
     {
         return $this->belongsToMany(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id')->withPivot('so_luong_phong');
     }
+
+    public function Loai_phong()
+    {
+        return $this->belongsTo(Loai_phong::class, 'loai_phong_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
+    }
+    
 
     public function khuyen_mai()
     {

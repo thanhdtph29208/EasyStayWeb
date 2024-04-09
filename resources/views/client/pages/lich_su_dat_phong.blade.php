@@ -30,7 +30,7 @@
                 <th class="p-4"> {{ $DatPhong->Loai_phong->ten }}</th>
                 <th class="p-4"> {{ $DatPhong->so_luong_nguoi }}</th>
                 <th class="p-4"> {{ $DatPhong->so_luong_phong }}</th>
-                <th class="p-4"> {{ $DatPhong->Khuyen_Mai->ma_giam_gia}} ({{ $DatPhong->Khuyen_Mai->gia_tri_giam}})</th>
+                <th class="p-4"> {{ $DatPhong->khuyen_Mai->ma_giam_gia}} ({{ $DatPhong->Khuyen_Mai->gia_tri_giam}})</th>
                 <th class="p-4"> {{ $DatPhong->thoi_gian_den }}</th>
                 <th class="p-4"> {{ $DatPhong->thoi_gian_di }}</th>
                     <th class="p-4"> {{ $DatPhong->ghi_chu }}</th>

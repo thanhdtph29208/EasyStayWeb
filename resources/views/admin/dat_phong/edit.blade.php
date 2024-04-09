@@ -37,21 +37,21 @@
                     @csrf
                     @method('put')
 
-                    <div class="form-group mt-3 mx-auto">
-                        @for ($i = 0; $i < $so_luong_dich_vu; $i++)
-                        <div id="form-container">
-                            <label for="dich_vu_ids_{{ $i }}">Dịch vụ {{ $i + 1 }}:</label>
-                            <input type="text" name="dich_vu_ids[{{ $i }}][id]" id="dich_vu_ids_{{ $i }}" list="dich_vu">
-                            <datalist id="dich_vu">
+                    <div id="dich-vu-form">
+                        <div class="form-group mt-3 mx-auto"  style="display: inline-block; width:629px">
+                            <label for="dich_vu_ids_{{ $j }}"></label>
+                            <select  name="dich_vu_ids[{{ $j }}][id]" id="dich_vu_ids_{{ $j }}" class="form-control">>
                                 @foreach ($dich_vus as $dich_vu)
                                     <option value="{{ $dich_vu->id }}">{{ $dich_vu->ten_dich_vu }}</option>
                                 @endforeach
-                            </datalist>
-                            <label for="so_luong_{{ $i }}">Số lượng:</label>
-                            <input type="number" name="dich_vu_ids[{{ $i }}][so_luong]" id="so_luong_{{ $i }}" value="0" min="0">
+                            </select>
+                            <span class="text-danger error-dich_vu_id_{{$j}}"></span>
                         </div>
-                        @break;
-                        @endfor
+
+                        <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                            <label for="so_luong_{{ $j }}">Số lượng:</label>
+                            <input type="number" class="form-control" name="so_luong[{{ $j }}][so_luong]" id="so_luong_{{ $j }}" value="0" min="0">
+                        </div>
                     </div>
                     <button type="button" id="add-input" class="btn btn-primary">Thêm</button>
                     <div class="form-group mt-3 mx-auto ">
@@ -70,24 +70,32 @@
     </div>
 </main>
 <script>
-    var count = 0; // Số lần lặp đã được thực hiện
+    var j = 1;
 
-    // console.log(count);
-    document.getElementById("add-input").addEventListener("click", function() {
-        count++; // Tăng biến đếm lên 1
-        console.log(count);
-        var formGroup = `
-        <label for="dich_vu_ids_{{ $count }}">Dịch vụ {{ $count + 1 }}:</label>
-                            <input type="text" name="dich_vu_ids[{{ $count }}][id]" id="dich_vu_ids_{{ $count }}" list="dich_vu">
-                            <datalist id="dich_vu">
-                                @foreach ($dich_vus as $dich_vu)
-                                    <option value="{{ $dich_vu->id }}">{{ $dich_vu->ten_dich_vu }}</option>
-                                @endforeach
-                            </datalist>
-                            <label for="so_luong_{{ $count }}">Số lượng:</label>
-                            <input type="number" name="dich_vu_ids[{{ $count }}][so_luong]" id="so_luong_{{ $count }}" value="0" min="0">
-        `;
-        document.getElementById("form-container").innerHTML += formGroup;
-    });
+document.getElementById('add-input').addEventListener('click', function() {
+    var form = document.getElementById('dich-vu-form');
+    var html = `
+            <div id="dich-vu-form">
+                <div class="form-group mt-3 mx-auto"  style="display: inline-block; width:629px">
+                    <label for="dich_vu_ids_${j}">Dịch vụ </label>
+                    <select  name="dich_vu_ids[${j}][id]" id="dich_vu_ids_${j}" class="form-control">>
+                        @foreach ($dich_vus as $dich_vu)
+                            <option value="{{ $dich_vu->id }}">{{ $dich_vu->ten_dich_vu }}</option>
+                        @endforeach
+                    </select>
+                    <span class="text-danger error-dich_vu_id_${j}"></span>
+                </div>
+
+                <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                    <label for="so_luong_${j}">Số lượng</label>
+                    <input type="number" class="form-control" name="so_luong[${j}][so_luong]" id="so_luong_${j}" value="0" min="0">
+                 <span class="text-danger error-so_luong_${j}"></span>
+                </div>
+            </div>
+     `;
+
+    form.insertAdjacentHTML('beforeend', html);
+    j++;
+});
 </script>
 @endsection

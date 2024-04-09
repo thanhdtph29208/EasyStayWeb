@@ -85,17 +85,21 @@ class DatPhongController extends Controller
         ]);
         $datPhongId = $datPhong->id;
         // Thêm dữ liệu vào bảng DatPhongLoaiPhong
-        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
-            // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-            $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        // foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+        //     // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+        //     $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
 
-            // Thêm dữ liệu vào bảng liên kết
-            $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        }
+        //     // Thêm dữ liệu vào bảng liên kết
+        //     $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        // }
 
         $phongIds = collect();
         $tong_tien=0;
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+        // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+        $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        // Thêm dữ liệu vào bảng liên kết
+        $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
         $phongIdsForLoaiPhong = DB::table('phongs as p')
         ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
         ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
@@ -118,8 +122,9 @@ class DatPhongController extends Controller
         $ngay_bat_dau = strtotime($request->thoi_gian_den);
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
         $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
-        var_dump($loaiPhongId['id'],$khuyenMai->loai_phong_id);
-        
+
+        // var_dump($loaiPhongId['id'],$khuyenMai->loai_phong_id);
+
         if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
         {
             $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
@@ -186,11 +191,12 @@ class DatPhongController extends Controller
      */
     public function edit(DatPhong $datPhong)
     {
+        $j = 0;
         $so_luong_dich_vu = DichVu::count();
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
         $user = User::query()->pluck('ten_nguoi_dung', 'id')->toArray();
         $dich_vus = DichVu::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu','j'));
     }
 
     /**
@@ -203,21 +209,23 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 
-        $request->validate([
-            'dich_vu_ids' => 'required|array',
-            'dich_vu_ids.*.id' => 'required|numeric',
-            'dich_vu_ids.*.so_luong' => 'required|numeric|min:0',
-            'ghi_chu' => 'nullable|string',
-        ]);
+        // $request->validate([
+        //     'dich_vu_ids' => 'required|array',
+        //     'dich_vu_ids.*.id' => 'required|numeric',
+        //     'dich_vu_ids.*.so_luong' => 'required|numeric|min:0',
+        //     'ghi_chu' => 'nullable|string',
+        // ]);
         // Tính toán tổng tiền cho các dịch vụ
-        $tongTienDichVu = 0;
-        foreach ($request->dich_vu_ids as $dichVuData) {
-            $dichVu = DichVu::find($dichVuData['id']);
-            if ($dichVu) {
-                $tongTienDichVu += $dichVu->gia * $dichVuData['so_luong'];
-            }
-        }
+        // Xóa các dịch vụ hiện có của DatPhong trước khi thêm mới
+        $datPhong->dichVus()->detach();
 
+        $tongTienDichVu = 0;
+        foreach ($request->dich_vu_ids as $key => $dichVuId) {
+            $soLuongDichVu = $request->so_luong[$key]['so_luong'];
+            $datPhong->dichVus()->attach($dichVuId['id'], ['so_luong' => $soLuongDichVu]);
+            $dichVu = DichVu::find($dichVuId['id']);
+            $tongTienDichVu += $dichVu->gia * $soLuongDichVu;
+        }
         // Tính tổng tiền mới cho chi tiết đặt phòng
         $tongTienMoi = $datPhong->tong_tien + $tongTienDichVu;
 
@@ -231,16 +239,8 @@ class DatPhongController extends Controller
         $datPhong->ghi_chu = $request->ghi_chu;
         $datPhong->save();
 
-        // Xóa các dịch vụ hiện có của DatPhong trước khi thêm mới
-        $datPhong->dichVus()->detach();
 
         // Lưu dữ liệu vào bảng trung gian
-        foreach ($request->dich_vu_ids as $dichVuData) {
-            $dichVu = DichVu::find($dichVuData['id']);
-            if ($dichVu) {
-                $datPhong->dichVus()->attach($dichVu->id, ['so_luong' => $dichVuData['so_luong']]);
-            }
-        }
         return back()->with('msg', 'Cập nhật thành công');
     }
 

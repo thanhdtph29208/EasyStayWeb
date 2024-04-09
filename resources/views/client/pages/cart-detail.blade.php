@@ -1,32 +1,115 @@
 @extends('client.layouts.master')
 @section('content')
-<!-- Start Hero -->
-<section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
-    <div class="container relative">
-        <div class="grid grid-cols-1 pb-8 text-center mt-10">
-            <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Thông tin đơn đặt phòng
-            </h3>
-        </div><!--end grid-->
-    </div><!--end container-->
+<script>
+    function changeQuantity(rowId, action) {
+        var inputElement = document.querySelector('input[data-rowid="' + rowId + '"]');
+        var currentQuantity = parseInt(inputElement.value);
+        var price = parseFloat(inputElement.getAttribute('data-price'));
 
-    <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
-        <ul class="tracking-[0.5px] mb-0 inline-block">
-            <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white/50 hover:text-white">
-                <a href="<?= env('APP_URL') ?>/">EasyStay</a>
-            </li>
-            <li class="inline-block text-base text-white/50 mx-0.5 ltr:rotate-0 rtl:rotate-180"><i class="mdi mdi-chevron-right"></i></li>
-            <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white" aria-current="page">Thông tin đơn đặt phòng</li>
-        </ul>
-    </div>
-</section><!--end section-->
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-[900px_minmax(300px,_1fr)_100px] gap-3 ">
-        {{-- div 1 --}}
-        <div class="bg-white rounded-lg overflow-hidden shadow-md">
-            <div class="bg-white border rounded-lg">
-                <div class="p-4 border-b">
-                    <h1 class="text-xl font-semibold">Thông tin đơn đặt phòng</h1>
+        if (action === 'increase') {
+            inputElement.value = currentQuantity + 1;
+        } else if (action === 'decrease' && currentQuantity > 0) {
+            inputElement.value = currentQuantity - 1;
+        }
+
+        var subtotal = price * parseInt(inputElement.value);
+        document.getElementById(rowId).textContent = `${subtotal.toLocaleString()} VNĐ`;
+
+        // Cập nhật tổng số tiền
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        var total = 0;
+        var subtotals = document.querySelectorAll('td[id^="row"]');
+        subtotals.forEach(function(subtotal) {
+            total += parseFloat(subtotal.textContent.replace('VNĐ', '').replace(/\./g, '').trim());
+        });
+        document.getElementById('totalPrice').textContent = `${total.toLocaleString()} VNĐ`;
+    }
+</script>
+
+    <section
+        class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
+        <div class="container relative">
+            <div class="grid grid-cols-1 pb-8 text-center mt-10">
+                <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Thông tin đơn đặt phòng
+                </h3>
+            </div><!--end grid-->
+        </div><!--end container-->
+
+        <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
+            <ul class="tracking-[0.5px] mb-0 inline-block">
+                <li
+                    class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white/50 hover:text-white">
+                    <a href="<?= env('APP_URL') ?>/">EasyStay</a>
+                </li>
+                <li class="inline-block text-base text-white/50 mx-0.5 ltr:rotate-0 rtl:rotate-180"><i
+                        class="mdi mdi-chevron-right"></i></li>
+                <li class="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-white"
+                    aria-current="page">Thông tin đơn đặt phòng</li>
+            </ul>
+        </div>
+    </section><!--end section-->
+    <div class="container mx-auto py-8"  id="cart">
+        <div class="grid grid-cols-[900px_minmax(300px,_1fr)_100px] gap-3 ">
+            {{-- div 1 --}}
+            <div class="bg-white rounded-lg overflow-hidden shadow-md">
+                <div class="bg-white border rounded-lg">
+                    <div class="p-4 border-b">
+                        <h1 class="text-xl font-semibold">Thông tin đơn đặt phòng</h1>
+                    </div>
+                    <div class="p-4">
+                        <table class="w-full table-fixed">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-2">#</th>
+                                    <th class="px-2 py-2">Loại phòng</th>
+                                    <th class="px-2 py-2">Số lượng</th>
+                                    <th class="px-2 py-2">Giá</th>
+                                    <th class="px-2 py-2">Tổng tiền</th>
+                                    <th class="px-2 py-2">
+                                        <button class="btn btn-primary ">Clear</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cartItems as $item)
+                                    <tr>
+                                        <td>
+                                            <img src="{{ Storage::url($item->image) }}" alt="" class="w-24 h-auto">
+                                        </td>
+                                        <td>
+                                            <p>{{ $item->name }}</p>
+                                        </td>
+                                       
+                                    
+            <td>
+            <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button> 
+                <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
+                <button onclick="changeQuantity('{{ $item->rowId }}', 'decrease')">-</button>
+            </td>
+            <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
+            <td id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ</td>
+       
+                                        <td>
+                                            <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}"
+                                                class="btn btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @if (count($cartItems) == 0)
+                                    <tr>
+                                        <td class="border-b-0">Bạn chưa chọn phòng nào !</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
                 <div class="p-4">
                     <table class="w-full table-fixed">
@@ -256,9 +339,14 @@
                         $('#cart_total').text(data.cart_total + 'VNĐ');
                         $('#input_cart_total').val(data.cart_total);
                     }
-                }
-            })
-        }
-    })
-</script>
+
+                })
+            }
+        })
+    </script>
+
+
+
+
 @endpush
+

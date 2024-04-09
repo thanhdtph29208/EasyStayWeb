@@ -8,7 +8,9 @@ use App\Models\Phong;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Carbon;
+use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+
 
 class CartController extends Controller
 {
@@ -29,12 +31,17 @@ class CartController extends Controller
         $request->session()->put('ngayBatDau', $request->ngayBatDau);
         $request->session()->put('ngayKetThuc', $request->ngayKetThuc);
 
+        $so_luong = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
+            $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
+        })->count();
+    
         $cartData = [];
         $cartData['id'] = $loai_phong->id;
         $cartData['name'] = $loai_phong->ten;
         $cartData['price'] = $loai_phong->gia;
-        $cartData['qty'] = $so_luong;
+        $cartData['qty'] = 1;
         $cartData['weight'] = 10;
+
         $cartData['ngay_bat_dau'] = $request->ngayBatDau;
         $cartData['ngay_ket_thuc'] = $request->ngayKetThuc;
         // $cartData['image'] = $loai_phong->anh;
@@ -42,10 +49,17 @@ class CartController extends Controller
         // $cartData['gia_ban_dau'] = $loai_phong->gia_ban_dau;
         // $cartData['gioi_han_nguoi'] = $loai_phong->gioi_han_nguoi;
         Cart::add($cartData);
-
-    
-
         return response(['status' => 'Thành công', 'message' => 'Thêm giỏ hàng thành công']);
+        $cartData['options']['image'] = $loai_phong->anh;
+    
+        // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
+        if ($cartData['qty'] <= $so_luong) {
+            Cart::add($cartData);
+            return Redirect::route('kiem_tra_phong')->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
+        } else {
+            return Redirect::route('kiem_tra_phong')->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
+        }
+
     }
 
     public function cartDetail(Request $request)
