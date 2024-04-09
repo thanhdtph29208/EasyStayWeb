@@ -8,6 +8,7 @@ use App\Models\Phong;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class CartController extends Controller
 {
@@ -30,7 +31,7 @@ class CartController extends Controller
         // $cartData['gioi_han_nguoi'] = $loai_phong->gioi_han_nguoi;
         Cart::add($cartData);
 
-        return response(['status' => 'Thành công', 'message' => 'Thêm giỏ hàng thành công']);
+        return Redirect::route('kiem_tra_phong')->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
     }
 
     public function cartDetail(Request $request)

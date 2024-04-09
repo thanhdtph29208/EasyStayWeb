@@ -1,6 +1,34 @@
 @extends('client.layouts.master')
 @section('content')
-    <!-- Start Hero -->
+<script>
+    function changeQuantity(rowId, action) {
+        var inputElement = document.querySelector('input[data-rowid="' + rowId + '"]');
+        var currentQuantity = parseInt(inputElement.value);
+        var price = parseFloat(inputElement.getAttribute('data-price'));
+
+        if (action === 'increase') {
+            inputElement.value = currentQuantity + 1;
+        } else if (action === 'decrease' && currentQuantity > 0) {
+            inputElement.value = currentQuantity - 1;
+        }
+
+        var subtotal = price * parseInt(inputElement.value);
+        document.getElementById(rowId).textContent = `${subtotal.toLocaleString()} VNĐ`;
+
+        // Cập nhật tổng số tiền
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        var total = 0;
+        var subtotals = document.querySelectorAll('td[id^="row"]');
+        subtotals.forEach(function(subtotal) {
+            total += parseFloat(subtotal.textContent.replace('VNĐ', '').replace(/\./g, '').trim());
+        });
+        document.getElementById('totalPrice').textContent = `${total.toLocaleString()} VNĐ`;
+    }
+</script>
+
     <section
         class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
@@ -24,7 +52,7 @@
             </ul>
         </div>
     </section><!--end section-->
-    <div class="container mx-auto py-8">
+    <div class="container mx-auto py-8"  id="cart">
         <div class="grid grid-cols-[900px_minmax(300px,_1fr)_100px] gap-3 ">
             {{-- div 1 --}}
             <div class="bg-white rounded-lg overflow-hidden shadow-md">
@@ -38,6 +66,7 @@
                                 <tr>
                                     <th class="px-2 py-2">#</th>
                                     <th class="px-2 py-2">Loại phòng</th>
+                                    <th class="px-2 py-2">Phòng trống</th>
                                     <th class="px-2 py-2">Số lượng</th>
                                     <th class="px-2 py-2">Giá</th>
                                     <th class="px-2 py-2">Tổng tiền</th>
@@ -56,22 +85,17 @@
                                             <p>{{ $item->name }}</p>
                                         </td>
                                         <td>
-                                            <div class="flex items-center">
-                                                <button class="btn btn-warning mr-1 room-decrement">
-                                                    <i class="bi bi-dash"></i>
-                                                </button>
-                                                <input type="text"
-                                                    class="form-control w-16 px-2 py-1 text-center phong-qty"
-                                                    value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}">
-                                                <button class="btn btn-success ml-1 room-increment">
-                                                    <i class="bi bi-plus-lg"></i>
-                                                </button>
-                                            </div>
+                                            <p>{{ $item->qty }}</p>
                                         </td>
-                                        <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
-                                        <td id="{{ $item->rowId }}">
-                                            {{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ
-                                        </td>
+                                    
+            <td>
+            <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button> 
+                <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
+                <button onclick="changeQuantity('{{ $item->rowId }}', 'decrease')">-</button>
+            </td>
+            <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
+            <td id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ</td>
+       
                                         <td>
                                             <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}"
                                                 class="btn btn-danger">
@@ -262,4 +286,8 @@
             }
         })
     </script>
+
+
+
+
 @endpush
