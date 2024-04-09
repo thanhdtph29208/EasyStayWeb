@@ -82,15 +82,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('client.pages.password-change');
     Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
-    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+    // Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
     
     Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
     Route::get('pay/success', [CheckoutController::class, 'checkoutSuccess'])->name('pay-success');
     Route::get('pay/success1', [CheckoutController::class, 'checkoutSuccess1'])->name('pay-success1');
 
-    
+});
 
-  
+Route::middleware('clearcart')->group(function () {
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 
 

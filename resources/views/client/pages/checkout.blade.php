@@ -55,9 +55,19 @@
                     <h5 class="text-xl font-bold mb-2">Yêu cầu đặt phòng của bạn</h5>
                     <hr class="my-3">
                     <p class="text-base font-medium mb-2">Khách sạn EasyStay</p>
-                    <p class="text-base font-medium mb-2">Nhận phòng:</p>
-                    <p class="text-base font-medium mb-2">Trả phòng:</p>
+                    @foreach ($cartItems as $item)
+                    <p class="text-base font-medium mb-2">Nhận phòng: {{$item->ngay_bat_dau}} </p>
+                    <p class="text-base font-medium mb-2">Trả phòng: {{$item->ngay_ket_thuc}}</p>
+                    <?php
+                    $soNgay = Carbon\Carbon::parse($item->ngay_ket_thuc)->diffInDays(Carbon\Carbon::parse($item->ngay_bat_dau));
+                    $soDem = $soNgay - 1;
+                    ?>
+                    <p class="text-base font-medium mb-2">
+                        ({{ $soNgay }} ngày {{ $soDem }} đêm)
+                    </p>
+                    @endforeach
                 </div>
+
                 <hr>
                 <div>
                     <h5 class="text-xl font-bold my-2">Thông tin phòng</h5>
@@ -66,7 +76,7 @@
                     <p class="text-base">Số lượng: {{ $item->qty }}</p>
                     <p class="text-base">Giá phòng: {{ number_format($item->price, 0, ',', ',') }} VNĐ</p>
                     <p class="text-red-600 text-right text-base font-bold">
-                        {{ number_format($item->price * $item->qty, 0, ',', ',') }} VNĐ
+                        {{ number_format($item->price * $item->qty * $soNgay, 0, ',', ',') }} VNĐ
                     </p>
                     <hr>
                     @endforeach
@@ -84,7 +94,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!-- <form action="{{ url('/vnpay_payment') }}" method="POST">
         @csrf -->
