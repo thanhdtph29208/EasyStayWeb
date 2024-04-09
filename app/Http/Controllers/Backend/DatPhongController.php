@@ -122,7 +122,9 @@ class DatPhongController extends Controller
         $ngay_bat_dau = strtotime($request->thoi_gian_den);
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
         $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
+
         // var_dump($loaiPhongId['id'],$khuyenMai->loai_phong_id);
+
         if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
         {
             $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
@@ -173,48 +175,6 @@ class DatPhongController extends Controller
 
         return redirect()->route('admin.dat_phong.index')->with('success', 'Thêm mới dịch vụ thành công!');
     }
-
-    public function bookOnline(Request $request)
-    {
-        $loai_phong = Loai_phong::findOrFail($request->loai_phong_id);
-        $khuyen_mai = KhuyenMai::findOrFail($request->khuyen_mai_id);
-
-        $datPhong = DatPhong::create([
-            'user_id' => $request->user_id,
-            // 'loai_phong_id' => $request->loai_phong_id,
-            // 'loai_phong' => null,
-            'order_sdt' => $request->order_sdt,
-            // 'so_luong_phong' => $request->so_luong_phong,
-            'so_luong_nguoi' => null,
-            'thoi_gian_den' => $request->thoi_gian_den,
-            'thoi_gian_di' => $request->thoi_gian_di,
-            'dich_vu_id' => null,
-            'khuyen_mai_id' => null,
-            'tong_tien' => null,
-            'payment' => $request->payment,
-            'trang_thai' => 1,
-            'ghi_chu' => null,
-        ]);
-
-        foreach ($request->loai_phong as $index => $loai_phong_id) {
-            $loaiPhong = Loai_phong::find($loai_phong_id);
-            $so_luong = $request->so_luong[$index];
-            $gia_phong = $loaiPhong->gia;
-
-            $phong = DatPhong::create([
-                'dat_phong_id' => $datPhong->id,
-                'loai_phong_id' => $loai_phong_id,
-                'so_luong' => $so_luong,
-                'gia_phong' => $gia_phong,
-                // Các trường thông tin khác của phòng nếu cần
-            ]);
-        }
-
-        foreach ($request->loai_phong_id as $index => $loai_phong_id1) {
-            $datPhong->loaiPhongs()->attach($loai_phong_id1, ['so_luong' => $request->so_luong[$index]]);
-        }
-    }
-
 
     /**
      * Display the specified resource.

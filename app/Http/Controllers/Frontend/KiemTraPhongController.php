@@ -19,8 +19,12 @@ class KiemTraPhongController extends Controller
     function checkPhong(Request $request)
     {
         // try {
-            $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
+            $ngayBatDau =  Carbon::parse($request->input('thoi_gian_den'));
             $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
+
+            $request->session()->put('ngay_bat_dau', $ngayBatDau);
+            $request->session()->put('ngay_ket_thuc', $ngayKetThuc);
+            
         // } catch (Exception $e) {
         //     return response()->json([
         //         'success' => false,
@@ -124,7 +128,7 @@ class KiemTraPhongController extends Controller
     //     while ($currentTime->lessThanOrEqualTo($ngayKetThuc)) {
     //         $availableLoaiPhongs = Loai_phong::all()->filter(function ($loaiPhong) use ($currentTime) {
     //             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-    //                 ->whereDoesntHave('datPhong', function ($query) use ($currentTime) {
+    //                 ->whereDoesntHave('datPhongs', function ($query) use ($currentTime) {
     //                     $query->where('thoi_gian_den', '<=', $currentTime)
     //                         ->where('thoi_gian_di', '>=', $currentTime->copy()->addHour());
     //                 })
@@ -135,7 +139,7 @@ class KiemTraPhongController extends Controller
 
     //         $phongs[$currentTime->format('Y-m-d H:i')] = $availableLoaiPhongs->map(function ($loaiPhong) use ($currentTime) {
     //             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-    //                 ->whereDoesntHave('datPhong', function ($query) use ($currentTime) {
+    //                 ->whereDoesntHave('datPhongs', function ($query) use ($currentTime) {
     //                     $query->where('thoi_gian_den', '<=', $currentTime)
     //                         ->where('thoi_gian_di', '>=', $currentTime->copy()->addHour());
     //                 })

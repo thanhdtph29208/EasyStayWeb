@@ -15,9 +15,9 @@ class Kernel extends HttpKernel
     ];
 
     protected function schedule(Schedule $schedule)
-{
-    $schedule->command('promotion:update')->daily(); // Chạy command này mỗi ngày
-}
+    {
+        $schedule->command('promotion:update')->daily(); // Chạy command này mỗi ngày
+    }
 
     /**
      * The application's global HTTP middleware stack.
@@ -26,6 +26,12 @@ class Kernel extends HttpKernel
      *
      * @var array<int, class-string|string>
      */
+
+    protected $routeMiddleware = [
+        //...
+        'clearcart' => \App\Http\Middleware\ClearCartOnExit::class,
+    ];
+
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
@@ -53,7 +59,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -79,7 +85,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'block.user' => \App\Http\Middleware\BlockUserFromAdmin::class,
-
+        
     ];
-
 }

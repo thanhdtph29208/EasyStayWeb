@@ -27,6 +27,11 @@ class Kernel extends ConsoleKernel
                 ->whereNotNull('ngay_bat_dau')
                 ->update(['trang_thai' => 0]);
         })->everyMinute();
+
+        
+        // Xóa đơn hàng nào thêm vào giỏ hàng quá 15 phút
+        $schedule->command('carts::clear')->everyMinute();
+        // $schedule->command('carts::clear')->everyFifteenMinutes();
     }
 
     /**

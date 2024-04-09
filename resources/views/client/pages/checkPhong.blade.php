@@ -62,9 +62,17 @@
                                         <li class="hidden">Phòng số: {{ $room->ten_phong }}</li>
                                         @endforeach
                                     </ul>
+                                    <div>
+                                        <label for="so_luong">Số lượng muốn đặt:</label>
+                                        <input type="number" id="so_luong" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" >
+                                    </div>
                                     @endif
                                     @endforeach
+
                                 </div>
+                                <input type=" text" name="ngayBatDau" value="{{$ngayBatDau}}">
+                                <input type=" text" name="ngayKetThuc" value="{{$ngayKetThuc}}">
+                                
 
                                 <div>
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,11 +84,8 @@
                                 <button  type="submit"  class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
   
-
-
-
-
                             </form>
+
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
                         </div>
                     </div>
@@ -97,8 +102,8 @@
                         <ul class="cd-slider-navigation">
                             <li><a class="cd-next" href="#0">Prev</a></li>
                             <li><a class="cd-prev" href="#0">Next</a></li>
-                        </ul> <!-- cd-slider-navigation -->
-                    </div> <!-- cd-slider-wrapper -->
+                        </ul> 
+                    </div>
 
                     <div class="cd-item-info">
                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
@@ -115,7 +120,7 @@
                         </ul>
                         @endif
                         @endforeach
-                        
+
                         <!-- <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br> -->
                         <p>Lưu ý: Không hoàn trả phí khi hủy phòng</p>
 
@@ -137,6 +142,8 @@
                         <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
                         <hr class="my-2">
                         <p>EasyStayHotel</p>
+                        <input type="text" name="thoi_gian_den" id="" value="<?= $ngayBatDau ?>">
+                        <input type="text" name="thoi_gian_di" id="" value="<?= $ngayKetThuc ?>"> <br>
                         <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
                     </div>
                     <hr class="my-2">
