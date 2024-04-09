@@ -57,6 +57,8 @@ class KiemTraPhongController extends Controller
             ];
         });
 
+        
+
         // dd($phongs);
         // return response()->json([
         //     'success' => true,
@@ -68,6 +70,41 @@ class KiemTraPhongController extends Controller
         return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc', 'loaiPhongs'));
 
     }
+
+
+    public function addToCart(Request $request)
+{
+    // Kiểm tra xem người dùng đã đặt phòng trước đó chưa
+    $daDatPhong = DatPhong::where('user_id', auth()->user()->id)
+        ->where('thoi_gian_den', $request->input('thoi_gian_den'))
+        ->where('thoi_gian_di', $request->input('thoi_gian_di'))
+        ->exists();
+
+    if ($daDatPhong) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Bạn đã đặt phòng trong khoảng thời gian này.'
+        ]);
+    }
+
+    // Nếu chưa đặt phòng, tiếp tục thêm vào giỏ hàng
+    // Code thêm phòng vào giỏ hàng ở đây
+
+    // Sau khi thêm vào giỏ hàng thành công
+    // Đánh dấu rằng người dùng đã đặt phòng
+    DatPhong::create([
+        'user_id' => auth()->user()->id,
+        'thoi_gian_den' => $request->input('thoi_gian_den'),
+        'thoi_gian_di' => $request->input('thoi_gian_di'),
+        // Thêm các trường dữ liệu khác cần thiết
+    ]);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Thêm giỏ hàng thành công'
+    ]);
+}
+
 
     // function checkPhong(Request $request)
     // {

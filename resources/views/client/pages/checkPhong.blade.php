@@ -73,7 +73,7 @@
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
-                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
+                                <button  type="submit"  class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
   
 
@@ -195,14 +195,9 @@ $(document).ready(function() {
             data: formData,
             url: formAction,
             success: function(data) {
-    console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
-    if (data.status === 'Thành công') {
-        toastr.success('Đã thêm vào giỏ hàng thành công');
-    } else {
-        toastr.error(data.message);
-    }
-}
-,
+                // Xử lý phản hồi từ máy chủ ở đây
+                console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
+            },
             error: function(xhr, status, error) {
                 // Xử lý lỗi khi gửi yêu cầu Ajax
                 console.error('Đã xảy ra lỗi:', error);

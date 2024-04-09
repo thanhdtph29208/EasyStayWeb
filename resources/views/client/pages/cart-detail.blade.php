@@ -66,7 +66,6 @@
                                 <tr>
                                     <th class="px-2 py-2">#</th>
                                     <th class="px-2 py-2">Loại phòng</th>
-                                    <th class="px-2 py-2">Phòng trống</th>
                                     <th class="px-2 py-2">Số lượng</th>
                                     <th class="px-2 py-2">Giá</th>
                                     <th class="px-2 py-2">Tổng tiền</th>
@@ -84,9 +83,7 @@
                                         <td>
                                             <p>{{ $item->name }}</p>
                                         </td>
-                                        <td>
-                                            <p>{{ $item->qty }}</p>
-                                        </td>
+                                       
                                     
             <td>
             <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button> 
@@ -140,6 +137,7 @@
                         <div class="flex items-center justify-between mt-2">
                             <p class="font-semibold">Thành tiền:</p>
                             <p id="cart_total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
+                            
                             <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                         </div>
 
