@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers;
 
-use App\Models\DatPhongDichVu;
+use App\Models\DatPhongLoaiPhong;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class DatPhongDichVuController extends Controller
+class DatPhongLoaiPhongController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +34,7 @@ class DatPhongDichVuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DatPhongDichVu $datPhongDichVu)
+    public function show(DatPhongLoaiPhong $datPhongLoaiPhong)
     {
         //
     }
@@ -43,7 +42,7 @@ class DatPhongDichVuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DatPhongDichVu $datPhongDichVu)
+    public function edit(DatPhongLoaiPhong $datPhongLoaiPhong)
     {
         //
     }
@@ -51,7 +50,7 @@ class DatPhongDichVuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DatPhongDichVu $datPhongDichVu)
+    public function update(Request $request, DatPhongLoaiPhong $datPhongLoaiPhong)
     {
         //
     }
@@ -59,7 +58,7 @@ class DatPhongDichVuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DatPhongDichVu $datPhongDichVu)
+    public function destroy(DatPhongLoaiPhong $datPhongLoaiPhong)
     {
         //
     }

@@ -17,6 +17,7 @@ class Phong extends Model
     const HET_PHONG = 0;
 
     protected $fillable = [
+        'id',
         'ten_phong',
         'loai_phong_id',
         'gioi_han_nguoi',
@@ -30,10 +31,10 @@ class Phong extends Model
         return $this->belongsTo(Loai_phong::class);
     }
 
-    public function datPhong()
-    {
-        return $this->hasMany(datPhong::class, 'phong_id', 'id');
-    }
+    // public function datPhong()
+    // {
+    //     return $this->hasMany(datPhong::class, 'phong_id', 'id');
+    // }
     public function datPhongs()
     {
         return $this->belongsToMany(DatPhong::class, 'dat_phong_noi_phongs', 'phong_id', 'dat_phong_id');
@@ -52,4 +53,10 @@ class Phong extends Model
             }
         });
     }
+
+    public function Phong()
+    {
+        return $this->belongsTo(Phong::class, 'id ');
+    }
+
 }

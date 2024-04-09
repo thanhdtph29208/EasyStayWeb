@@ -40,14 +40,16 @@
 
                             <div class="form-group mx-auto ">
                                 <label for="user_id">Email Khách Hàng</label>
-                                <select name="user_id" id="user_id" class="form-control">
+                                <input type="text" name="user_id" id="user_id" class="form-control" list="user">
+                                <datalist id="user">
                                     @foreach ($user as $id => $email)
                                     <option value="{{$id}}">{{$email}}</option>
                                     @endforeach
-                                </select>
+                                </datalist>
                                 <span class="text-danger error-user_id"></span>
                             </div>
-                            <div class="form-group mt-3 mx-auto ">
+
+                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
                                 <label for="loai_phong_id">Loại Phòng</label>
                                 <select name="loai_phong_id" id="loai_phong_id" class="form-control">
                                     @foreach ($loai_phong as $id => $ten)
@@ -55,36 +57,63 @@
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-loai_phong_id"></span>
-                            </div>
-                            <div class="form-group mt-3 mx-auto ">
+                            </div> -->
+
+                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
                                 <label for="so_luong_phong">Số Lượng phòng</label>
-                                <input type="number" class="form-control" id="so_luong_phong" name="so_luong_phong">
+                                <input type="number" class="form-control" name="so_luong_phong" id="so_luong_phong" value="0" min="0">
                                 <span class="text-danger error-so_luong_phong"></span>
+                            </div> -->
+
+                            <div id="dynamic-form">
+                                <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                    <label for="loai_phong_ids_{{$i}}">Loại Phòng</label>
+                                    <select name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control">
+                                        @foreach ($loai_phong as $id => $ten)
+                                        <option value="{{$id}}">{{$ten}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger error-loai_phong_id_{{$i}}"></span>
+                                </div>
+
+                                <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                    <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label>
+                                    <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
+                                    <span class="text-danger error-so_luong_phong"></span>
+                                </div>
                             </div>
+
+                            <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="so_luong_nguoi">Số Lượng người</label>
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
-                            <div class="row">
-                                <div class="form-group mt-3 mx-auto col-6 ">
+                            <div>
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
                                     <label for="thoi_gian_den">Thời gian đến</label>
-                                    <input type="datetime-local" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
+                                    <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
                                     <span class="text-danger error-thoi_gian_den"></span>
                                 </div>
-                                <div class="form-group mt-3 mx-auto col-6 ">
+                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
                                     <label for="thoi_gian_di">Thời gian đi</label>
-                                    <input type="datetime-local" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
+                                    <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
+
                                     <span class="text-danger error-thoi_gian_di"></span>
                                 </div>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
-                                <label for="khuyen_mai_id">Khuyến mãi</label>
-                                <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control">
+                                <label for="khuyen_mai_input">Khuyến mãi</label>
+                                <!-- <input type="text" name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" list="khuyen_mai"> -->
+                                <input list="khuyen_mai" id="khuyen_mai_input" class="form-control">
+                                <input id="khuyen_mai_id" name="khuyen_mai_id" hidden>
+                                <datalist id="khuyen_mai">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
-                                    <option value="{{$id}}">{{$ten_khuyen_mai}}</option>
+                                    <option value="{{$ten_khuyen_mai}}" data-id="{{$id}}" id="option_km_{{$ten_khuyen_mai}}">{{$ten_khuyen_mai}}</option>
+
                                     @endforeach
-                                </select>
+
+                                </datalist>
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
@@ -97,7 +126,7 @@
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="ghi_chu">Ghi chú</label>
-                                <input type="number" class="form-control" id="ghi_chu" name="ghi_chu">
+                                <textarea type="number" class="form-control" id="ghi_chu" name="ghi_chu"></textarea>
                                 <span class="text-danger error-ghi_chu"></span>
                             </div>
                             <div class="d-flex justify-content-center">
@@ -113,61 +142,41 @@
         </div>
     </div>
 </main>
+<script>
+    var i = 1;
 
-<!-- <script>
-    $(document).ready(function() {
-    $('#ten_khuyen_mai').autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: '{{ route("admin.searchKhuyenMai") }}',
-                dataType: 'json',
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    response(data);
-                }
-            });
-        },
-        minLength: 1, // Số ký tự tối thiểu trước khi bắt đầu tìm kiếm
-        select: function(event, ui) {
-            $('#ten_khuyen_mai').val(ui.item.label); // Hiển thị tên được chọn
-            $('#khuyen_mai_id').val(ui.item.value); // Lưu ID của tên được chọn
-            return false;
+    document.getElementById('add-button').addEventListener('click', function() {
+        var form = document.getElementById('dynamic-form');
+        var html = `
+             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                 <label for="loai_phong_ids_${i}">Loại Phòng</label>
+                 <select name="loai_phong_ids[${i}][id]" id="loai_phong_ids_${i}" class="form-control" list="loai_phong">
+                     @foreach ($loai_phong as $id => $ten)
+                         <option value="{{$id}}">{{$ten}}</option>
+                     @endforeach
+                 </select>
+                 <span class="text-danger error-loai_phong_ids_${i}"></span>
+             </div>
+
+             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                 <label for="so_luong_phong_${i}">Số Lượng phòng</label>
+                 <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
+                 <span class="text-danger error-so_luong_phong"></span>
+             </div>
+         `;
+
+        form.insertAdjacentHTML('beforeend', html);
+        i++;
+    });
+    document.getElementById('khuyen_mai_input').addEventListener('input', function() {
+        var selectedOption = document.getElementById('option_km_' + this.value);
+        // console.log(this.value);
+        // console.log(selectedOption);
+        if (selectedOption) {
+            var id = selectedOption.getAttribute('data-id');
+            // console.log(id);
+            document.getElementById('khuyen_mai_id').value = id;
         }
     });
-});
-</script> -->
-<!-- <script>
-    $(document).ready(function() {
-    $('#ten_khuyen_mai').select2({
-        ajax: {
-            url: '{{ route("admin.searchKhuyenMai") }}',
-            dataType: 'json',
-            delay: 250,
-            processResults: function(data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        },
-        minimumInputLength: 1,
-        placeholder: 'Chọn khuyến mãi',
-        escapeMarkup: function(markup) {
-            return markup;
-        },
-        templateResult: function(data) {
-            return data.text;
-        },
-        templateSelection: function(data) {
-            if (data.text) {
-                $('#khuyen_mai_id').val(data.id);
-                return data.text;
-            }
-        }
-    });
-});
-
-</script> -->
+</script>
 @endsection
