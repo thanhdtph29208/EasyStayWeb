@@ -9,8 +9,8 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Carbon;
-// use Carbon;
+// use Illuminate\Support\Carbon;
+use Carbon;
 
 
 class CartController extends Controller
@@ -50,9 +50,9 @@ class CartController extends Controller
     
         $ngayBatDau = $request->session()->get('ngayBatDau');
         $ngayKetThuc = $request->session()->get('ngayKetThuc');
+        $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
 
-        $soNgay = Carbon::parse($ngayKetThuc)->diffInDays(Carbon::parse($ngayBatDau));
-
+        // dd($soNgay);
         return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgay'));
     }
 
