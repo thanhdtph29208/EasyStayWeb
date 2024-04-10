@@ -66,9 +66,9 @@
                     @foreach ($cartItems as $item)
                     <p class="text-base">Tên phòng: {{ $item->name }}</p>
                     <p class="text-base">Số lượng: {{ $item->qty }}</p>
-                    <p class="text-base">Giá phòng: {{ number_format($item->price, 0, ',', ',') }} VNĐ</p>
+                    <p class="text-base">Giá phòng: {{ number_format($item->price, 0, '.', '.') }} VNĐ</p>
                     <p class="text-red-600 text-right text-base font-bold">
-                        {{ number_format($item->price * $item->qty * $soNgay, 0, ',', ',') }} VNĐ
+                        {{ number_format($item->price * $item->qty , 0, '.', '.') }} VNĐ
                     </p>
                     <hr>
                     @endforeach
@@ -76,7 +76,7 @@
 
                 <div class="flex justify-between mt-3">
                     <p class="font-bold text-lg">Tổng giá:</p>
-                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal * $soNgay, 0, ',', ',') }} VNĐ</p>
+                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal , 0, '.', '.') }} VNĐ</p>
                 </div>
 
                 <div class="mt-2">
@@ -90,7 +90,7 @@
         <!-- <form action="{{ url('/vnpay_payment') }}" method="POST">
         @csrf -->
         <div>
-            <input type="hidden" name="cart_total" value="{{ $cartTotal }}">
+            <input type="" name="cart_total" value="{{ $cartTotal }}">
             <button type="submit" name="redirect" class="bg-blue-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded w-full mt-4">Thanh
                 toán</button>
         </div>

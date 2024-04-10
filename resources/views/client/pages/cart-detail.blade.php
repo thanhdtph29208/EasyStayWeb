@@ -120,7 +120,7 @@
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Tổng tiền:</p>
-                        <p id="total" class="font-semibold">{{ number_format($total * $soNgay, 0, '.', '.') }}VNĐ</p>
+                        <p id="total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
                         <input type="hidden" value="{{ $total }}" name="total">
                     </div>
 
@@ -131,7 +131,7 @@
 
                     <div class="flex items-center justify-between mt-2">
                         <p class="font-semibold">Thành tiền:</p>
-                        <p id="cart_total" class="font-semibold">{{ number_format($total * $soNgay, 0, '.', '.') }}VNĐ</p>
+                        <p id="cart_total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
 
                         <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                     </div>
