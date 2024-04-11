@@ -20,7 +20,6 @@ class DatPhong extends Model
         'user_id',
         'loai_phong_id',
         'phong_id',
-        'phong_ids',
         'don_gia',
         'so_luong_nguoi',
         'so_luong_phong',
