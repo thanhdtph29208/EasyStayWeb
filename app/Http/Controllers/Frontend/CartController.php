@@ -20,7 +20,7 @@ class CartController extends Controller
     {
 
         $loai_phong = Loai_phong::findOrFail($request->id);
-        $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
+        $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhong', function ($query) {
             // $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
         })->count();
     
@@ -43,6 +43,10 @@ class CartController extends Controller
         }
     }
 
+
+
+
+    
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();

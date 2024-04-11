@@ -9,8 +9,9 @@
     <div class="container relative">
         <div class="grid grid-cols-1 pb-8 text-center mt-10">
             <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Tra cứu: </h3>
-            <p class="text-white">Ngày bắt đầu: <?= $ngayBatDau ?></p>
-            <p class="text-white">Ngày kết thúc: <?= $ngayKetThuc ?></p>
+            <p class="text-white">Ngày bắt đầu: <?= $ngayBatDau->format('Y-m-d') ?></p>
+<p class="text-white">Ngày kết thúc: <?= $ngayKetThuc->format('Y-m-d') ?></p>
+
         </div><!--end grid-->
     </div><!--end container-->
 
@@ -70,14 +71,11 @@
                                     @endforeach
 
                                 </div>
-                                <input type=" text" name="ngayBatDau" value="{{$ngayBatDau}}">
-                                <input type=" text" name="ngayKetThuc" value="{{$ngayKetThuc}}">
+                             
                                 
 
                                 <div>
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path opacity="0.4" d="M8.67969 10.8203C8.77344 10.7266 8.77344 10.5703 8.67969 10.4688L7.21094 9L8.67969 7.53125C8.77344 7.42969 8.77344 7.27344 8.67969 7.17969L8.32031 6.82031C8.22656 6.72656 8.07031 6.72656 7.96875 6.82031L6.5 8.28906L5.03125 6.82031C4.92969 6.72656 4.77344 6.72656 4.67969 6.82031L4.32031 7.17969C4.22656 7.27344 4.22656 7.42969 4.32031 7.53125L5.79688 9L4.32031 10.4688C4.22656 10.5703 4.22656 10.7266 4.32031 10.8203L4.67969 11.1797C4.77344 11.2734 4.92969 11.2734 5.03125 11.1797L6.5 9.70313L7.96875 11.1797C8.07031 11.2734 8.22656 11.2734 8.32031 11.1797L8.67969 10.8203ZM1 13V5H12V13H1ZM4 3.5C4 3.64063 3.89062 3.75 3.75 3.75H3.25C3.10938 3.75 3 3.64063 3 3.5V1.25C3 1.10938 3.10938 1 3.25 1H3.75C3.89062 1 4 1.10938 4 1.25V3.5ZM10 3.5C10 3.64063 9.89062 3.75 9.75 3.75H9.25C9.10938 3.75 9 3.64063 9 3.5V1.25C9 1.10938 9.10938 1 9.25 1H9.75C9.89062 1 10 1.10938 10 1.25V3.5ZM13 3C13 2.45312 12.5469 2 12 2H11V1.25C11 0.5625 10.4375 0 9.75 0H9.25C8.5625 0 8 0.5625 8 1.25V2H5V1.25C5 0.5625 4.4375 0 3.75 0H3.25C2.5625 0 2 0.5625 2 1.25V2H1C0.453125 2 0 2.45312 0 3V13C0 13.5469 0.453125 14 1 14H12C12.5469 14 13 13.5469 13 13V3Z" fill="black"></path>
-                                    </svg>
+                                    
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
@@ -136,28 +134,32 @@
             </div>
 
             <div class="lg:col-span-4 md:col-span-5">
-                <div class="px-3 rounded-md shadow dark:shadow-gray-700 sticky top-20">
-                    <!-- <form action="" method="post"> -->
-                    <div class="mt-6">
-                        <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
-                        <hr class="my-2">
-                        <p>EasyStayHotel</p>
-                        <input type="text" name="thoi_gian_den" id="" value="<?= $ngayBatDau ?>">
-                        <input type="text" name="thoi_gian_di" id="" value="<?= $ngayKetThuc ?>"> <br>
-                        <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
+                <h2 class="text-lg font-medium dark:text-white ">Tìm kiếm</h2>
+            <form class="p-6 bg-white dark:bg-slate-900 rounded-xl shadow dark:shadow-gray-700" method="post" action="{{route('kiem_tra_phong')}}">
+            @csrf
+                <div class="registration-form text-dark text-start">
+                    <div class="">
+                        <div>
+                            <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
+                            <div class="relative mt-2">
+                                <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
+                            <div class="relative mt-2">
+                                <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
+                            </div>
+                        </div>
+                        <div class="lg:mt-[35px]">
+                            <input type="submit" id="search-buy" name="search" class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" value="Tìm kiếm">
+                        </div>
                     </div>
-                    <hr class="my-2">
-                    <div>
-                        <h5>Thông tin phòng</h5>
-                        <p></p>
-                    </div>
-                    <hr class="my-2">
-                    <div class="pb-3">
-                        <p class="text-red-500">Tổng cộng: VNĐ</p>
-                        <button class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer">Đặt ngay</button>
-                    </div>
-                    <!-- </form> -->
                 </div>
+            </form>
             </div>
         </div>
     </div>

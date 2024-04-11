@@ -19,8 +19,8 @@ class KiemTraPhongController extends Controller
     function checkPhong(Request $request)
     {
         // try {
-            $ngayBatDau =  Carbon::parse($request->input('thoi_gian_den'));
-            $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
+            $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'))->setTime(14, 0);
+            $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'))->setTime(12, 0);
 
             $request->session()->put('ngay_bat_dau', $ngayBatDau);
             $request->session()->put('ngay_ket_thuc', $ngayKetThuc);
@@ -37,7 +37,7 @@ class KiemTraPhongController extends Controller
         $availableLoaiPhongs = $loaiPhongs->filter(function ($loaiPhong) use ($ngayBatDau, $ngayKetThuc) {
 
             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-                ->whereDoesntHave('datPhongs', function ($query) use ($ngayBatDau, $ngayKetThuc) {
+                ->whereDoesntHave('datPhong', function ($query) use ($ngayBatDau, $ngayKetThuc) {
                     $query->where('thoi_gian_den', '<', $ngayKetThuc)
                         ->where('thoi_gian_di', '>', $ngayBatDau);
                 })
@@ -47,7 +47,7 @@ class KiemTraPhongController extends Controller
 
         $phongs = $availableLoaiPhongs->map(function ($loaiPhong) use ($ngayBatDau, $ngayKetThuc) {
             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-                ->whereDoesntHave('datPhongs', function ($query) use ($ngayBatDau, $ngayKetThuc) {
+                ->whereDoesntHave('datPhong', function ($query) use ($ngayBatDau, $ngayKetThuc) {
                     $query->where('thoi_gian_den', '<', $ngayKetThuc)
                         ->where('thoi_gian_di', '>', $ngayBatDau);
                 })
