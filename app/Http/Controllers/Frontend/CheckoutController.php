@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChiTietDatPhong;
+use App\Models\DatPhong;
+use App\Models\DatPhongNoiPhong;
+use App\Models\KhuyenMai;
 use App\Models\Loai_phong;
 use App\Models\Phong;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
+use Carbon;
 use function Laravel\Prompts\alert;
 
 class CheckoutController extends Controller
@@ -17,6 +23,10 @@ class CheckoutController extends Controller
     public function index(Request $request)
     {
         $cartItems = Cart::content();
+        // dd($cartItems);
+        // $ngayBatDau = $cartItems->ngay_bat_dau();
+        // $ngayKetThuc = $cartItems->ngay_ket_thuc();
+        // $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
         $cartTotal = $request['cart_total'];
         return view('client.pages.checkout', compact('cartItems', 'cartTotal'));
     }
@@ -28,11 +38,97 @@ class CheckoutController extends Controller
             'order_sdt' => ['required', 'min:9'],
         ]);
 
+
         if($request['payment'] == 1){
-            return redirect()->route('vnpay_payment',[$request]);         
+            return redirect()->route('vnpay_payment',[$request]);
+
+            // return $this->checkoutSuccess1($request);
         }
-     
+        // return $this->checkoutSuccess($request);
+
+        if ($request['payment'] == 1) {
+            return redirect()->route('vnpay_payment', [$request]);
+        }
+
+        if ($request['payment'] == 2) {
+            return redirect()->route('momo_payment', [$request]);
+        }
     }
+
+    public function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
+    }
+
+    public function momo_payment()
+    {
+
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+        $amount = "10000";
+        $orderId = time() . "";
+        $redirectUrl = "http://easystayweb.test/";
+        $ipnUrl = "http://easystayweb.test/";
+        $extraData = "";
+        $requestId = time() . "";
+        $requestType = "payWithATM";
+
+        //before sign HMAC SHA256 signature
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+
+        $data = array(
+            'partnerCode' => $partnerCode,
+            'partnerName' => "Test",
+            "storeId" => "MomoTestStore",
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'lang' => 'vi',
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature
+        );
+        $result = $this->execPostRequest($endpoint, json_encode($data));
+
+        $jsonResult = json_decode($result, true);  // decode json
+
+        // if($jsonResult = json_decode($result, true)){
+        //     // return view('admin.layouts.master');
+        //     return redirect()->to($jsonResult['payUrl']);
+        // }
+
+        return redirect()->to($jsonResult['payUrl']);
+
+    }
+
+
+
+    // xây dựng hàm thanh toán bằng vnpay
 
     public function vnpay_payment(Request $request)
     {
@@ -43,7 +139,6 @@ class CheckoutController extends Controller
         $vnp_Returnurl = "http://easystayweb.test/";
         $vnp_TmnCode = "AWNZRJM5"; //Mã website tại VNPAY 
         $vnp_HashSecret = "RPKSHDUMKYBXLNABFXEZSBHTYUWBWPNS"; //Chuỗi bí mật
-
         $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
         $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
@@ -107,8 +202,102 @@ class CheckoutController extends Controller
             echo json_encode($returnData);  
         }
     }
+    public function checkoutSuccess($request){
+        $this->bookOnline($request);
+        $newBook = DatPhong::orderBy('created_at','desc')->first();
+        Cart::destroy();
+
+        // return view('', compact('newBook'));
+    }
+
+    public function bookOnline(Request $request){
+        // $datPhong = DatPhong::create([
+        //    'invoice' => $request['vnp_TxnRef'] ? $request['vnp_TxnRef'] :  uniqid(),
+        //    'user_id' => Auth::user()->id,
+        //    'trang_thai' => 1,
+        //    'don_gia' => $request->don_gia,
+        //    'thoi_gian_den' => $request->session('thoi_gian_den'),
+        //    'thoi_gian_di' => $request->session('thoi_gian_di'),
+        //    'tong_tien' => $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total,
+        //    'payment' => $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo',
+    
+        // ]);
+
+        // $datPhongId = $datPhong->id();
+
+        // //Thêm dữ liệu vào bảng đặt phòng
+        // foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+        //     // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+        //     $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        //     // Thêm dữ liệu vào bảng liên kết
+        //     $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        // }
+
+        // $phongIds = collect();
+        // $tong_tien = 0;
+        // foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+        //     $phongIdsForLoaiPhong = DB::table('phongs as p')
+        //     ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
+        //     ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
+        //     // ->leftJoin('dat_phong_loai_phongs as dplp', 'd.id', '=', 'dplp.dat_phong_id')
+        //     ->Where('p.loai_phong_id', $loaiPhongId)
+        //     ->whereNull('dp.phong_id')
+        //     ->orWhere(function($query) use ($datPhong) {
+        //         $query->whereNotNull('dp.phong_id')
+        //             ->where('d.thoi_gian_di', '<=', $datPhong->thoi_gian_den);
+    
+        //     })
+        
+        //     ->limit($request->so_luong_phong[$key]['so_luong_phong'])
+        //     ->pluck('p.id');
+        //     $phongIds = $phongIds->merge($phongIdsForLoaiPhong);
+    
+        //     $loaiPhong = Loai_phong::find($loaiPhongId['id']);
+        //     $khuyenMai = null;
+    
+
+        $datPhong = new DatPhong();
+        $datPhong->invoice = $request['vnp_TxnRef'] ? $request['vnp_TxnRef'] :  uniqid();
+        $datPhong->user_id = Auth::user()->id;
+        $datPhong->trang_thai = 1;
+        $datPhong->don_gia = $request->don_gia;
+        $datPhong->thoi_gian_den = $request->session('thoi_gian_den');
+        $datPhong->thoi_gian_di = $request->session('thoi_gian_di');
+        $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
+
+        if ($request['vnp_OrderInfo']) {
+            $separate = explode('~', $request['vnp_OrderInfo']);
+            $datPhong->order_sdt = $separate[0];
+        } else {
+            $datPhong->order_sdt = $request->telephone;
+        }
+
+        $datPhong->save();
+        
+        dd($datPhong);
+
+        foreach(Cart::content() as $loaiphong){
+            $loaiPhongDat = new DatPhongNoiPhong(); 
+            $loaiPhongDat->dat_phong_id = $datPhong->id;
+            $loaiPhongDat->so_luong_phong = $datPhong->so_luong_phong;
+        }
+
+
+        foreach(Cart::content() as $phong){
+            $phong = new DatPhong();
+            
+        }
+
+        // $loaiPhong = Loai_phong::find($loaiPhongId['id']);
+        // $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
 
 
 
+
+
+    
+
+    }
    
 }

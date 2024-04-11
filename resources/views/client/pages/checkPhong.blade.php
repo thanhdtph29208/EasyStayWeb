@@ -1,6 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
 
+
+
 <!-- Start Hero -->
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
@@ -44,7 +46,7 @@
                         <div class="p-4 w-full">
                             <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
 
-                            <form action="{{ route('them_gio_hang') }}" method="POST" class="book-cart">
+                            <form id="book-cart" action="{{ route('them_gio_hang') }}" method="POST" class="book-cart">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$loaiPhong->id}}">
                                 <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
@@ -60,9 +62,17 @@
                                         <li class="hidden">Phòng số: {{ $room->ten_phong }}</li>
                                         @endforeach
                                     </ul>
+                                    <div>
+                                        <label for="so_luong">Số lượng muốn đặt:</label>
+                                        <input type="number" id="so_luong" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" >
+                                    </div>
                                     @endif
                                     @endforeach
+
                                 </div>
+                                <input type=" text" name="ngayBatDau" value="{{$ngayBatDau}}">
+                                <input type=" text" name="ngayKetThuc" value="{{$ngayKetThuc}}">
+                                
 
                                 <div>
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,17 +81,11 @@
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
-                                <div>
-                                    <label for="so_luong">Số lượng:</label>
-                                    <input type="number" id="so_luong" min="1" value="1" name="so_luong">
-                                </div>
-
-                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Chọn phòng</button>
+                                <button  type="submit"  class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
-
-
-
+  
                             </form>
+
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
                         </div>
                     </div>
@@ -98,8 +102,8 @@
                         <ul class="cd-slider-navigation">
                             <li><a class="cd-next" href="#0">Prev</a></li>
                             <li><a class="cd-prev" href="#0">Next</a></li>
-                        </ul> <!-- cd-slider-navigation -->
-                    </div> <!-- cd-slider-wrapper -->
+                        </ul> 
+                    </div>
 
                     <div class="cd-item-info">
                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
@@ -116,7 +120,7 @@
                         </ul>
                         @endif
                         @endforeach
-                        
+
                         <!-- <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br> -->
                         <p>Lưu ý: Không hoàn trả phí khi hủy phòng</p>
 
@@ -138,6 +142,8 @@
                         <h5 class="text-lg font-medium text-center pt-2 text-red-500">Thông tin đặt phòng</h5>
                         <hr class="my-2">
                         <p>EasyStayHotel</p>
+                        <input type="text" name="thoi_gian_den" id="" value="<?= $ngayBatDau ?>">
+                        <input type="text" name="thoi_gian_di" id="" value="<?= $ngayKetThuc ?>"> <br>
                         <?= $ngayBatDau ?>/<?= $ngayKetThuc ?>
                     </div>
                     <hr class="my-2">
@@ -163,39 +169,51 @@
 @push('scripts')
 
 <script>
-    $(document).ready(function() {
-        $('.book-cart').on('submit', function(e) {
-            e.preventDefault();
+    // Khởi tạo toastr
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
 
-            let formData = $(this).serialize();
-            $.ajax({
-                method: 'POST',
-                data: formData,
-                url: $(this).attr('action'),
-                success: function(data) {
-                    if (data.status === 'success') {
-                        getCartCount();
-                        toastr.success(data.message);
-                    } else {
-                        toastr.error(data.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    toastr.error('Xảy ra lỗi trong khi thêm vào giỏ hàng.');
-                }
-            });
+$(document).ready(function() {
+    $('#book-cart').on('submit', function(e) {
+        e.preventDefault(); // Ngăn chặn hành động mặc định của biểu mẫu
+
+        // Lấy dữ liệu từ biểu mẫu
+        let formData = $(this).serialize();
+        let formAction = $(this).attr('action');
+
+        // Gửi yêu cầu Ajax
+        $.ajax({
+            method: 'POST',
+            data: formData,
+            url: formAction,
+            success: function(data) {
+                // Xử lý phản hồi từ máy chủ ở đây
+                console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi khi gửi yêu cầu Ajax
+                console.error('Đã xảy ra lỗi:', error);
+            }
         });
-
-        function getCartCount() {
-            $.ajax({
-                method: 'GET',
-                url: "{{ route('cart-count') }}",
-                success: function(data) {
-                    $('#cart-count').text(data);
-                }
-            });
-        }
     });
+});
+
+
 </script>
 
 

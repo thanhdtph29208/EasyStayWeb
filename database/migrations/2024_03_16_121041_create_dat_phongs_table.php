@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreign('dich_vu_id')->references('id')->on('dich_vus');
             $table->unsignedBigInteger('khuyen_mai_id')->nullable();
             $table->foreign('khuyen_mai_id')->references('id')->on('khuyen_mais');
+            $table->string('invoice')->nullable();
             $table->string('payment');
             $table->decimal('tong_tien')->nullable();
             $table->boolean('trang_thai')->default(0);

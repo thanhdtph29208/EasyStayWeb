@@ -70,6 +70,12 @@ class DatPhong extends Model
         return $this->belongsToMany(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id')->withPivot('so_luong_phong');
     }
 
+    public function Loai_phong()
+    {
+        return $this->belongsTo(Loai_phong::class, 'loai_phong_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
+    }
+    
+
     public function khuyen_mai()
     {
         return $this->belongsTo(KhuyenMai::class, 'khuyen_mai_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User

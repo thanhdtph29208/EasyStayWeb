@@ -8,6 +8,10 @@ use App\Models\Phong;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+// use Illuminate\Support\Carbon;
+use Carbon;
+
 
 class CartController extends Controller
 {
@@ -16,30 +20,40 @@ class CartController extends Controller
     {
 
         $loai_phong = Loai_phong::findOrFail($request->id);
-        $so_luong = Phong::where('loai_phong_id', $loai_phong->id)->count();
-
+        $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
+            // $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
+        })->count();
+    
         $cartData = [];
         $cartData['id'] = $loai_phong->id;
         $cartData['name'] = $loai_phong->ten;
         $cartData['price'] = $loai_phong->gia;
-        $cartData['qty'] = $so_luong;
-        $cartData['weight'] = 10;
-        // $cartData['image'] = $loai_phong->anh;
+        $cartData['qty'] = 1;
+        $cartData['weight'] = $weight;
+        $cartData['ngay_bat_dau'] = $request->ngayBatDau;
+        $cartData['ngay_ket_thuc'] = $request->ngayKetThuc;
         $cartData['options']['image'] = $loai_phong->anh;
-        // $cartData['gia_ban_dau'] = $loai_phong->gia_ban_dau;
-        // $cartData['gioi_han_nguoi'] = $loai_phong->gioi_han_nguoi;
-        Cart::add($cartData);
-
-        return response(['status' => 'Thành công', 'message' => 'Thêm giỏ hàng thành công']);
+    
+        // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
+        if ($cartData['qty'] <= $weight) {
+            Cart::add($cartData);
+            return Redirect::route('kiem_tra_phong')->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
+        } else {
+            return Redirect::route('kiem_tra_phong')->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
+        }
     }
 
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();
-        // dd($cartItems->toArray());
         $total = $this->getCartTotal();
-        // dd($total);
-        return view('client.pages.cart-detail', compact('total', 'cartItems'));
+    
+        $ngayBatDau = $request->session()->get('ngayBatDau');
+        $ngayKetThuc = $request->session()->get('ngayKetThuc');
+        $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
+
+        // dd($soNgay);
+        return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgay'));
     }
 
     public function updateRoomQuantity(Request $request)
@@ -80,7 +94,7 @@ class CartController extends Controller
         return $total;
     }
 
-    
+
     public function getCartCount()
     {
         return Cart::content()->count();
