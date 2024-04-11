@@ -39,11 +39,12 @@
                             @csrf
 
                             <div class="form-group mx-auto ">
-                                <label for="user_id">Email Khách Hàng</label>
-                                <input type="text" name="user_id" id="user_id" class="form-control" list="user">
+                                <label for="user_id_input">Email Khách Hàng</label>
+                                <input type="text" id="user_id_input" class="form-control" list="user">
+                                <input id="user_id" name="user_id" hidden>
                                 <datalist id="user">
                                     @foreach ($user as $id => $email)
-                                    <option value="{{$id}}">{{$email}}</option>
+                                    <option value="{{$email}}" data-id="{{$id}}" id="option_user_{{$email}}">{{$email}}</option>
                                     @endforeach
                                 </datalist>
                                 <span class="text-danger error-user_id"></span>
@@ -104,15 +105,12 @@
                             </div>
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="khuyen_mai_input">Khuyến mãi</label>
-                                <!-- <input type="text" name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" list="khuyen_mai"> -->
                                 <input list="khuyen_mai" id="khuyen_mai_input" class="form-control">
                                 <input id="khuyen_mai_id" name="khuyen_mai_id" hidden>
                                 <datalist id="khuyen_mai">
                                     @foreach ($khuyen_mai as $id => $ten_khuyen_mai)
                                     <option value="{{$ten_khuyen_mai}}" data-id="{{$id}}" id="option_km_{{$ten_khuyen_mai}}">{{$ten_khuyen_mai}}</option>
-
                                     @endforeach
-
                                 </datalist>
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
                             </div>
@@ -170,12 +168,19 @@
     });
     document.getElementById('khuyen_mai_input').addEventListener('input', function() {
         var selectedOption = document.getElementById('option_km_' + this.value);
+        if (selectedOption) {
+            var id_km = selectedOption.getAttribute('data-id');
+            document.getElementById('khuyen_mai_id').value = id_km;
+        }
+    });
+    document.getElementById('user_id_input').addEventListener('input', function() {
+        var selectedOption = document.getElementById('option_user_' + this.value);
         // console.log(this.value);
         // console.log(selectedOption);
         if (selectedOption) {
-            var id = selectedOption.getAttribute('data-id');
-            // console.log(id);
-            document.getElementById('khuyen_mai_id').value = id;
+            var id_user = selectedOption.getAttribute('data-id');
+            // console.log(id_user);
+            document.getElementById('user_id').value = id_user;
         }
     });
 </script>
