@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\DatPhong;
+use App\Models\DatPhongDichVu;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -30,6 +31,7 @@ class DatPhongsExport implements FromCollection,WithHeadings,WithMapping
             'Thời gian đến',
             'Thời gian đi',
             'Dịch vụ',
+            'Số lượng dịch vụ',
             'Tổng tiền',
             'Hình thức thanh toán',
             'Trạng thái',
@@ -41,18 +43,24 @@ class DatPhongsExport implements FromCollection,WithHeadings,WithMapping
     }
 
     public function map($datPhong): array {
+        $id = $datPhong->id;
         $tenPhongsArray = $datPhong->phongs()->pluck('ten_phong')->toArray();
+        $tenLoaiPhongsArray = $datPhong->loaiPhongs()->pluck('ten')->toArray();
+        $giaLoaiPhongsArray = $datPhong->loaiPhongs()->pluck('gia')->toArray();
+        $soLuongLoaiPhongsArray = $datPhong->loaiPhongs()->pluck('so_luong_phong')->toArray();
         $tenDichVusArray = $datPhong->dichVus()->pluck('ten_dich_vu')->toArray();
+        $soLuongDichVusArray =DatPhongDichVu::where('dat_phong_id',$id)->pluck('so_luong')->toArray();
         return [
             $datPhong->user->ten_nguoi_dung,
-            $datPhong->loaiPhong->ten,
+            $tenLoaiPhongsArray,
             $tenPhongsArray,
-            $datPhong->loaiPhong->gia,
-            $datPhong->loaiPhong->so_luong_phong,
+            $giaLoaiPhongsArray,
+            $soLuongLoaiPhongsArray,
             $datPhong->so_luong_nguoi,
             $datPhong->thoi_gian_den,
             $datPhong->thoi_gian_di,
             $tenDichVusArray,
+            $soLuongDichVusArray,
             $datPhong->tong_tien,
             $datPhong->payment,
             $datPhong->trang_thai,

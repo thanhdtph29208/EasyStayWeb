@@ -19,11 +19,10 @@ class LichSuDatPhongController extends Controller
        
       
 
-        // Lấy lịch sử đặt phòng của người dùng hiện tại
-        $userBookings = DatPhong::where('user_id', auth()->id())
-        ->with('DatPhong') // Load thông tin người dùng
-        ->get();
+        $userBookings = DatPhong::where('user_id', auth()->id())->get();
 
+        // Lấy thông tin của người dùng đang đăng nhập
+        $user = auth()->user();
   
 
 

@@ -16,10 +16,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
+use App\Models\DatPhongDichVu;
 use App\Models\DatPhongLoaiPhong;
 use Illuminate\Support\Facades\DB;
 use App\Models\DatPhongNoiPhong;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 
 use function Laravel\Prompts\alert;
 use function Livewire\store;
@@ -71,7 +73,7 @@ class DatPhongController extends Controller
         //     'loai_phong_ids.*.so_luong_phong' => 'required|numeric|min:0',
         //     'ghi_chu' => 'nullable|string',
         // ]);
-
+        // dd($request);
 
         $datPhong=DatPhong::create([
             'user_id'=> $request->user_id,
@@ -85,59 +87,69 @@ class DatPhongController extends Controller
         ]);
         $datPhongId = $datPhong->id;
         // Thêm dữ liệu vào bảng DatPhongLoaiPhong
-        // foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
-        //     // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        //     $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+            // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+            $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
 
-        //     // Thêm dữ liệu vào bảng liên kết
-        //     $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        // }
-
-        $phongIds = collect();
+            // Thêm dữ liệu vào bảng liên kết
+            $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        }
         $tong_tien=0;
+        $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
-        // Thêm dữ liệu vào bảng liên kết
-        $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        $phongIdsForLoaiPhong = DB::table('phongs as p')
-        ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
-        ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
+        // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+        // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        // // Thêm dữ liệu vào bảng liên kết
+        // $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        // phongs as p'
+        // ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
+        // ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
         // ->leftJoin('dat_phong_loai_phongs as dplp', 'd.id', '=', 'dplp.dat_phong_id')
-        ->Where('p.loai_phong_id', $loaiPhongId)
-        ->whereNull('dp.phong_id')
-        ->orWhere(function($query) use ($datPhong) {
-            $query->whereNotNull('dp.phong_id')
-                ->where('d.thoi_gian_di', '<=', $datPhong->thoi_gian_den);
-
-        })
-
-        ->limit($request->so_luong_phong[$key]['so_luong_phong'])
-        ->pluck('p.id');
-        $phongIds = $phongIds->merge($phongIdsForLoaiPhong);
-
-        $loaiPhong = Loai_phong::find($loaiPhongId['id']);
-        $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
+        // ->Where('p.loai_phong_id', $loaiPhongId['id'])
+        // ->where(function($query) use ($thoiGianDenFormatted) {
+        //     $query->whereNull('dp.phong_id')
+        //     ->orWhere(function($query) use ($thoiGianDenFormatted){
+        //         $query->whereNotNull('dp.phong_id')
+        //         ->where('d.thoi_gian_di', '<=', $thoiGianDenFormatted);
+        //     });
+        // })
+        // ->limit($request->so_luong_phong[$key]['so_luong_phong'])
+        // ->pluck('p.id');
+        // )
+        $phongIds = DB::select("
+        SELECT DISTINCT p.id
+        FROM phongs p
+        LEFT JOIN dat_phong_noi_phongs dp ON p.id = dp.phong_id
+        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
+        WHERE p.loai_phong_id = {$loaiPhongId['id']}
+        AND (dp.phong_id IS NULL OR (dp.phong_id IS NOT NULL AND d.thoi_gian_di <= '2024-05-01'))
+        LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
+        ");
+        $phongIdsArray = [];
+        foreach ($phongIds as $phong) {
+            $phongIdsArray[] = $phong->id;
+        }
+        // var_dump($phongIdsArray);
+        // die();
+        $datPhong->phongs()->attach($phongIdsArray);
+        }
 
         $ngay_bat_dau = strtotime($request->thoi_gian_den);
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
+        $loaiPhong = Loai_phong::find($loaiPhongId['id']);
+        $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
         $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
-
-        // var_dump($loaiPhongId['id'],$khuyenMai->loai_phong_id);
-
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
         if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
         {
             $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
-        }else if($khuyenMai->loai_phong_id != $loaiPhongId['id']){
+        }else if($khuyenMai->loai_phong_id != $loaiPhongId['id'] || !$khuyenMai){
             $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
         }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
             $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
         }
         $tong_tien = $tinh_tien+$tong_tien;
         }
-        $phongIds = $phongIds->take(array_sum(array_column($request->so_luong_phong, 'so_luong_phong')));
-        $datPhong->phongs()->attach($phongIds);
-
         $datPhong->update([
             'tong_tien' => $tong_tien
         ]);
@@ -182,8 +194,27 @@ class DatPhongController extends Controller
     public function show(ChiTietDatPhongDataTable $datatables, string $id)
     {
         $datPhong = DatPhong::findOrFail($id);
-        $phongDat = DatPhongNoiPhong::where('dat_phong_id', $id)->with('phong')->get();
-        return $datatables->render('admin.dat_phong.show', compact('datPhong', 'phongDat'));
+        $loai_phong_ids =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('loai_phong_id');
+        $so_luong_phong =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
+        $tenLoaiPhongs = collect();
+        foreach($loai_phong_ids as $loai_phong_id){
+            $tenLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('ten');
+            $tenLoaiPhongs = $tenLoaiPhongs->merge($tenLoaiPhong);
+        };
+        $tenDichVus = collect();
+        $dich_vu_ids = DatPhongDichVu::where('dat_phong_id', $id)->pluck('dich_vu_id');
+        $so_luong_dich_vu = DatPhongDichVu::where('dat_phong_id', $id)->pluck('so_luong');
+        foreach($dich_vu_ids as $dich_vu_id){
+            $tenDichVu = DichVu::where('id', $dich_vu_id)->pluck('ten_dich_vu');
+            $tenDichVus = $tenDichVus->merge($tenDichVu);
+        };
+        $tenPhongs = collect();
+        $phong_ids = DatPhongNoiPhong::where('dat_phong_id', $id)->pluck('phong_id');
+        foreach($phong_ids as $phong_id){
+            $tenPhong = Phong::where('id', $phong_id)->pluck('ten_phong');
+            $tenPhongs = $tenPhongs->merge($tenPhong);
+        };
+        return $datatables->render('admin.dat_phong.show', compact('datPhong','tenLoaiPhongs','loai_phong_ids','tenDichVus','so_luong_phong','so_luong_dich_vu','tenPhongs'));
     }
 
     /**

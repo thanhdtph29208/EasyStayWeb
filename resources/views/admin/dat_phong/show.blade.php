@@ -9,7 +9,7 @@
         ])
     </div>
 
-    <div class="container">
+    <div class="container" id="invoice-print">
         <div class="card">
             <div class="card-header">
                 <h5>Chi tiết đặt phòng: {{$datPhong->id}}</h5>
@@ -27,17 +27,50 @@
                 </div>
                 <div class="col-6">
                     <h5 class="fw-bold">Thông tin phòng:</h5>
-                    <p>LOẠI PHÒNG: <span class="fw-bold">{{$datPhong->loai_phong->ten}}</span></p>
-                    <p>PHÒNG:
-                        <span>
-                            <ul>
-                                @foreach($phongDat as $datPhongNoiPhong)
-                                <li>{{$datPhongNoiPhong->phong->ten_phong}}</li>
+                    <p>LOẠI PHÒNG:</p>
+                    <table class="table">
+                        <tr>
+                            @foreach ($tenLoaiPhongs as $tenLoaiPhong)
+                            <th>
+                                {{$tenLoaiPhong}}
+                            </th>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            @foreach ($so_luong_phong as $soLuongPhong)
+                            <td>
+                                {{$soLuongPhong}}
+                            </td>
+                            @endforeach
+                        </tr>
+                        </table>
+                    <p>PHÒNG:</p>
+                    <table class="table">
+                        <tr>
+                            @foreach($tenPhongs as $tenPhong)
+                            <th>
+                                {{$tenPhong}}
+                            </th>
+                            @endforeach
+                        </tr>
+                    </table>
+                    <p>DỊCH VỤ:</p>
+                        <table class="table">
+                            <tr>
+                                @foreach ($tenDichVus as $tenDichVu)
+                                <th>
+                                    {{$tenDichVu}}
+                                </th>
                                 @endforeach
-                            </ul>
-                        </span>
-                    </p>
-                    <p>DỊCH VỤ: <span class="fw-bold">{{$datPhong->dich_vu->ten_dich_vu}}</span></p>
+                            </tr>
+                            <tr>
+                                @foreach ($so_luong_dich_vu as $soLuongDichVu)
+                                <td>
+                                    {{$soLuongDichVu}}
+                                </td>
+                                @endforeach
+                            </tr>
+                        </table>
                     <p>KHUYẾN MÃI: <span class="fw-bold">{{$datPhong->khuyen_mai->ten_khuyen_mai}}</span></p>
                     <p>HÌNH THỨC THANH TOÁN: <span class="fw-bold">{{$datPhong->payment}}</span></p>
                     <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{$datPhong->tong_tien}}</span> </p>
@@ -48,10 +81,29 @@
 
         </div>
         <a href="{{route('admin.dat_phong.index')}}" class="btn btn-danger mt-3">Quay lại</a>
+        <button type="button" class="btn btn-primary mt-3" id="print">
+            <i class="bi bi-printer"></i>
+        </button>
     </div>
 
 </main>
 @endsection
 @push('scripts')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#print').on('click', function() {
+           let printBody = $('#invoice-print');
+           let originalContents = $('body').html();
+
+           $('body').html(printBody);
+
+           window.print();
+
+           $('body').html(originalContents);
+        })
+    })
+</script>
 @endpush
