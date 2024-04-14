@@ -59,20 +59,28 @@
                                     @if($phong['loai_phong']->id == $loaiPhong->id) <ul>
                                         <p>Phòng trống: {{ $phong['available_rooms']->count() }}</p>
                                         @foreach($phong['available_rooms'] as $room)
-                                        <li class="hidden">Phòng số: {{ $room->ten_phong }}</li>
+                                        <input type="text" name="phong[]" value="{{ $room->id }}">
+                                        <!-- <li name class="">Phòng số: {{ $room->ten_phong }}</li> -->
                                         @endforeach
                                     </ul>
                                     <div>
-                                        <label for="so_luong">Số lượng muốn đặt:</label>
-                                        <input type="number" id="so_luong" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" >
+                                        <label for="qty">Số lượng phòng muốn đặt:</label>
+                                        <input type="number" id="qty" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}">
                                     </div>
+
+                                    <div>
+                                        <label for="so_luong_nguoi">Số lượng người:</label>
+                                        <input type="number" name="so_luong_nguoi" id="so_luong_nguoi" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi}}">
+                                    </div>
+
                                     @endif
                                     @endforeach
 
                                 </div>
+
                                 <input type=" text" name="ngayBatDau" value="{{$ngayBatDau}}">
                                 <input type=" text" name="ngayKetThuc" value="{{$ngayKetThuc}}">
-                                
+
 
                                 <div>
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,9 +89,9 @@
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
-                                <button  type="submit"  class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
+                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
-  
+
                             </form>
 
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
@@ -102,7 +110,7 @@
                         <ul class="cd-slider-navigation">
                             <li><a class="cd-next" href="#0">Prev</a></li>
                             <li><a class="cd-prev" href="#0">Next</a></li>
-                        </ul> 
+                        </ul>
                     </div>
 
                     <div class="cd-item-info">
@@ -170,50 +178,48 @@
 
 <script>
     // Khởi tạo toastr
-toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 
-$(document).ready(function() {
-    $('#book-cart').on('submit', function(e) {
-        e.preventDefault(); // Ngăn chặn hành động mặc định của biểu mẫu
+    $(document).ready(function() {
+        $('#book-cart').on('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của biểu mẫu
 
-        // Lấy dữ liệu từ biểu mẫu
-        let formData = $(this).serialize();
-        let formAction = $(this).attr('action');
+            // Lấy dữ liệu từ biểu mẫu
+            let formData = $(this).serialize();
+            let formAction = $(this).attr('action');
 
-        // Gửi yêu cầu Ajax
-        $.ajax({
-            method: 'POST',
-            data: formData,
-            url: formAction,
-            success: function(data) {
-                // Xử lý phản hồi từ máy chủ ở đây
-                console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
-            },
-            error: function(xhr, status, error) {
-                // Xử lý lỗi khi gửi yêu cầu Ajax
-                console.error('Đã xảy ra lỗi:', error);
-            }
+            // Gửi yêu cầu Ajax
+            $.ajax({
+                method: 'POST',
+                data: formData,
+                url: formAction,
+                success: function(data) {
+                    // Xử lý phản hồi từ máy chủ ở đây
+                    console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi khi gửi yêu cầu Ajax
+                    console.error('Đã xảy ra lỗi:', error);
+                }
+            });
         });
     });
-});
-
-
 </script>
 
 

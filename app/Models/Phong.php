@@ -35,7 +35,7 @@ class Phong extends Model
     // {
     //     return $this->hasMany(datPhong::class, 'phong_id', 'id');
     // }
-    public function datPhong()
+    public function datPhongs()
     {
         return $this->belongsToMany(DatPhong::class, 'dat_phong_noi_phongs', 'phong_id', 'dat_phong_id');
     }

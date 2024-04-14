@@ -23,17 +23,31 @@ class CartController extends Controller
         $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
             // $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
         })->count();
-    
+
+        $phongs = $request->input('phong');
+        shuffle($phongs);
+        // dd($phongs);
+        // $ten_phong = collect($phongs)->pluck('ten_phong')->toArray();
+        // dd($ten_phong);
+
+        $so_luong = $request->so_luong;
+
+        $random_rooms = array_slice($phongs, 0, $so_luong);
+        // dd($random_rooms);
+
         $cartData = [];
         $cartData['id'] = $loai_phong->id;
         $cartData['name'] = $loai_phong->ten;
         $cartData['price'] = $loai_phong->gia;
-        $cartData['qty'] = 1;
+        $cartData['qty'] = $request->so_luong;
         $cartData['weight'] = $weight;
         $cartData['ngay_bat_dau'] = $request->ngayBatDau;
         $cartData['ngay_ket_thuc'] = $request->ngayKetThuc;
+        $cartData['so_luong_nguoi'] = $request->so_luong_nguoi;
+        $cartData['phong'] = $random_rooms;
         $cartData['options']['image'] = $loai_phong->anh;
     
+        // dd($cartData);
         // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
         if ($cartData['qty'] <= $weight) {
             Cart::add($cartData);
@@ -46,8 +60,9 @@ class CartController extends Controller
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();
+        // dd($cartItems);
         $total = $this->getCartTotal();
-    
+
         $ngayBatDau = $request->session()->get('ngayBatDau');
         $ngayKetThuc = $request->session()->get('ngayKetThuc');
         $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));

@@ -12,7 +12,7 @@
 
 </section><!--end section-->
 <div class="container mx-auto py-5">
-    <form action="{{ route('pay') }}" method="get">
+    <form action="{{ route('pay') }}" method="GET">
         @csrf
         <div class="flex flex-row">
             <div class="w-3/4">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail2" class="block text-sm font-medium mb-1">Số điện thoại</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail2" required name="order_sdt">
+                        <input type="text" class="form-input w-full" id="order_sdt" required name="order_sdt">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Email</label>
@@ -48,6 +48,8 @@
                     <hr class="my-3">
                     <p class="text-base font-medium mb-2">Khách sạn EasyStay</p>
                     @foreach ($cartItems as $item)
+                    <input type="text" name="thoi_gian_den" value="{{$item->ngay_bat_dau}}">
+                    <input type="text" name="thoi_gian_di" value="{{$item->ngay_ket_thuc}}">
                     <p class="text-base font-medium mb-2">Nhận phòng: {{$item->ngay_bat_dau}} </p>
                     <p class="text-base font-medium mb-2">Trả phòng: {{$item->ngay_ket_thuc}}</p>
                     <?php
@@ -72,6 +74,8 @@
                     </p>
                     <hr>
                     @endforeach
+                    <input type="hidden" name="so_luong_phong" value="<?= $totalQty?>">
+                    <input type="hidden" name="so_luong_nguoi" value="<?= $so_luong_nguoi?>">
                 </div>
 
                 <div class="flex justify-between mt-3">

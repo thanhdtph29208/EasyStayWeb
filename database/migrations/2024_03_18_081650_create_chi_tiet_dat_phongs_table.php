@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('dat_phong_id');
             $table->foreign('dat_phong_id')->references('id')->on('dat_phongs');
-            $table->decimal('thanh_tien')->nullable();
+            $table->float('thanh_tien')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
