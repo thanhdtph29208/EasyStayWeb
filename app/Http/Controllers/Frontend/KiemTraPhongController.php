@@ -109,7 +109,7 @@ class KiemTraPhongController extends Controller
     ]);
 }
 
-
+}
     // function checkPhong(Request $request)
     // {
     //     try {
@@ -159,4 +159,4 @@ class KiemTraPhongController extends Controller
     //     return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc'));
     // }
 
-}
+

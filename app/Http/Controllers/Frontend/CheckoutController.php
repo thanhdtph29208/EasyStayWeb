@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\ChiTietDatPhong;
 use App\Models\DatPhong;
+use App\Models\DatPhongLoaiPhong;
 use App\Models\DatPhongNoiPhong;
 use App\Models\KhuyenMai;
 use App\Models\Loai_phong;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Carbon;
+use Illuminate\Support\Facades\Log;
+
 use function Laravel\Prompts\alert;
 
 class CheckoutController extends Controller
@@ -28,10 +31,22 @@ class CheckoutController extends Controller
         // $ngayKetThuc = $cartItems->ngay_ket_thuc();
         // $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
         $cartTotal = $request['cart_total'];
-        return view('client.pages.checkout', compact('cartItems', 'cartTotal'));
+        $totalQty = 0;
+        foreach ($cartItems as $item) {
+            $totalQty += $item->qty;
+        }
+        $so_luong_nguoi = 0;
+        foreach ($cartItems as $item) {
+            $so_luong_nguoi += $item->so_luong_nguoi;
+        }
+
+
+        // dd($totalQty);
+        return view('client.pages.checkout', compact('cartItems', 'cartTotal', 'totalQty', 'so_luong_nguoi'));
     }
 
-    public function pay(Request $request){
+    public function pay(Request $request)
+    {
         $request['cart_total'] = (float)$request->cart_total;
         // var_dump($request->cart_total);
         $request->validate([
@@ -39,21 +54,41 @@ class CheckoutController extends Controller
         ]);
 
 
-        if($request['payment'] == 1){
-            return redirect()->route('vnpay_payment',[$request]);
+        if ($request['payment'] == 1) {
 
+            $vnpayRequest = [
+                'cart_total' => (float)$request->cart_total,
+                'order_sdt' => $request->order_sdt,
+            ];
+            return redirect()->route('vnpay_payment', [$request])->with($vnpayRequest);
             // return $this->checkoutSuccess1($request);
         }
-        // return $this->checkoutSuccess($request);
-
-        if ($request['payment'] == 1) {
-            return redirect()->route('vnpay_payment', [$request]);
-        }
-
         if ($request['payment'] == 2) {
             return redirect()->route('momo_payment', [$request]);
         }
+
+        // return $this->checkoutSuccess($request);
     }
+
+    public function checkoutSuccess()
+    {
+
+        // $this->bookOnline($request);
+        // $newOrder = DatPhong::orderBy('created_at', 'desc')->first();
+        Cart::destroy();
+
+        return view('client.pages.thanhcong');
+    }
+
+    public function checkoutSuccess1($request)
+    {
+        $this->bookOnline($request);
+        $newOrder = DatPhong::orderBy('created_at', 'desc')->first();
+        Cart::destroy();
+
+        return view('client.pages.thanhcong', compact($newOrder));
+    }
+
 
     public function execPostRequest($url, $data)
     {
@@ -78,7 +113,7 @@ class CheckoutController extends Controller
         return $result;
     }
 
-    public function momo_payment()
+    public function momo_payment(Request $request)
     {
 
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
@@ -86,7 +121,7 @@ class CheckoutController extends Controller
         $accessKey = 'klm05TvNBzhg7h7j';
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua MoMo";
-        $amount = "10000";
+        $amount = (float)$request['cart_total'];
         $orderId = time() . "";
         $redirectUrl = "http://easystayweb.test/";
         $ipnUrl = "http://easystayweb.test/";
@@ -123,7 +158,6 @@ class CheckoutController extends Controller
         // }
 
         return redirect()->to($jsonResult['payUrl']);
-
     }
 
 
@@ -136,7 +170,7 @@ class CheckoutController extends Controller
         date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://easystayweb.test/";
+        $vnp_Returnurl = url('/vnpay_callback');
         $vnp_TmnCode = "AWNZRJM5"; //Mã website tại VNPAY 
         $vnp_HashSecret = "RPKSHDUMKYBXLNABFXEZSBHTYUWBWPNS"; //Chuỗi bí mật
         $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
@@ -145,6 +179,8 @@ class CheckoutController extends Controller
         $vnp_Amount = (float)$request['cart_total'] * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
+        $vnp_Pay = 'VNPay';
+        // $vnp_BankCode = $request['bank_code'];
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         //Add Params of 2.0.1 Version
 
@@ -199,105 +235,83 @@ class CheckoutController extends Controller
             header('Location: ' . $vnp_Url);
             die();
         } else {
-            echo json_encode($returnData);  
+            echo json_encode($returnData);
         }
     }
-    public function checkoutSuccess($request){
-        $this->bookOnline($request);
-        $newBook = DatPhong::orderBy('created_at','desc')->first();
-        Cart::destroy();
 
-        // return view('', compact('newBook'));
+    public function vnpayCallBack(Request $request)
+    {
+        if ($request->get('vnp_ResponseCode') == '00') {
+            $this->bookOnline($request);
+            // Cart::remove();
+            return redirect()->route('home');
+        }
     }
 
-    public function bookOnline(Request $request){
-        // $datPhong = DatPhong::create([
-        //    'invoice' => $request['vnp_TxnRef'] ? $request['vnp_TxnRef'] :  uniqid(),
-        //    'user_id' => Auth::user()->id,
-        //    'trang_thai' => 1,
-        //    'don_gia' => $request->don_gia,
-        //    'thoi_gian_den' => $request->session('thoi_gian_den'),
-        //    'thoi_gian_di' => $request->session('thoi_gian_di'),
-        //    'tong_tien' => $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total,
-        //    'payment' => $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo',
-    
-        // ]);
+    public function bookOnline(Request $request)
+    {
+        $cartItems = Cart::content();
 
-        // $datPhongId = $datPhong->id();
 
-        // //Thêm dữ liệu vào bảng đặt phòng
-        // foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        //     // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        //     $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
-        //     // Thêm dữ liệu vào bảng liên kết
-        //     $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        // }
-
-        // $phongIds = collect();
-        // $tong_tien = 0;
-        // foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        //     $phongIdsForLoaiPhong = DB::table('phongs as p')
-        //     ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
-        //     ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
-        //     // ->leftJoin('dat_phong_loai_phongs as dplp', 'd.id', '=', 'dplp.dat_phong_id')
-        //     ->Where('p.loai_phong_id', $loaiPhongId)
-        //     ->whereNull('dp.phong_id')
-        //     ->orWhere(function($query) use ($datPhong) {
-        //         $query->whereNotNull('dp.phong_id')
-        //             ->where('d.thoi_gian_di', '<=', $datPhong->thoi_gian_den);
-    
-        //     })
-        
-        //     ->limit($request->so_luong_phong[$key]['so_luong_phong'])
-        //     ->pluck('p.id');
-        //     $phongIds = $phongIds->merge($phongIdsForLoaiPhong);
-    
-        //     $loaiPhong = Loai_phong::find($loaiPhongId['id']);
-        //     $khuyenMai = null;
-    
+        $ngayBatDau = $cartItems->min('ngay_bat_dau');
+        $ngayKetThuc = $cartItems->max('ngay_ket_thuc');
+        $soLuongPhong = $cartItems->sum('so_luong_phong');
+        $soLuongNguoi = $cartItems->sum('so_luong_nguoi');
 
         $datPhong = new DatPhong();
         $datPhong->invoice = $request['vnp_TxnRef'] ? $request['vnp_TxnRef'] :  uniqid();
         $datPhong->user_id = Auth::user()->id;
         $datPhong->trang_thai = 1;
-        $datPhong->don_gia = $request->don_gia;
-        $datPhong->thoi_gian_den = $request->session('thoi_gian_den');
-        $datPhong->thoi_gian_di = $request->session('thoi_gian_di');
+        $datPhong->thoi_gian_den = $ngayBatDau;
+        $datPhong->thoi_gian_di = $ngayKetThuc;
+        // $cartTotal = str_replace([' ', ',', 'VNĐ'], '', $request->cart_total);
+        // $datPhong->tong_tien = (float) $cartTotal;
         $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        // $datPhong->payment = $request->payment;
         $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
+        $datPhong->order_sdt = $request->order_sdt;
+        $datPhong->so_luong_phong = $soLuongPhong;
+        $datPhong->so_luong_nguoi = $soLuongNguoi;
 
-        if ($request['vnp_OrderInfo']) {
-            $separate = explode('~', $request['vnp_OrderInfo']);
-            $datPhong->order_sdt = $separate[0];
-        } else {
-            $datPhong->order_sdt = $request->telephone;
-        }
+        // if ($request['vnp_OrderInfo']) {
+        //     $separate = explode('~', $request['vnp_OrderInfo']);
+        //     $datPhong->order_sdt = $separate[0];
+        // } else {
+        //     $datPhong->order_sdt = $request->telephone;
+        // }
 
         $datPhong->save();
-        
-        dd($datPhong);
 
-        foreach(Cart::content() as $loaiphong){
-            $loaiPhongDat = new DatPhongNoiPhong(); 
+        $thanhtien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+
+        foreach (Cart::content() as $item) {
+            $loaiPhongDat = new DatPhongLoaiPhong();
             $loaiPhongDat->dat_phong_id = $datPhong->id;
-            $loaiPhongDat->so_luong_phong = $datPhong->so_luong_phong;
+            $loaiPhongDat->loai_phong_id = $item->id;
+            // $loaiPhongDat->don_gia = $loaiPhong->price;
+            $loaiPhongDat->so_luong_phong = $item->qty;
+            $loaiPhongDat->save();
+
+            $phongs = $item->phong;
+            // dd($phongs);
+
+            $phongAll = [];
+
+            foreach ($phongs as $phong_id) {
+                $phongAll[] = [
+                    'dat_phong_id' => $datPhong->id,
+                    'phong_id' => $phong_id
+                ];
+            }
+            DatPhongNoiPhong::insert($phongAll);
+
+
+            $chiTietDatPhong = new ChiTietDatPhong();
+            $chiTietDatPhong->dat_phong_id = $datPhong->id;
+            $chiTietDatPhong->thanh_tien = $thanhtien;
+            $chiTietDatPhong->save();
+
         }
-
-
-        foreach(Cart::content() as $phong){
-            $phong = new DatPhong();
-            
-        }
-
-        // $loaiPhong = Loai_phong::find($loaiPhongId['id']);
-        // $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
-
-
-
-
-
-    
-
+        return back();
     }
-   
 }
