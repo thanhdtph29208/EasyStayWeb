@@ -37,7 +37,7 @@ class KiemTraPhongController extends Controller
         $availableLoaiPhongs = $loaiPhongs->filter(function ($loaiPhong) use ($ngayBatDau, $ngayKetThuc) {
 
             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-                ->whereDoesntHave('datPhong', function ($query) use ($ngayBatDau, $ngayKetThuc) {
+                ->whereDoesntHave('datPhongs', function ($query) use ($ngayBatDau, $ngayKetThuc) {
                     $query->where('thoi_gian_den', '<', $ngayKetThuc)
                         ->where('thoi_gian_di', '>', $ngayBatDau);
                 })
@@ -47,7 +47,7 @@ class KiemTraPhongController extends Controller
 
         $phongs = $availableLoaiPhongs->map(function ($loaiPhong) use ($ngayBatDau, $ngayKetThuc) {
             $availableRooms = Phong::where('loai_phong_id', $loaiPhong->id)
-                ->whereDoesntHave('datPhong', function ($query) use ($ngayBatDau, $ngayKetThuc) {
+                ->whereDoesntHave('datPhongs', function ($query) use ($ngayBatDau, $ngayKetThuc) {
                     $query->where('thoi_gian_den', '<', $ngayKetThuc)
                         ->where('thoi_gian_di', '>', $ngayBatDau);
                 })
@@ -109,7 +109,7 @@ class KiemTraPhongController extends Controller
     ]);
 }
 
-
+}
     // function checkPhong(Request $request)
     // {
     //     try {
@@ -159,4 +159,4 @@ class KiemTraPhongController extends Controller
     //     return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc'));
     // }
 
-}
+

@@ -74,13 +74,11 @@
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::url($item->image) }}" alt="" class="w-24 h-auto">
+                                    <img src="{{ Storage::url($item->options['image']) }}" alt="" class="w-24 h-auto">
                                 </td>
                                 <td>
                                     <p>{{ $item->name }}</p>
                                 </td>
-
-
                                 <td>
                                     <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button>
                                     <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
