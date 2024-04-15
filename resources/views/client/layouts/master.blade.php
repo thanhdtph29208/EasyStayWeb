@@ -116,8 +116,6 @@
 
             <a class="logo" href="<?= env('APP_URL') ?>/">
                 <span class="inline-block dark:hidden">
-                    <img src="assets/images/favicon.ico" class="h-7 l-dark" alt="ảnh logo">
-                    <img src="assets/images/favicon.ico" class="h-7 l-light" alt="ảnh logo">
                 </span>
                 <img src="assets/images/favicon.ico" class="hidden dark:inline-block" alt="ảnh logo">
             </a>

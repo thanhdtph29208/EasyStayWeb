@@ -1,4 +1,4 @@
-@extends('client.layouts.master1')
+@extends('client.layouts.master')
 
 @section('content')
     <div class="container mx-auto py-32">

@@ -27,6 +27,10 @@
         });
         document.getElementById('totalPrice').textContent = `${total.toLocaleString()} VNĐ`;
     }
+
+
+
+    
 </script>
 
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
