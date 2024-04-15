@@ -20,6 +20,7 @@ use App\Models\DatPhongDichVu;
 use App\Models\DatPhongLoaiPhong;
 use Illuminate\Support\Facades\DB;
 use App\Models\DatPhongNoiPhong;
+use App\Models\Hotel;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 
@@ -96,6 +97,7 @@ class DatPhongController extends Controller
         }
         $tong_tien=0;
         $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
+        $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
         // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
         // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
@@ -120,9 +122,8 @@ class DatPhongController extends Controller
         SELECT DISTINCT p.id
         FROM phongs p
         LEFT JOIN dat_phong_noi_phongs dp ON p.id = dp.phong_id
-        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
-        WHERE p.loai_phong_id = {$loaiPhongId['id']}
-        AND (dp.phong_id IS NULL OR (dp.phong_id IS NOT NULL AND d.thoi_gian_di <= '2024-05-01'))
+        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id AND (d.thoi_gian_di >= '$thoiGianDiFormatted' AND d.thoi_gian_den <= '$thoiGianDenFormatted' OR d.thoi_gian_di IS NULL)
+        WHERE d.id IS NULL AND p.loai_phong_id = {$loaiPhongId['id']}
         LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
         ");
         $phongIdsArray = [];
@@ -191,8 +192,10 @@ class DatPhongController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ChiTietDatPhongDataTable $datatables, string $id)
+    public function show(ChiTietDatPhongDataTable $datatables, string $id, DichVu $dichVu)
     {
+        $thongTinHotel = Hotel::all();
+        $giaLoaiPhongs = collect();
         $datPhong = DatPhong::findOrFail($id);
         $loai_phong_ids =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('loai_phong_id');
         $so_luong_phong =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
@@ -200,21 +203,25 @@ class DatPhongController extends Controller
         foreach($loai_phong_ids as $loai_phong_id){
             $tenLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('ten');
             $tenLoaiPhongs = $tenLoaiPhongs->merge($tenLoaiPhong);
+            $giaLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('gia');
+            $giaLoaiPhongs = $giaLoaiPhongs->merge($giaLoaiPhong);
         };
+        $loaiPhong = $tenLoaiPhongs -> zip($giaLoaiPhongs,$so_luong_phong);
+
+
         $tenDichVus = collect();
+        $giaDichVus = collect();
         $dich_vu_ids = DatPhongDichVu::where('dat_phong_id', $id)->pluck('dich_vu_id');
         $so_luong_dich_vu = DatPhongDichVu::where('dat_phong_id', $id)->pluck('so_luong');
         foreach($dich_vu_ids as $dich_vu_id){
             $tenDichVu = DichVu::where('id', $dich_vu_id)->pluck('ten_dich_vu');
             $tenDichVus = $tenDichVus->merge($tenDichVu);
+            $giaDichVu = DichVu::Where('id', $dich_vu_id)->pluck('gia');
+            $giaDichVus = $giaDichVus->merge($giaDichVu);
         };
-        $tenPhongs = collect();
-        $phong_ids = DatPhongNoiPhong::where('dat_phong_id', $id)->pluck('phong_id');
-        foreach($phong_ids as $phong_id){
-            $tenPhong = Phong::where('id', $phong_id)->pluck('ten_phong');
-            $tenPhongs = $tenPhongs->merge($tenPhong);
-        };
-        return $datatables->render('admin.dat_phong.show', compact('datPhong','tenLoaiPhongs','loai_phong_ids','tenDichVus','so_luong_phong','so_luong_dich_vu','tenPhongs'));
+        $dichVu = $tenDichVus->zip($giaDichVus,$so_luong_dich_vu);
+        $thanhTien = ChiTietDatPhong::where('dat_phong_id', $datPhong['id'])->pluck('thanh_tien')->first();
+        return $datatables->render('admin.dat_phong.show', compact('datPhong','loai_phong_ids','loaiPhong','dichVu','thongTinHotel','thanhTien'));
     }
 
     /**

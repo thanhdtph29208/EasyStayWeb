@@ -68,7 +68,7 @@ Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
-Route::get('chi_tiet_gio_hang',[CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
+Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
 Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
 Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
@@ -77,9 +77,8 @@ Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart
 
 
 // thanh toán 
-Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
-Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo
+// Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
+
 
 
 
@@ -89,21 +88,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('client.pages.password-change');
     Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
-    // Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
-    
-    Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-    Route::get('pay/success', [CheckoutController::class, 'checkoutSuccess'])->name('pay-success');
-    Route::get('pay/success1', [CheckoutController::class, 'checkoutSuccess1'])->name('pay-success1');
-
-});
-
-Route::middleware('clearcart')->group(function () {
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+    Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
+    Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
+    Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo
+    // Route::post('pay', [CheckoutController::class, 'bookOnline'])->name('pay');
+    Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
+    Route::get('thanh_toan_thanh_cong', [CheckoutController::class, 'checkoutSuccess'])->name('thanh_toan_thanh_cong');
+    Route::get('thanh_toan/thanh_cong1', [CheckoutController::class, 'checkoutSuccess1'])->name('pay-success1');
 });
+
+// Route::middleware('auth', 'clearcart')->group(function () {
+//     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+// });
 
 
 require __DIR__ . '/auth.php';
-    Route::middleware(['auth','verified','block.user'])->prefix('admin')
+Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
     ->as('admin.')
     ->group(function () {
 

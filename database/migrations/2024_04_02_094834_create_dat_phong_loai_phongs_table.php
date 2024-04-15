@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('loai_phong_id');
             $table->foreign('dat_phong_id')->references('id')->on('dat_phongs')->onDelete('cascade');
             $table->foreign('loai_phong_id')->references('id')->on('loai_phongs')->onDelete('cascade');
+            // $table->decimal('don_gia')->nullable();
             $table->bigInteger('so_luong_phong');
             $table->timestamps();
         });
