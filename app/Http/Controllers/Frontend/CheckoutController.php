@@ -123,8 +123,8 @@ class CheckoutController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = (float)$request['cart_total'];
         $orderId = time() . "";
-        $redirectUrl = "http://easystayweb.test/";
-        $ipnUrl = "http://easystayweb.test/";
+        $redirectUrl = "http://easystayweb.test/momo_callback";
+        $ipnUrl = "http://easystayweb.test/momo_callback";
         $extraData = "";
         $requestId = time() . "";
         $requestType = "payWithATM";
@@ -248,6 +248,14 @@ class CheckoutController extends Controller
         }
     }
 
+    public function momoCallBack(Request $request){
+        // $isPaymentValid = $this->verifyMoMoPayment($request);
+        // if($isPaymentValid){
+            $this->bookOnline($request);
+            return redirect()->route('home');
+        // }
+    }
+
     public function bookOnline(Request $request)
     {
         $cartItems = Cart::content();
@@ -255,7 +263,8 @@ class CheckoutController extends Controller
 
         $ngayBatDau = $cartItems->min('ngay_bat_dau');
         $ngayKetThuc = $cartItems->max('ngay_ket_thuc');
-        $soLuongPhong = $cartItems->sum('so_luong_phong');
+        $soLuongPhong = $cartItems->sum('qty');
+        // dd($soLuongPhong);
         $soLuongNguoi = $cartItems->sum('so_luong_nguoi');
 
         $datPhong = new DatPhong();

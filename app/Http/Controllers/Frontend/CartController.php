@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 // use Illuminate\Support\Carbon;
-use Carbon;
+use Carbon\Carbon;
 
 
 class CartController extends Controller
@@ -67,11 +67,33 @@ class CartController extends Controller
         // dd($cartItems);
         $total = $this->getCartTotal();
 
-        $ngayBatDau = $request->session()->get('ngayBatDau');
-        $ngayKetThuc = $request->session()->get('ngayKetThuc');
-        $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
+        // $ngayBatDau = $request->session()->get('ngayBatDau');
+        // $ngayKetThuc = $request->session()->get('ngayKetThuc');
+
+        $ngayBatDau = $cartItems->min('ngay_bat_dau');
+        // dd($ngayBatDau);
+        $ngayKetThuc = $cartItems->max('ngay_ket_thuc');
+        // dd($ngayKetThuc);
+        $soNgay = Carbon::parse($ngayKetThuc)->diffInDays(Carbon::parse($ngayBatDau));
 
         // dd($soNgay);
+
+        // $ngayBatDau = $cartItems->min(function ($item) {
+        //     return Carbon\Carbon::parse($item->ngay_bat_dau);
+        // });
+        
+        // $ngayKetThuc = $cartItems->max(function ($item) {
+        //     return Carbon\Carbon::parse($item->ngay_ket_thuc);
+        // });
+        
+        // // Ensure that both $ngayBatDau and $ngayKetThuc are valid Carbon instances
+        // if ($ngayBatDau && $ngayKetThuc) {
+        //     $soNgay = $ngayKetThuc->diffInDays($ngayBatDau);
+        // } else {
+        //     $soNgay = 0;
+        // }
+
+
         return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgay'));
     }
 

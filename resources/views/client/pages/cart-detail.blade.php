@@ -84,8 +84,10 @@
                                     <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
                                     <button onclick="changeQuantity('{{ $item->rowId }}', 'decrease')">-</button>
                                 </td>
+
                                 <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
-                                <td id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty, 0, '.', '.') }}VNĐ</td>
+
+                                <td id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty , 0, '.', '.') }}VNĐ</td>
 
                                 <td>
                                     <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}" class="btn btn-danger">
@@ -118,7 +120,7 @@
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Tổng tiền:</p>
-                        <p id="total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
+                        <p id="total" class="font-semibold">{{ number_format($total , 0, '.', '.') }}VNĐ</p>
                         <input type="hidden" value="{{ $total }}" name="total">
                     </div>
 
@@ -137,12 +139,12 @@
                     <div class="mt-3">
                         <span class="font-semibold">Áp dụng mã giảm giá</span>
 
-                        {{-- <form id="coupon_form" class="flex mb-3 mt-2"> --}}
+                       <form id="coupon_form" class="flex mb-3 mt-2"> 
 
                         <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text" placeholder="Mã khuyến mãi" name="coupon_code">
                         <button class="py-1 px-2 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Áp
                             dụng</button>
-                        {{-- </form> --}}
+                        </form> 
                     </div>
 
                     @if (count($cartItems) != 0)

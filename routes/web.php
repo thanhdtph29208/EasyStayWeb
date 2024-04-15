@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
     Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo
+    Route::get('/momo_callback', [CheckoutController::class, 'momoCallBack'])->name('momo_callback'); // thanh toán bằng momo
     // Route::post('pay', [CheckoutController::class, 'bookOnline'])->name('pay');
     Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
     Route::get('thanh_toan_thanh_cong', [CheckoutController::class, 'checkoutSuccess'])->name('thanh_toan_thanh_cong');
