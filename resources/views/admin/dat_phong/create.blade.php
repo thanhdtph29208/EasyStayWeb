@@ -117,7 +117,6 @@
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="payment">Payment</label>
                                 <select name="payment" id="payment" class="form-control">
-                                    <option value="Online">Online</option>
                                     <option value="Offline">Offline</option>
                                 </select>
                                 <span class="text-danger error-payment"></span>
