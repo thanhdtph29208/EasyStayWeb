@@ -11,9 +11,11 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
-
+use Illuminate\Support\Carbon;
 class DatPhongDataTable extends DataTable
 {
+
+  
     /**
      * Build the DataTable class.
      *
@@ -72,7 +74,6 @@ class DatPhongDataTable extends DataTable
 
                 return $editBtn . $deleteBtn . $detailBtn ;
             })
-
             ->rawColumns(['ten_khach_hang','loai_phong_id','email','so_dien_thoai', 'phong_id','trang_thai','action'])
             ->setRowId('id');
     }

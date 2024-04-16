@@ -1,6 +1,9 @@
 @extends('admin.layouts.master')
 
 @section('content')
+<style>
+    .ck-editor__editable {min-height: 400px;}
+</style>
     <main class="app-main">
         <div class="app-content-header">
             @include('admin.layouts.components.content-header', [
@@ -55,7 +58,7 @@
 
                                 <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
-                                    <textarea name="noi_dung" id="noi_dung" cols="30" rows="8" class="form-control"></textarea>
+                                    <textarea name="noi_dung" id="editor" cols="30" rows="8" class="form-control"></textarea>
                                 </div>
 
                                 <div class="mb-3 mx-auto ">
@@ -86,3 +89,15 @@
         </div>
     </main>
 @endsection
+
+@push('scripts')
+<script>
+ClassicEditor.create( document.querySelector( '#editor' ) )
+    .then( editor => {
+        editor.ui.view.editable.element.style.height = '500px';
+    } )
+    .catch( error => {
+        console.error( error );
+    } );
+</script>
+@endpush
