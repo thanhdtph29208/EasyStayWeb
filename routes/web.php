@@ -44,8 +44,14 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'home'])->name('home');
 
+Route::get('chi_tiet_lsphong/{booking_id}', [LichSuDatPhongController::class, 'show'])->name('chi_tiet_lsphong');
 
 Route::get('ho_so', [ProfileController::class, 'index'])->name('client.pages.hoso');
+
+Route::middleware('auth', 'throttle:1,1')->group(function () {
+    Route::put('ho_so', [ProfileController::class, 'update'])->name('ho_so.update');
+});
+
 Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
 
 

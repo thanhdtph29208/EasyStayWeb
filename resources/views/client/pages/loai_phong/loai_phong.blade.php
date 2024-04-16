@@ -2,10 +2,12 @@
 @section('content')
 <!-- Start Hero -->
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900">
+
+    </div>
     <div class="container relative">
         <div class="grid grid-cols-1 pb-8 text-center mt-10">
-            <h3 class="text-4xl leading-normal tracking-wider font-semibold text-white">Loại phòng</h3>
+        <h3 class="font-bold text-white lg:leading-normal leading-normal text-4xl lg:text-2xl mb-6 mt-5">LOẠI PHÒNG</h3>
         </div><!--end grid-->
     </div><!--end container-->
 

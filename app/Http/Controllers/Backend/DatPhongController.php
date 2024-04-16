@@ -178,6 +178,7 @@ class DatPhongController extends Controller
         }
         $tong_tien=0;
         $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
+        $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
         // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
         // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
@@ -202,10 +203,8 @@ class DatPhongController extends Controller
         SELECT DISTINCT p.id
         FROM phongs p
         LEFT JOIN dat_phong_noi_phongs dp ON p.id = dp.phong_id
-        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
-        WHERE p.loai_phong_id = {$loaiPhongId['id']}
-        AND (dp.phong_id IS NULL OR (dp.phong_id IS NOT NULL AND d.thoi_gian_di <= '2024-05-01'))
-        AND d.thoi_gian_di IS NULL
+        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id AND (d.thoi_gian_di >= '$thoiGianDiFormatted' AND d.thoi_gian_den <= '$thoiGianDenFormatted' OR d.thoi_gian_di IS NULL)
+        WHERE d.id IS NULL AND p.loai_phong_id = {$loaiPhongId['id']}
         LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
         ");
         $phongIdsArray = [];
