@@ -136,24 +136,19 @@
                         <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                     </div>
 
-                    <div class="mt-3">
-                        <span class="font-semibold">Áp dụng mã giảm giá</span>
-
-                       <form id="coupon_form" class="flex mb-3 mt-2"> 
-
-                        <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text" placeholder="Mã khuyến mãi" name="coupon_code">
-                        <button class="py-1 px-2 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Áp
-                            dụng</button>
-                        </form> 
-                    </div>
-
                     @if (count($cartItems) != 0)
                     <button class="mt-4 py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" type="submit">Đặt phòng</button>
                     @endif
-
                 </form>
 
+                <div class="mt-3">
+                    <span class="font-semibold">Áp dụng mã giảm giá</span>
 
+                    <form id="coupon_form" class="flex mb-3 mt-2">
+                        <input class="form-control w-40 px-2 py-1 mr-2 border-2" type="text" placeholder="Mã khuyến mãi" name="coupon_code">
+                        <button type="submit" class="py-1 px-2 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Áp dụng</button>
+                    </form>
+                </div>
 
             </div>
         </div>
@@ -253,6 +248,27 @@
                             console.log(error);
                         }
                     })
+                }
+            })
+        })
+
+
+        $('#coupon_form').on('submit', function(e) {
+            e.preventDefault();
+            let fromData = $(this).serialize();
+            console.log(fromData);
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('apply-coupon') }}",
+                data: fromData,
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'error') {
+                        toastr.error(data.message)
+                    } else if (data.status == 'success') {
+                        calcCouponDiscount()
+                        toastr.success(data.message)
+                    }
                 }
             })
         })

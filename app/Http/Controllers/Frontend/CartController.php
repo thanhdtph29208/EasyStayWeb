@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\KhuyenMai;
 use App\Models\Loai_phong;
 use App\Models\Phong;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 // use Illuminate\Support\Carbon;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Date;
 
 class CartController extends Controller
 {
@@ -149,4 +150,80 @@ class CartController extends Controller
         }
         return $total;
     }
+
+    public function applyCoupon(Request $request){
+        if($request -> coupon_code == null){
+            return response([
+                'status' => 'error',
+                'message' => 'Khuyến mãi bắt buộc'
+            ]);
+        }
+
+        $coupon  = KhuyenMai::where(['ma_giam_gia' => $request->coupon_code, 'trang_thai' => 1])->first();
+        if($coupon == null){
+            return response([
+                'status' => 'error',
+                'message' => 'Khuyến mãi không tồn tại',
+            ]);
+        }else if($coupon->ngay_bat_dau > Date('Y-m-d')){
+            return response([
+                'status' => 'error',
+                'message'=> 'Khuyến mãi đã hết thời hạn',
+            ]);
+        }else if($coupon->ngay_ket_thuc < Date('Y-m-d')){
+            return response([
+                'status' => 'error',
+                'message' => 'Khuyến mãi chưa đến ngày'
+            ]);
+        }
+
+        if($coupon->loai_giam_gia == 1){
+            Session::put('coupon',[
+                'ten_khuyen_mai' => $coupon->ten_khuyen_mai,
+                'ma_giam_gia' => $coupon->ma_giam_gia,
+                'loai_giam_gia' => 1,
+                'gia_tri_giam' => $coupon->gia_tri_giam,
+            ]);
+        }else if($coupon->loai_giam_gia == 2){
+            Session::put('coupon',[
+                'ten_khuyen_mai' => $coupon->ten_khuyen_mai,
+                'ma_giam_gia' => $coupon->ma_giam_gia,
+                'loai_giam_gia' => 1,
+                'gia_tri_giam' => $coupon->gia_tri_giam,
+            ]);
+        }
+
+        return response([
+            'status' => 'success',
+            'message' => 'Đã áp dụng khuyến mãi',
+        ]);
+
+    }
+
+    public function couponCalc(){
+        if(Session::has('coupon')){
+            $khuyen_mai = Session::get('coupon');
+
+            if($khuyen_mai['loai_giam_gia'] == 1){
+                $total = (double)$this->getCartTotal() - (double)$khuyen_mai['gia_tri_giam'];
+                return response([
+                    'status' => 'success',
+                    'cart_total' => (double)$total,
+                    'discount' => $khuyen_mai['gia_tri_giam'],
+                ]);
+            }else if($khuyen_mai['loai_khuyen_mai'] == 2){
+                $khuyen_mai = (double)$this->getCartCount() * (double)$khuyen_mai['gia_tri_giam'] / 100;
+                $total = (double)$this->getCartCount() - (double)$khuyen_mai;
+                return response([
+                    'status' => 'success',
+                    'cart_total' => (double)$total,
+                    'gia_tri_giam' => $khuyen_mai,
+                ]);
+            }else{
+                return 0;
+            }
+        }
+
+    }
+
 }

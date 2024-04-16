@@ -67,12 +67,12 @@ Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-co
 Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
 
 
 // thanh toán 
 // Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-
 
 
 
