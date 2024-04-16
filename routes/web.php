@@ -73,12 +73,12 @@ Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-co
 Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
 
 
 // thanh toán 
 // Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-
 
 
 
@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
     Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo
+    Route::get('/momo_callback', [CheckoutController::class, 'momoCallBack'])->name('momo_callback'); // thanh toán bằng momo
     // Route::post('pay', [CheckoutController::class, 'bookOnline'])->name('pay');
     Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
     Route::get('thanh_toan_thanh_cong', [CheckoutController::class, 'checkoutSuccess'])->name('thanh_toan_thanh_cong');
