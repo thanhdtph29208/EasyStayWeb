@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class DatPhong extends Model
@@ -32,6 +33,35 @@ class DatPhong extends Model
         'trang_thai',
         'ghi_chu',
     ];
+
+    protected $dates = [
+        'thoi_gian_den',
+        'thoi_gian_di',
+    ];
+
+    // Accessors
+    public function getThoiGianDenAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d 14:00:00');
+    }
+
+    public function getThoiGianDiAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d 12:00:00');
+    }
+
+    // Mutators
+    public function setThoiGianDenAttribute($value)
+{
+    $this->attributes['thoi_gian_den'] = Carbon::parse($value)->startOfDay()->addHours(12);
+}
+
+public function setThoiGianDiAttribute($value)
+{
+    $this->attributes['thoi_gian_di'] = Carbon::parse($value)->startOfDay()->addHours(14);
+}
+
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
@@ -73,7 +103,7 @@ class DatPhong extends Model
     {
         return $this->belongsTo(Loai_phong::class, 'loai_phong_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
-    
+
 
     public function khuyen_mai()
     {

@@ -96,45 +96,38 @@ class DatPhongController extends Controller
             $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
         }
         $tong_tien=0;
-        $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
-        $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
+        // $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
+        // $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
         // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
         // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
         // // Thêm dữ liệu vào bảng liên kết
         // $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        // phongs as p'
-        // ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
-        // ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
-        // ->leftJoin('dat_phong_loai_phongs as dplp', 'd.id', '=', 'dplp.dat_phong_id')
-        // ->Where('p.loai_phong_id', $loaiPhongId['id'])
-        // ->where(function($query) use ($thoiGianDenFormatted) {
-        //     $query->whereNull('dp.phong_id')
-        //     ->orWhere(function($query) use ($thoiGianDenFormatted){
-        //         $query->whereNotNull('dp.phong_id')
-        //         ->where('d.thoi_gian_di', '<=', $thoiGianDenFormatted);
-        //     });
+        // $phongIds = Phong::where('loai_phong_id', $loaiPhongId['id'])
+        // ->whereDoesntHave('dat_phong_noi_phongs.dat_phongs', function ($query) {
+        //     $query->where('thoi_gian_di', '<=', '$datPhong->thoi_gian_di')
+        //         ->where('thoi_gian_den', '>=', '$datPhong->thoi_gian_den');
         // })
         // ->limit($request->so_luong_phong[$key]['so_luong_phong'])
         // ->pluck('p.id');
-        // )
+        // $datPhong->phongs()->attach($phongIds);
         $phongIds = DB::select("
-        SELECT DISTINCT p.id
+        SELECT p.id
         FROM phongs p
-        LEFT JOIN dat_phong_noi_phongs dp ON p.id = dp.phong_id
-        LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id AND (d.thoi_gian_di >= '$thoiGianDiFormatted' AND d.thoi_gian_den <= '$thoiGianDenFormatted' OR d.thoi_gian_di IS NULL)
-        WHERE d.id IS NULL AND p.loai_phong_id = {$loaiPhongId['id']}
+        WHERE p.loai_phong_id = {$loaiPhongId['id']}
+        AND NOT EXISTS (
+            SELECT 1
+            FROM dat_phong_noi_phongs dp
+            LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
+            WHERE p.id = dp.phong_id
+            AND (
+                d.thoi_gian_di <= '{$datPhong->thoi_gian_di}' AND d.thoi_gian_den >= '{$datPhong->thoi_gian_den}'
+            )
+        )
         LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
         ");
-        $phongIdsArray = [];
-        foreach ($phongIds as $phong) {
-            $phongIdsArray[] = $phong->id;
+        $datPhong->phongs()->attach($phongIds);
         }
-        // var_dump($phongIdsArray);
-        // die();
-        $datPhong->phongs()->attach($phongIdsArray);
-        }
-
         $ngay_bat_dau = strtotime($request->thoi_gian_den);
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
         $loaiPhong = Loai_phong::find($loaiPhongId['id']);

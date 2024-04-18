@@ -98,8 +98,7 @@
                                 </div>
                                 <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
                                     <label for="thoi_gian_di">Thời gian đi</label>
-                                    <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di">
-
+                                    <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" min="" onchange="setMinDate()">
                                     <span class="text-danger error-thoi_gian_di"></span>
                                 </div>
                             </div>
@@ -182,5 +181,21 @@
             document.getElementById('user_id').value = id_user;
         }
     });
+    function setMinDate() {
+        // Lấy giá trị của input "Thời gian đến"
+        var thoi_gian_den_value = document.getElementById("thoi_gian_den").value;
+
+        // Chuyển đổi giá trị thành đối tượng Date
+        var minDate = new Date(thoi_gian_den_value);
+
+        // Thêm một ngày cho giá trị tối thiểu cho input "Thời gian đi"
+        minDate.setDate(minDate.getDate() + 1);
+
+        // Định dạng ngày tháng để gán cho thuộc tính "min" của input "Thời gian đi"
+        var formattedMinDate = minDate.toISOString().slice(0, 10);
+
+        // Thiết lập giá trị tối thiểu cho input "Thời gian đi"
+        document.getElementById("thoi_gian_di").setAttribute("min", formattedMinDate);
+    }
 </script>
 @endsection
