@@ -133,11 +133,11 @@
                         <!-- <p class="text-slate-400">Số lượng còn lại: {{$loaiPhong->so_luong}}</p> <br> -->
                         <p>Lưu ý: Không hoàn trả phí khi hủy phòng</p>
 
-                        <ul class="cd-item-action">
+                        <!-- <ul class="cd-item-action">
                             <li>
                                 <button class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer">Đặt ngay</button>
                             </li>
-                        </ul> <!-- cd-item-action -->
+                        </ul>  -->
                     </div> <!-- cd-item-info -->
                     <a href="#0" class="cd-close">Đóng</a>
                 </div> <!-- cd-quick-view -->

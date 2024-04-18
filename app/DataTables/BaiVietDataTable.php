@@ -29,7 +29,6 @@ class BaiVietDataTable extends DataTable
                 return  "<img src='"  . Storage::url($query->anh) .  "' width='100px' alt='ảnh bài viết'>";
             })
 
-
             ->addColumn('trang_thai', function ($query) {
                 $active = "<span class='badge text-bg-success'>Xuất bản</span>";
                 $inActive = "<span class='badge text-bg-danger'>Nháp</span>";
@@ -52,7 +51,7 @@ class BaiVietDataTable extends DataTable
                 return $editBtn . $deleteBtn;
             })
 
-            ->rawColumns(['anh', 'trang_thai', 'action'])
+            ->rawColumns(['anh', 'trang_thai', 'action','noi_dung'])
             ->setRowId('id');
     }
 

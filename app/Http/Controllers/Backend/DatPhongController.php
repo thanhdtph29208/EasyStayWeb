@@ -26,7 +26,7 @@ use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 
 use function Laravel\Prompts\alert;
 use function Livewire\store;
-
+use Yajra\DataTables\DataTables;
 
 class DatPhongController extends Controller
 {
@@ -35,8 +35,88 @@ class DatPhongController extends Controller
 
     public function index(Request $request, DatPhongDataTable $datatables)
     {
+      
         // $datphong = DatPhong::query()->latest()->paginate(7);
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
+    }
+
+    public function search(Request $request, DatPhongDataTable $datatables){
+        $dataTableQuery = DatPhong::query()->with(['user']);
+
+        if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+        
+            $dataTableQuery->whereBetween('thoi_gian_den', [$from, $to]);
+        }
+        
+
+        
+        if ($request->has('status') && $request->status != 2) {
+            $dataTableQuery->where('trang_thai','=',$request->status);
+        }
+      
+        if ($request->has('create_date_time') && $request->filled('create_date_time')) {
+            $create_date_time = Carbon::createFromFormat('Y-m-d', $request->get('create_date_time'));
+            $dataTableQuery->where('created_at','>=',$create_date_time);
+        }
+        $datphong = $dataTableQuery->get();
+     
+        return Datatables::of($datphong)
+        ->addColumn('action', 'datphong.action')
+        ->addColumn('ten_khach_hang', function($query){
+            return $query->user->ten_nguoi_dung;
+        })
+        ->addColumn('email', function($query){
+            return $query->user->email;
+        })
+        ->addColumn('so_dien_thoai', function($query){
+            return $query->user->so_dien_thoai;
+        })
+        // ->addColumn('don_gia', function($query){
+        //     return $query->loai_phong->gia;
+        // })
+        ->addColumn('trang_thai', function ($query) {
+            $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
+            $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
+            if ($query->trang_thai == 1) {
+                return $active;
+            } else {
+                return $inActive;
+            }
+        })
+        ->addColumn('action', function ($query) {
+            $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
+            <i class='bi bi-pen'></i>
+            </a>";
+            // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
+            // <i class='bi bi-image'></i>
+            // </a>";
+
+            // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
+            // <i class='bi bi-card-list'></i>
+            // </a>";
+            $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+            <i class='bi bi-archive'></i>
+            </a>";
+            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
+            // <i class='bi bi-houses-fill'></i>
+            // </a>";
+            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
+            // <i class='bi bi-chat-dots'></i>
+            // </a>";
+            $detailBtn = "<a href='" . route('admin.dat_phong.show', ['dat_phong' => $query->id]) . "' class='btn btn-secondary ms-2'>
+            <i class='bi bi-list-ul'></i>
+            </a>";
+
+
+
+            return $editBtn . $deleteBtn . $detailBtn ;
+        })
+        ->rawColumns(['ten_khach_hang','loai_phong_id','email','so_dien_thoai', 'phong_id','trang_thai','action'])
+        ->setRowId('id')
+        // ->rawColumns(['action'])
+        ->make(true);
     }
     public function create(DatPhong $datPhong)
     {
@@ -58,6 +138,7 @@ class DatPhongController extends Controller
         $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai','id')->toArray();
         return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong','i'));
     }
+
 
     /**
      * Store a newly created resource in storage.
