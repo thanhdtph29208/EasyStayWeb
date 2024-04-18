@@ -54,7 +54,9 @@ Route::middleware('auth', 'throttle:1,1')->group(function () {
 
 Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
 
+Route::get('search-rooms', [ChiTietLoaiPhongController::class, 'detail'])->name('searchRooms');
 
+Route::post('them_gio_hang_ct', [ChiTietLoaiPhongController::class, 'addCTLS'])->name('them_gio_hang_ct');
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');
 Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('clients.pages.loai_phong.loai_phong');
@@ -66,6 +68,7 @@ Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.
 
 // Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
 
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
 Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');

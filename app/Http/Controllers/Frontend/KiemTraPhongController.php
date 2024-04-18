@@ -61,15 +61,6 @@ class KiemTraPhongController extends Controller
             ];
         });
 
-        
-
-        // dd($phongs);
-        // return response()->json([
-        //     'success' => true,
-        //     'available_loai_phongs' => $phongs,
-        //     'ngay_bat_dau' => $ngayBatDau,
-        //     'ngay_ket_thuc' => $ngayKetThuc
-        // ]);
 
         return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc', 'loaiPhongs'));
 
@@ -108,6 +99,7 @@ class KiemTraPhongController extends Controller
         'message' => 'Thêm giỏ hàng thành công'
     ]);
 }
+
 
 }
     // function checkPhong(Request $request)
