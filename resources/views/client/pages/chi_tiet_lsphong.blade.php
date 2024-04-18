@@ -22,6 +22,7 @@
                         <th scope="col" class="px-6 py-3">
                             Loại Phòng
                         </th>
+                    
                         <th scope="col" class="px-6 py-3">
                             Số phòng
                         </th>
@@ -41,6 +42,9 @@
                             Ghi chú
                         </th>
                         <th scope="col" class="px-6 py-3">
+                          Dịch vụ
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Tổng Tiền
                         </th>
                     </tr>
@@ -54,6 +58,8 @@
                         <td class="px-6 py-4">
                             {{ $userBooking->Loai_phong->ten }}
                         </td>
+                   
+                      
                         <td class="px-6 py-4">
                             {{ $userBooking->so_luong_phong }}
                         </td>
@@ -71,6 +77,10 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $userBooking->ghi_chu }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $userBooking->dichVu->ten_dich_vu  }}
+                            <br>  {{ $userBooking->dichVu->so_luong  }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $userBooking->tong_tien }}

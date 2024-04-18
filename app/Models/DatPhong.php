@@ -67,10 +67,8 @@ public function setThoiGianDiAttribute($value)
         return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
 
-    public function phong()
-    {
-        return $this->belongsTo(Phong::class);
-    }
+  
+
 
     public function phongs()
     {

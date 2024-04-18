@@ -42,5 +42,9 @@ class Loai_phong extends Model
     {
         return $this->belongsTo(Loai_phong::class, 'id');
     }
+    public function phongs()
+    {
+        return $this->hasMany(Phong::class);
+    }
 
 }

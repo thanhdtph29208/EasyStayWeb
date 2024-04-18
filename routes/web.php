@@ -54,7 +54,9 @@ Route::middleware('auth', 'throttle:1,1')->group(function () {
 
 Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
 
+Route::get('search-rooms', [ChiTietLoaiPhongController::class, 'detail'])->name('searchRooms');
 
+Route::post('them_gio_hang_ct', [ChiTietLoaiPhongController::class, 'addCTLS'])->name('them_gio_hang_ct');
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');
 Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('clients.pages.loai_phong.loai_phong');
@@ -66,6 +68,7 @@ Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.
 
 // Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
+Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
 
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
 Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
@@ -73,12 +76,12 @@ Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-co
 Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
 
 
 // thanh toán 
 // Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-
 
 
 
@@ -93,6 +96,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
     Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo
+    Route::get('/momo_callback', [CheckoutController::class, 'momoCallBack'])->name('momo_callback'); // thanh toán bằng momo
     // Route::post('pay', [CheckoutController::class, 'bookOnline'])->name('pay');
     Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
     Route::get('thanh_toan_thanh_cong', [CheckoutController::class, 'checkoutSuccess'])->name('thanh_toan_thanh_cong');
@@ -121,6 +125,7 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
 
         Route::resource('vai_tro', VaiTroController::class);
         Route::resource('dat_phong', DatPhongController::class);
+        Route::get('dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
         Route::resource('chi_tiet_dat_phong', ChiTietDatPhongController::class);
         Route::put('loai_phong/change-status', [LoaiPhongController::class, 'changeStatus'])->name('loai_phong.change-status');
         Route::get('exportUser', [ExportController::class, 'exportUser'])->name('exportUser');
