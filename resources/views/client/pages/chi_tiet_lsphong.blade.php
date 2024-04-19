@@ -22,6 +22,9 @@
                         <th scope="col" class="px-6 py-3">
                             Loại Phòng
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Tên Phòng
+                        </th>
                     
                         <th scope="col" class="px-6 py-3">
                             Số phòng
@@ -58,7 +61,9 @@
                         <td class="px-6 py-4">
                             {{ $userBooking->Loai_phong->ten }}
                         </td>
-                   
+                        <td class="px-6 py-4">
+                            {{ $userBooking->phong->ten_phong  }}
+                        </td>
                       
                         <td class="px-6 py-4">
                             {{ $userBooking->so_luong_phong }}
