@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('phong_id')->nullable();
             $table->foreign('phong_id')->references('id')->on('phongs');
             $table->decimal('don_gia')->nullable();
-            $table->integer('so_luong_phong');
+            $table->integer('so_luong_phong')->nullable();
             $table->integer('so_luong_nguoi');
             $table->dateTime('thoi_gian_den');
             $table->dateTime('thoi_gian_di');
