@@ -210,25 +210,29 @@ class DatPhongController extends Controller
         foreach($phongIds as $phongId)
         $datPhong->phongs()->attach($phongId);
         }
-        $ngay_bat_dau = strtotime($request->thoi_gian_den);
-        $ngay_ket_thuc = strtotime($request->thoi_gian_di);
-        $loaiPhong = Loai_phong::find($loaiPhongId['id']);
-        $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
-        $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
+
+
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
-        {
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
-        }else if($khuyenMai->loai_phong_id != $loaiPhongId['id'] || !$khuyenMai){
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
-        }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
+            $ngay_bat_dau = strtotime($request->thoi_gian_den);
+            $ngay_ket_thuc = strtotime($request->thoi_gian_di);
+            $loaiPhong = Loai_phong::find($loaiPhongId['id']);
+            $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
+            $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
+            foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+            if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
+            {
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
+            }else if($khuyenMai->loai_phong_id != $loaiPhongId['id'] || !$khuyenMai){
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
+            }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
+            }
+            $tong_tien = $tinh_tien+$tong_tien;
+            }
+            $datPhong->update([
+                'tong_tien' => $tong_tien
+            ]);
         }
-        $tong_tien = $tinh_tien+$tong_tien;
-        }
-        $datPhong->update([
-            'tong_tien' => $tong_tien
-        ]);
 
 
 
@@ -255,6 +259,8 @@ class DatPhongController extends Controller
 
             $tongTienMoi = $tongTienDatPhong;
         }
+
+
         // Tạo một chi tiết đặt phòng và lưu tổng giá trị của các dịch vụ
         ChiTietDatPhong::create([
             'dat_phong_id' => $datPhong->id,
