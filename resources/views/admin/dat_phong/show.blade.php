@@ -20,15 +20,27 @@
             </div>
 
             <div class="card-body">
+                @if($datPhong->ho_ten == null && $datPhong->so_dien_thoai == null)
                 <div class="">
                     <h5 class="fw-bold">Thông tin khách hàng</h5>
                     <p>KHÁCH HÀNG:<span class="fw-bold"> {{$datPhong->user->ten_nguoi_dung}}</span></p>
                     <p>EMAIL: <span class="fw-bold">{{$datPhong->user->email}}</span></p>
-                    <p>SỐ ĐIỆN THOẠI: <span class="fw-bold">{{$datPhong->user->so_dien_thoai}}</span></p>
+                    <p>SỐ ĐIỆN THOẠI: <span class="fw-bold">{{$datPhong->user-> so_dien_thoai}}</span></p>
                     <p>THỜI GIAN ĐẾN: <span class="fw-bold">{{date("d-m-Y", strtotime($datPhong->thoi_gian_den))}}</span></p>
                     <p>THỜI GIAN ĐI: <span class="fw-bold">{{date("d-m-Y", strtotime($datPhong->thoi_gian_di))}}</span></p>
                     <p>TRẠNG THÁI: <span class="{{ $datPhong->trang_thai ? 'badge text-bg-success' : 'badge text-bg-danger' }} fw-bold">{{ $datPhong->trang_thai ? 'Xác nhận' : 'Chưa xác nhận' }}</span></p>
                 </div>
+                @else
+                <div class="">
+                    <h5 class="fw-bold">Thông tin khách hàng</h5>
+                    <p>KHÁCH HÀNG:<span class="fw-bold"> {{$datPhong->ho_ten}}</span></p>
+                    <p>EMAIL: <span class="fw-bold">{{$datPhong->user->email}}</span></p>
+                    <p>SỐ ĐIỆN THOẠI: <span class="fw-bold">{{$datPhong->so_dien_thoai}}</span></p>
+                    <p>THỜI GIAN ĐẾN: <span class="fw-bold">{{date("d-m-Y", strtotime($datPhong->thoi_gian_den))}}</span></p>
+                    <p>THỜI GIAN ĐI: <span class="fw-bold">{{date("d-m-Y", strtotime($datPhong->thoi_gian_di))}}</span></p>
+                    <p>TRẠNG THÁI: <span class="{{ $datPhong->trang_thai ? 'badge text-bg-success' : 'badge text-bg-danger' }} fw-bold">{{ $datPhong->trang_thai ? 'Xác nhận' : 'Chưa xác nhận' }}</span></p>
+                </div>
+                @endif
                 <div class="">
                     <h5 class="fw-bold">Thông tin phòng:</h5>
                     <table class="table">

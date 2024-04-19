@@ -20,6 +20,8 @@ class DatPhong extends Model
     protected $fillable = [
         'user_id',
         'loai_phong_id',
+        'ho_ten',
+        'so_dien_thoai',
         'phong_id',
         'don_gia',
         'so_luong_nguoi',
@@ -67,7 +69,7 @@ public function setThoiGianDiAttribute($value)
         return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
 
-  
+
 
 
     public function phongs()

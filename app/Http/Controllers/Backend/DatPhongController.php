@@ -159,6 +159,8 @@ class DatPhongController extends Controller
 
         $datPhong=DatPhong::create([
             'user_id'=> $request->user_id,
+            'ho_ten'=> $request->ho_ten,
+            'so_dien_thoai'=>$request->so_dien_thoai,
             'so_luong_nguoi'=>$request->so_luong_nguoi,
             'thoi_gian_den'=>$request->thoi_gian_den,
             'thoi_gian_di'=>$request->thoi_gian_di,

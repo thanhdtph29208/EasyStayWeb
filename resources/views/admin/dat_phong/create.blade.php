@@ -50,21 +50,17 @@
                                 <span class="text-danger error-user_id"></span>
                             </div>
 
-                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                <label for="loai_phong_id">Loại Phòng</label>
-                                <select name="loai_phong_id" id="loai_phong_id" class="form-control">
-                                    @foreach ($loai_phong as $id => $ten)
-                                    <option value="{{$id}}">{{$ten}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger error-loai_phong_id"></span>
-                            </div> -->
+                            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <label for="ho_ten">Họ tên</label>
+                                <input type="text" class="form-control" name="ho_ten" id="ho_ten">
+                                <span class="text-danger error-ho_ten"></span>
+                            </div>
 
-                            <!-- <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                <label for="so_luong_phong">Số Lượng phòng</label>
-                                <input type="number" class="form-control" name="so_luong_phong" id="so_luong_phong" value="0" min="0">
-                                <span class="text-danger error-so_luong_phong"></span>
-                            </div> -->
+                            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <label for="so_dien_thoai">Số điện thoại</label>
+                                <input type="text" class="form-control" name="so_dien_thoai" id="so_dien_thoai">
+                                <span class="text-danger error-so_dien_thoai"></span>
+                            </div>
 
                             <div id="dynamic-form">
                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
