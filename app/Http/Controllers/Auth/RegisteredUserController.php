@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
             'gioi_tinh' => ['nullable'],
             'ngay_sinh' => ['nullable'],
             'anh'=>['nullable'],
-            'so_dien_thoai',
+            'so_dien_thoai'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
         ]);
 
         $user = User::create([

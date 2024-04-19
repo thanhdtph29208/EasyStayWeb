@@ -39,7 +39,7 @@
                             @csrf
 
                             <div class="form-group mx-auto ">
-                                <label for="user_id_input">Email Khách Hàng</label>
+                                <label for="user_id_input">Email người đặt</label><span style="color: red;"> *</span>
                                 <input type="text" id="user_id_input" class="form-control" list="user">
                                 <input id="user_id" name="user_id" hidden>
                                 <datalist id="user">
@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="form-group mt-3 mx-auto">
-                                <label for="email">Email</label>
+                                <label for="email">Email khách hàng</label>
                                 <input type="text" class="form-control" name="email" id="email">
                                 <span class="text-danger error-email"></span>
                             </div>
@@ -70,7 +70,7 @@
 
                             <div id="dynamic-form">
                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                    <label for="loai_phong_ids_{{$i}}">Loại Phòng</label>
+                                    <label for="loai_phong_ids_{{$i}}">Loại Phòng</label><span style="color: red;"> *</span>
                                     <select name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control">
                                         @foreach ($loai_phong as $id => $ten)
                                         <option value="{{$id}}">{{$ten}}</option>
@@ -80,7 +80,7 @@
                                 </div>
 
                                 <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                                    <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label>
+                                    <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label><span style="color: red;"> *</span>
                                     <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
                                     <span class="text-danger error-so_luong_phong"></span>
                                 </div>
@@ -88,18 +88,18 @@
 
                             <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
                             <div class="form-group mt-3 mx-auto ">
-                                <label for="so_luong_nguoi">Số Lượng người</label>
+                                <label for="so_luong_nguoi">Số Lượng người</label><span style="color: red;"> *</span>
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
                             <div>
                                 <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
-                                    <label for="thoi_gian_den">Thời gian đến</label>
+                                    <label for="thoi_gian_den">Thời gian đến</label><span style="color: red;"> *</span>
                                     <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
                                     <span class="text-danger error-thoi_gian_den"></span>
                                 </div>
                                 <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
-                                    <label for="thoi_gian_di">Thời gian đi</label>
+                                    <label for="thoi_gian_di">Thời gian đi</label><span style="color: red;"> *</span>
                                     <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" min="" onchange="setMinDate()">
                                     <span class="text-danger error-thoi_gian_di"></span>
                                 </div>
@@ -116,7 +116,7 @@
                                 <span class="text-danger error-trn_khuyen_mai_id"></span>
                             </div>
                             <div class="form-group mt-3 mx-auto ">
-                                <label for="payment">Payment</label>
+                                <label for="payment">Payment</label><span style="color: red;"> *</span>
                                 <select name="payment" id="payment" class="form-control">
                                     <option value="Offline">Offline</option>
                                 </select>
@@ -147,7 +147,7 @@
         var form = document.getElementById('dynamic-form');
         var html = `
              <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                 <label for="loai_phong_ids_${i}">Loại Phòng</label>
+                 <label for="loai_phong_ids_${i}">Loại Phòng</label><span style="color: red;"> *</span>
                  <select name="loai_phong_ids[${i}][id]" id="loai_phong_ids_${i}" class="form-control" list="loai_phong">
                      @foreach ($loai_phong as $id => $ten)
                          <option value="{{$id}}">{{$ten}}</option>
@@ -157,7 +157,7 @@
              </div>
 
              <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
-                 <label for="so_luong_phong_${i}">Số Lượng phòng</label>
+                 <label for="so_luong_phong_${i}">Số Lượng phòng</label><span style="color: red;"> *</span>
                  <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
                  <span class="text-danger error-so_luong_phong"></span>
              </div>
