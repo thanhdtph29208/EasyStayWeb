@@ -35,7 +35,7 @@ class DatPhongController extends Controller
 
     public function index(Request $request, DatPhongDataTable $datatables)
     {
-      
+
         // $datphong = DatPhong::query()->latest()->paginate(7);
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
     }
@@ -46,22 +46,22 @@ class DatPhongController extends Controller
         if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
             $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
             $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
-        
+
             $dataTableQuery->whereBetween('thoi_gian_den', [$from, $to]);
         }
-        
 
-        
+
+
         if ($request->has('status') && $request->status != 2) {
             $dataTableQuery->where('trang_thai','=',$request->status);
         }
-      
+
         if ($request->has('create_date_time') && $request->filled('create_date_time')) {
             $create_date_time = Carbon::createFromFormat('Y-m-d', $request->get('create_date_time'));
             $dataTableQuery->where('created_at','>=',$create_date_time);
         }
         $datphong = $dataTableQuery->get();
-     
+
         return Datatables::of($datphong)
         ->addColumn('action', 'datphong.action')
         ->addColumn('ten_khach_hang', function($query){
@@ -207,7 +207,8 @@ class DatPhongController extends Controller
         )
         LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
         ");
-        $datPhong->phongs()->attach($phongIds);
+        foreach($phongIds as $phongId)
+        $datPhong->phongs()->attach($phongId);
         }
         $ngay_bat_dau = strtotime($request->thoi_gian_den);
         $ngay_ket_thuc = strtotime($request->thoi_gian_di);
