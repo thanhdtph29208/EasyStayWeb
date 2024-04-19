@@ -150,10 +150,14 @@ class DatPhongController extends Controller
         }
         //dd($request);
         $request->validate([
-            'ho_ten' =>'nullable|string',
-            'loai_phong_ids' => 'required|array',
-            'loai_phong_ids.*.id' => 'required|numeric',
-            'loai_phong_ids.*.so_luong_phong' => 'required|numeric|min:0',
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'ho_ten' =>'nullable|string|max:255',
+            'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+            'so_luong_nguoi' => 'numeric|integer',
+            'thoi_gian_den' => 'date|required',
+            'thoi_gian_di' => 'date|required',
+            'khuyen_mai_id' => 'nullable',
+            'payment' => 'required',
             'ghi_chu' => 'nullable|string',
         ]);
         // dd($request);
@@ -332,12 +336,9 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 
-        // $request->validate([
-        //     'dich_vu_ids' => 'required|array',
-        //     'dich_vu_ids.*.id' => 'required|numeric',
-        //     'dich_vu_ids.*.so_luong' => 'required|numeric|min:0',
-        //     'ghi_chu' => 'nullable|string',
-        // ]);
+        $request->validate([
+            'ghi_chu' => 'nullable|string',
+        ]);
         // Tính toán tổng tiền cho các dịch vụ
         // Xóa các dịch vụ hiện có của DatPhong trước khi thêm mới
         $datPhong->dichVus()->detach();
