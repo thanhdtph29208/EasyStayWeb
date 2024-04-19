@@ -149,16 +149,18 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         //dd($request);
-        // $request->validate([
-        //     'loai_phong_ids' => 'required|array',
-        //     'loai_phong_ids.*.id' => 'required|numeric',
-        //     'loai_phong_ids.*.so_luong_phong' => 'required|numeric|min:0',
-        //     'ghi_chu' => 'nullable|string',
-        // ]);
+        $request->validate([
+            'ho_ten' =>'nullable|string',
+            'loai_phong_ids' => 'required|array',
+            'loai_phong_ids.*.id' => 'required|numeric',
+            'loai_phong_ids.*.so_luong_phong' => 'required|numeric|min:0',
+            'ghi_chu' => 'nullable|string',
+        ]);
         // dd($request);
 
         $datPhong=DatPhong::create([
             'user_id'=> $request->user_id,
+            'email'=> $request->email,
             'ho_ten'=> $request->ho_ten,
             'so_dien_thoai'=>$request->so_dien_thoai,
             'so_luong_nguoi'=>$request->so_luong_nguoi,

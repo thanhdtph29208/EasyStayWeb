@@ -20,6 +20,7 @@ class DatPhong extends Model
     protected $fillable = [
         'user_id',
         'loai_phong_id',
+        'email',
         'ho_ten',
         'so_dien_thoai',
         'phong_id',
