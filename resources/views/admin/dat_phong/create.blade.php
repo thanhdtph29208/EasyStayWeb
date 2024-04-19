@@ -50,6 +50,12 @@
                                 <span class="text-danger error-user_id"></span>
                             </div>
 
+                            <div class="form-group mt-3 mx-auto">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" name="email" id="email">
+                                <span class="text-danger error-email"></span>
+                            </div>
+
                             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
                                 <label for="ho_ten">Họ tên</label>
                                 <input type="text" class="form-control" name="ho_ten" id="ho_ten">
