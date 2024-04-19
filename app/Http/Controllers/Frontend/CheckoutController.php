@@ -50,7 +50,7 @@ class CheckoutController extends Controller
         $request['cart_total'] = (float)$request->cart_total;
         // var_dump($request->cart_total);
         $request->validate([
-            'order_sdt' => ['required', 'min:9'],
+            'so_dien_thoai' => ['required', 'min:9'],
         ]);
 
 
@@ -58,7 +58,7 @@ class CheckoutController extends Controller
 
             $vnpayRequest = [
                 'cart_total' => (float)$request->cart_total,
-                'order_sdt' => $request->order_sdt,
+                'so_dien_thoai' => $request->so_dien_thoai,
             ];
             return redirect()->route('vnpay_payment', [$request])->with($vnpayRequest);
             // return $this->checkoutSuccess1($request);
@@ -278,7 +278,7 @@ class CheckoutController extends Controller
         $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
         // $datPhong->payment = $request->payment;
         $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
-        $datPhong->order_sdt = $request->order_sdt;
+        $datPhong->so_dien_thoai = $request->so_dien_thoai;
         $datPhong->so_luong_phong = $soLuongPhong;
         $datPhong->so_luong_nguoi = $soLuongNguoi;
 
