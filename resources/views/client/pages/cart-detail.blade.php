@@ -191,7 +191,7 @@
                     }
                 }
             })
-        })
+        });
 
         $('.room-decrement').on('click', function() {
             let input = $(this).siblings('.phong-qty')

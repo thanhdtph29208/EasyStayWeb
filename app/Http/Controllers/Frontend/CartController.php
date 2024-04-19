@@ -136,7 +136,6 @@ class CartController extends Controller
         return $total;
     }
 
-
     public function getCartCount()
     {
         return Cart::content()->count();
@@ -152,6 +151,8 @@ class CartController extends Controller
     }
 
     public function applyCoupon(Request $request){
+        dd(123);
+        dd($request->all());
         if($request -> coupon_code == null){
             return response([
                 'status' => 'error',
@@ -197,7 +198,6 @@ class CartController extends Controller
             'status' => 'success',
             'message' => 'Đã áp dụng khuyến mãi',
         ]);
-
     }
 
     public function couponCalc(){
@@ -223,7 +223,5 @@ class CartController extends Controller
                 return 0;
             }
         }
-
     }
-
 }
