@@ -1,66 +1,69 @@
 @extends('client.layouts.master')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+
 @section('content')
+<section class="relative table w-full items-center py-10 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-200/20 to-slate-900"></div>
+    <div class="container relative">
+        <div class=" pb-8 text-center mt-10">
+         
+        </div><!--end grid-->
+    </div><!--end container-->
+    <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
+     
+    </div>
+</section><!--end section-->
 
 <div class="container mx-auto py-8 ">
     <!-- Grid with Two Columns -->
 
-    <div class="grid  mt-28">
+    <div class="grid ">
         <!-- First Column -->
         <h3 class="text-3xl leading-normal tracking-wider font-semibold mb-4 ">Lịch sử đặt phòng </h3>
-        <div class="bg-white rounded-lg  shadow-md">
+        <div class="">
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-800">
-        <thead class="text-base text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div class="">
+        <table id="example" class="table table-striped">
+        <thead>
             <tr>
-                <th scope="col" class="px-8 py-3">
-                    Khách hàng
-                </th>
-                <th scope="col" class="px-8 py-3">
-                    Email
-                </th>
-                <th scope="col" class="px-8 py-3">
-                    Số điện thoại
-                </th>
-                <th scope="col" class="px-8 py-3">
-                    Loại Phòng
-                </th>
-                <th scope="col" class="px-8 py-3">
-                    Tổng tiền
-                </th>
-                <th scope="col" class="px-8 py-3">
-                   Thao tác
-                </th>
+                <th>Tên khách hàng</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Loại Phòng</th>
+                <th>Tổng tiền</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
-    
         <tbody>
         @foreach($userBookings as $DatPhong)
-            
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td class="px-8 py-4">
-                {{ $DatPhong->ho_ten}}
-                </td>
-                <td class="px-8 py-4">
-                {{ $DatPhong->email  }}
-                </td>
-                <td class="px-8 py-4">
-                {{ $DatPhong->so_dien_thoai }}
-                </td>
-                <td class="px-8 py-4">
-                {{ $DatPhong->Loai_phong->ten }}
-                </td>
-        
-                <td class="px-8 py-4">
-                {{ $DatPhong->tong_tien }} VNĐ
-                </td>
-                <td class="px-8 py-4 text-right">
-                    <a href="{{ route('chi_tiet_lsphong', $DatPhong->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Xem chi tiết đơn đặt</a>
-                </td>
-            </tr>
-            @endforeach
+    @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null && $DatPhong->Loai_phong !== null  && $DatPhong->Phong !== null)
+        <tr>
+            <td>{{ $DatPhong->ho_ten }}</td>
+            <td>{{ $DatPhong->email }}</td>
+            <td>{{ $DatPhong->so_dien_thoai }}</td>
+            <td>{{ $DatPhong->Loai_phong->ten }}</td>
+            <td>
+                <?php
+                    $tong_tien = $DatPhong->tong_tien;
+                    $tong_tien_format = number_format($tong_tien, 0, ',', '.');
+                    echo $tong_tien_format . " VNĐ";
+                ?>
+            </td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ route('chi_tiet_lsphong', $DatPhong->id) }}" class="no-underline font-medium text-blue-600 dark:text-blue-500 hover:underline">Xem chi tiết đơn đặt</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    @endif
+@endforeach
 
         </tbody>
+      
+
     </table>
 </div>
         </div>
@@ -72,4 +75,12 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
+<script>
+    new DataTable('#example');
+</script>
 @endsection

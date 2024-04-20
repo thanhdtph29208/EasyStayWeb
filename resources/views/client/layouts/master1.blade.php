@@ -150,20 +150,20 @@
 
                                     <li>
                                         <a href=" {{ route('client.pages.hoso') }}"
-                                            class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                            class="flex  no-underline	items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                             <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
                                         </a>
                                     </li>
 
                                 <li>
                                 <a href=" {{ route('client.pages.lich_su_dat_phong') }}"
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
                                     </a>
                                 </li>
                                 <li>
                                     <a href=""
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="settings" class="size-4 me-2"></i>Cài đặt
                                     </a>
                                 </li>

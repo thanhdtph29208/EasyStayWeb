@@ -46,7 +46,7 @@ class LichSuDatPhongController extends Controller
         return view('client.pages.chi_tiet_lsphong', compact('userBooking', 'thoi_gian_den', 'thoi_gian_di'));
     }
     
-    
+
     
     
 }
