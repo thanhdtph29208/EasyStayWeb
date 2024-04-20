@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail2" class="block text-sm font-medium mb-1">Số điện thoại</label>
-                        <input type="text" class="form-input w-full" id="order_sdt" required name="order_sdt">
+                        <input type="text" class="form-input w-full" id="so_dien_thoai" required name="so_dien_thoai">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Email</label>

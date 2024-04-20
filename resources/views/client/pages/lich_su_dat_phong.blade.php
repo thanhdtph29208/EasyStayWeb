@@ -20,10 +20,10 @@
                     Email
                 </th>
                 <th scope="col" class="px-8 py-3">
-                    Loại phòng
+                    Số điện thoại
                 </th>
                 <th scope="col" class="px-8 py-3">
-                    Số lượng phòng
+                    Loại Phòng
                 </th>
                 <th scope="col" class="px-8 py-3">
                     Tổng tiền
@@ -36,22 +36,23 @@
     
         <tbody>
         @foreach($userBookings as $DatPhong)
-
+            
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {{ $DatPhong->user->ten_nguoi_dung }}
-                </th>
+            <td class="px-8 py-4">
+                {{ $DatPhong->ho_ten}}
+                </td>
                 <td class="px-8 py-4">
-                {{ $DatPhong->user->email  }}
+                {{ $DatPhong->email  }}
+                </td>
+                <td class="px-8 py-4">
+                {{ $DatPhong->so_dien_thoai }}
                 </td>
                 <td class="px-8 py-4">
                 {{ $DatPhong->Loai_phong->ten }}
                 </td>
+        
                 <td class="px-8 py-4">
-                {{ $DatPhong->so_luong_phong }}
-                </td>
-                <td class="px-8 py-4">
-                {{ $DatPhong->tong_tien }}
+                {{ $DatPhong->tong_tien }} VNĐ
                 </td>
                 <td class="px-8 py-4 text-right">
                     <a href="{{ route('chi_tiet_lsphong', $DatPhong->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Xem chi tiết đơn đặt</a>

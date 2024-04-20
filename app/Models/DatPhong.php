@@ -71,6 +71,11 @@ public function setThoiGianDiAttribute($value)
     }
 
 
+    public function Phong()
+    {
+        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
+        return $this->belongsTo(Phong::class);
+    }
 
 
     public function phongs()
