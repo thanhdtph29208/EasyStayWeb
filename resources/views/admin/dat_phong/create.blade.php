@@ -56,20 +56,20 @@
                                 <span class="text-danger error-email"></span>
                             </div>
 
-                            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                            <div class="form-group mt-3 mx-auto">
                                 <label for="ho_ten">Họ tên</label>
                                 <input type="text" class="form-control" name="ho_ten" id="ho_ten">
                                 <span class="text-danger error-ho_ten"></span>
                             </div>
 
-                            <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                            <div class="form-group mt-3 mx-auto">
                                 <label for="so_dien_thoai">Số điện thoại</label>
                                 <input type="text" class="form-control" name="so_dien_thoai" id="so_dien_thoai">
                                 <span class="text-danger error-so_dien_thoai"></span>
                             </div>
 
                             <div id="dynamic-form">
-                                <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <div class="form-group mt-3 mx-auto">
                                     <label for="loai_phong_ids_{{$i}}">Loại Phòng</label><span style="color: red;"> *</span>
                                     <select name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control">
                                         @foreach ($loai_phong as $id => $ten)
@@ -79,7 +79,7 @@
                                     <span class="text-danger error-loai_phong_id_{{$i}}"></span>
                                 </div>
 
-                                <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+                                <div class="form-group mt-3 mx-auto">
                                     <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label><span style="color: red;"> *</span>
                                     <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
                                     <span class="text-danger error-so_luong_phong"></span>
@@ -93,12 +93,12 @@
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
                             <div>
-                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                <div class="form-group mt-3 mx-auto ">
                                     <label for="thoi_gian_den">Thời gian đến</label><span style="color: red;"> *</span>
                                     <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den">
                                     <span class="text-danger error-thoi_gian_den"></span>
                                 </div>
-                                <div class="form-group mt-3 mx-auto " style="display: inline-block; width:629px">
+                                <div class="form-group mt-3 mx-auto ">
                                     <label for="thoi_gian_di">Thời gian đi</label><span style="color: red;"> *</span>
                                     <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" min="" onchange="setMinDate()">
                                     <span class="text-danger error-thoi_gian_di"></span>
@@ -146,7 +146,7 @@
     document.getElementById('add-button').addEventListener('click', function() {
         var form = document.getElementById('dynamic-form');
         var html = `
-             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+             <div class="form-group mt-3 mx-auto">
                  <label for="loai_phong_ids_${i}">Loại Phòng</label><span style="color: red;"> *</span>
                  <select name="loai_phong_ids[${i}][id]" id="loai_phong_ids_${i}" class="form-control" list="loai_phong">
                      @foreach ($loai_phong as $id => $ten)
@@ -156,7 +156,7 @@
                  <span class="text-danger error-loai_phong_ids_${i}"></span>
              </div>
 
-             <div class="form-group mt-3 mx-auto" style="display: inline-block; width:629px">
+             <div class="form-group mt-3 mx-auto">
                  <label for="so_luong_phong_${i}">Số Lượng phòng</label><span style="color: red;"> *</span>
                  <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
                  <span class="text-danger error-so_luong_phong"></span>

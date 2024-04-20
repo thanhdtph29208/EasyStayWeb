@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
 class DatPhongDataTable extends DataTable
 {
 
-  
+
     /**
      * Build the DataTable class.
      *
@@ -23,16 +23,28 @@ class DatPhongDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))
+            return (new EloquentDataTable($query))
             ->addColumn('action', 'datphong.action')
             ->addColumn('ten_khach_hang', function($query){
-                return $query->user->ten_nguoi_dung;
+                if($query->ho_ten == null){
+                    return $query->user->ten_nguoi_dung;
+                }else{
+                    return $query->ho_ten;
+                }
             })
             ->addColumn('email', function($query){
-                return $query->user->email;
+                if($query->email == null){
+                    return $query->user->email;
+                }else{
+                    return $query->email;
+                }
             })
             ->addColumn('so_dien_thoai', function($query){
-                return $query->user->so_dien_thoai;
+                if($query->so_dien_thoai == null){
+                    return $query->user->so_dien_thoai;
+                }else{
+                    return $query->so_dien_thoai;
+                }
             })
             // ->addColumn('don_gia', function($query){
             //     return $query->loai_phong->gia;

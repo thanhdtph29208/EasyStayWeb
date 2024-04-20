@@ -48,7 +48,6 @@
 </head>
 
 <body class="dark:bg-slate-900">
-
     {{-- Jquery --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -161,7 +160,7 @@
                         <button data-dropdown-toggle="dropdown" class="dropdown-toggle items-center" type="button">
                             <span
                                 class="size-8 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-md border border-red-500 bg-red-500 text-white">
-                                <img src="{{ Auth::user()->anh }}" class="rounded-md" alt="">
+                                <img src="{{ Storage::url(auth()->user()->anh) }}" class="rounded-md" alt="">
                             </span>
                         </button>
                         <!-- Dropdown menu -->
