@@ -31,8 +31,6 @@
                 <th>Tên khách hàng</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
-                <th>Thời gian đến</th>
-                <th>Thời gian đi</th>
                 <th>Tổng tiền</th>
                 <th>Thao tác</th>
             </tr>
@@ -46,8 +44,7 @@
             <td>{{ $DatPhong->ho_ten }}</td>
             <td>{{ $DatPhong->email }}</td>
             <td>{{ $DatPhong->so_dien_thoai }}</td>
-            <td>{{ $DatPhong->thoi_gian_den }}</td>
-            <td>{{ $DatPhong->thoi_gian_di }}</td>
+          
             <td>
                 <?php
                     $tong_tien = $DatPhong->tong_tien;
@@ -69,8 +66,7 @@
             <td>{{ $DatPhong->user->ten_nguoi_dung }}</td>
             <td>{{ $DatPhong->user->email }}</td>
             <td>{{ $DatPhong->user->so_dien_thoai }}</td>
-            <td>{{ $DatPhong->thoi_gian_den }}</td>
-            <td>{{ $DatPhong->thoi_gian_di }}</td>
+            
             <td>
                 <?php
                     $tong_tien = $DatPhong->tong_tien;
