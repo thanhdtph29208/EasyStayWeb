@@ -41,7 +41,6 @@ class CheckoutController extends Controller
             $so_luong_nguoi += $item->so_luong_nguoi;
         }
 
-
         // dd($totalQty);
         return view('client.pages.checkout', compact('cartItems', 'cartTotal', 'totalQty', 'so_luong_nguoi'));
     }
@@ -254,8 +253,7 @@ class CheckoutController extends Controller
         if ($request->get('vnp_ResponseCode') == '00') {
             $this->bookOnline($request);
             Cart::destroy();
-            route('sendMail');
-            return redirect()->route('home');
+            return redirect()->route('sendMail');
         }
     }
 
@@ -264,8 +262,7 @@ class CheckoutController extends Controller
         // if($isPaymentValid){
             $this->bookOnline($request);
             Cart::destroy();
-            route('sendMail');
-            return redirect()->route('home');
+            return redirect()->route('sendMail');
         // }
     }
 

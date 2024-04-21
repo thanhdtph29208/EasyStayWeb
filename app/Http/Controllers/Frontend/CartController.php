@@ -47,7 +47,7 @@ class CartController extends Controller
         $cartData['so_luong_nguoi'] = $request->so_luong_nguoi;
         $cartData['phong'] = $random_rooms;
         $cartData['options']['image'] = $loai_phong->anh;
-    
+
         // dd($cartData);
         // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
         if ($cartData['qty'] <= $weight) {
@@ -61,7 +61,7 @@ class CartController extends Controller
 
 
 
-    
+
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();
@@ -82,11 +82,11 @@ class CartController extends Controller
         // $ngayBatDau = $cartItems->min(function ($item) {
         //     return Carbon\Carbon::parse($item->ngay_bat_dau);
         // });
-        
+
         // $ngayKetThuc = $cartItems->max(function ($item) {
         //     return Carbon\Carbon::parse($item->ngay_ket_thuc);
         // });
-        
+
         // // Ensure that both $ngayBatDau and $ngayKetThuc are valid Carbon instances
         // if ($ngayBatDau && $ngayKetThuc) {
         //     $soNgay = $ngayKetThuc->diffInDays($ngayBatDau);
