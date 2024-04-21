@@ -50,15 +50,22 @@ class CheckoutController extends Controller
         $request['cart_total'] = (float)$request->cart_total;
         // var_dump($request->cart_total);
         $request->validate([
-            'so_dien_thoai' => ['required', 'min:9'],
+            'ho_ten' => ['required'],
+            'so_dien_thoai' => ['required', 'min:10'],
+            'email' => ['required', 'email'],
         ]);
-
+        // $ho_ten = $request->input('ho_ten');
+        // $so_dien_thoai = $request->input('so_dien_thoai');
+        // $email = $request->input('email');
 
         if ($request['payment'] == 1) {
 
             $vnpayRequest = [
                 'cart_total' => (float)$request->cart_total,
-                'so_dien_thoai' => $request->so_dien_thoai,
+                // 'ho_ten' => $ho_ten,
+                // 'so_dien_thoai' => $so_dien_thoai,
+                // 'email' => $email,
+
             ];
             return redirect()->route('vnpay_payment', [$request])->with($vnpayRequest);
             // return $this->checkoutSuccess1($request);
@@ -120,7 +127,7 @@ class CheckoutController extends Controller
         $partnerCode = 'MOMOBKUN20180529';
         $accessKey = 'klm05TvNBzhg7h7j';
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-        $orderInfo = "Thanh toán qua MoMo";
+        $orderInfo = $request->ho_ten . "~" . $request->so_dien_thoai . "~" . $request->email;
         $amount = (float)$request['cart_total'];
         $orderId = time() . "";
         $redirectUrl = "http://easystayweb.test/momo_callback";
@@ -174,7 +181,9 @@ class CheckoutController extends Controller
         $vnp_TmnCode = "AWNZRJM5"; //Mã website tại VNPAY 
         $vnp_HashSecret = "RPKSHDUMKYBXLNABFXEZSBHTYUWBWPNS"; //Chuỗi bí mật
         $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
-        $vnp_OrderInfo = 'Thanh toán đơn hàng';
+        $vnp_OrderInfo = $request->ho_ten . "~" . $request->so_dien_thoai . "~" . $request->email;
+        // $vnp_OrderType = $request->address;
+        // $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
         $vnp_Amount = (float)$request['cart_total'] * 100;
         $vnp_Locale = 'vn';
@@ -243,7 +252,7 @@ class CheckoutController extends Controller
     {
         if ($request->get('vnp_ResponseCode') == '00') {
             $this->bookOnline($request);
-            // Cart::remove();
+            Cart::destroy();
             return redirect()->route('home');
         }
     }
@@ -252,6 +261,7 @@ class CheckoutController extends Controller
         // $isPaymentValid = $this->verifyMoMoPayment($request);
         // if($isPaymentValid){
             $this->bookOnline($request);
+            Cart::destroy();
             return redirect()->route('home');
         // }
     }
@@ -275,23 +285,47 @@ class CheckoutController extends Controller
         $datPhong->thoi_gian_di = $ngayKetThuc;
         // $cartTotal = str_replace([' ', ',', 'VNĐ'], '', $request->cart_total);
         // $datPhong->tong_tien = (float) $cartTotal;
-        $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
-        // $datPhong->payment = $request->payment;
-        $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
-        $datPhong->so_dien_thoai = $request->so_dien_thoai;
+        $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : ($request['amount'] ? $request['amount'] : 0);
+
+        // $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
+        $datPhong->payment = $request['vnp_BankCode'] ? 'VNPay' : 'Momo';
+
+
+        // $datPhong->so_dien_thoai = $request->so_dien_thoai;
+        // $datPhong->ho_ten = $request->ho_ten;
+        // $datPhong->email = $request->email;
+
         $datPhong->so_luong_phong = $soLuongPhong;
         $datPhong->so_luong_nguoi = $soLuongNguoi;
 
-        // if ($request['vnp_OrderInfo']) {
-        //     $separate = explode('~', $request['vnp_OrderInfo']);
-        //     $datPhong->order_sdt = $separate[0];
-        // } else {
-        //     $datPhong->order_sdt = $request->telephone;
-        // }
+        if ($request['vnp_OrderInfo']) {
+            $separate = explode('~', $request['vnp_OrderInfo']);
+            $datPhong->ho_ten = $separate[0];
+            $datPhong->so_dien_thoai = $separate[1];
+            $datPhong->email = $separate[2];
+        } 
+
+
+        if ($request['orderInfo']) {
+            $separate = explode('~', $request['orderInfo']);
+            $datPhong->ho_ten = $separate[0];
+            $datPhong->so_dien_thoai = $separate[1];
+            $datPhong->email = $separate[2];
+        } 
+        
+
+        // dd($datPhong->so_dien_thoai);
 
         $datPhong->save();
 
-        $thanhtien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        if($request['vnp_Amount']){
+            $thanhtien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        }
+        if($request['amount']){
+            $thanhtien = $request['amount'] ? ($request['amount'] ) : $request->cart_total;
+        }
+
+        
 
         foreach (Cart::content() as $item) {
             $loaiPhongDat = new DatPhongLoaiPhong();

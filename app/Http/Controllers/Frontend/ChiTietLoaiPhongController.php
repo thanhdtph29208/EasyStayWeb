@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 
 
@@ -28,8 +30,8 @@ class ChiTietLoaiPhongController extends Controller
         $danh_gias = DanhGia::where('loai_phong_id', $id)->get();
         $khach_hangs = User::all();
         $trang_thai = Loai_phong::all();
-     
-        return view('client.pages.loai_phong.chitietloaiphong', compact('detail','khach_sans','danh_gias','khach_hangs','trang_thai', 'loaiPhongIds'));
+
+        return view('client.pages.loai_phong.chitietloaiphong', compact('detail', 'khach_sans', 'danh_gias', 'khach_hangs', 'trang_thai', 'loaiPhongIds'));
     }
 
     public function allRoom()
@@ -37,7 +39,6 @@ class ChiTietLoaiPhongController extends Controller
         $rooms = Loai_phong::all();
         return view('client.pages.loai_phong.loai_phong', compact('rooms'));
     }
-
 
     public function addCTLS(Request $request)
     {
@@ -64,25 +65,25 @@ class ChiTietLoaiPhongController extends Controller
         $cartData['price'] = $loai_phong->gia;
         $cartData['qty'] = $request->so_luong;
         $cartData['weight'] = $weight;
-        $cartData['ngay_bat_dau'] = $request->ngayBatDau;
-        $cartData['ngay_ket_thuc'] = $request->ngayKetThuc;
-        $cartData['so_luong_nguoi'] = $request->so_luong_nguoi;
+        $cartData['ngay_bat_dau'] = 1;
+        $cartData['ngay_ket_thuc'] = 2;
+        // $cartData['ngay_bat_dau'] = $request->ngayBatDau;
+        // $cartData['ngay_ket_thuc'] = $request->ngayKetThuc;
+        // $cartData['so_luong_nguoi'] = $request->so_luong_nguoi;
+        $cartData['so_luong_nguoi'] = 3;
         $cartData['phong'] = $random_rooms;
         $cartData['options']['image'] = $loai_phong->anh;
-    
+
         // dd($cartData);
         // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
         if ($cartData['qty'] <= $weight) {
             Cart::add($cartData);
-            return redirect()->route('client.pages.loai_phong.chitietloaiphong', ['id' => $loai_phong->id])
-            ->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);        
+            Toastr::success('Thêm vào giỏ hàng thành công', 'Thành công');
+            return redirect()->route('client.pages.loai_phong.chitietloaiphong', ['id' => $loai_phong->id]);
+            // ->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);        
         } else {
             return redirect()->route('kiem_tra_phong', ['loai_phong_id' => $loai_phong->id])
-                            ->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
+                ->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
         }
     }
-
-    
-
-   
 }

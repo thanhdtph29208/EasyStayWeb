@@ -21,19 +21,19 @@
                     <hr class="my-2 ">
                     @csrf
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="block text-sm font-medium mb-1">Họ và tên</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail1" value="{{ Auth::user()->ten_nguoi_dung }}" required name="name">
+                        <label for="ho_ten" class="block text-sm font-medium mb-1">Họ và tên</label>
+                        <input type="text" class="form-input w-full" id="ho_ten" value="{{ Auth::user()->ten_nguoi_dung }}" required name="ho_ten">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail2" class="block text-sm font-medium mb-1">Số điện thoại</label>
+                        <label for="so_dien_thoai" class="block text-sm font-medium mb-1">Số điện thoại</label>
                         <input type="text" class="form-input w-full" id="so_dien_thoai" required name="so_dien_thoai">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Email</label>
-                        <input type="text" class="form-input w-full" id="exampleInputEmail3" required name="address" value="{{ Auth::user()->email }}">
+                        <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                        <input type="text" class="form-input w-full" id="email" required name="email" value="{{ Auth::user()->email }}">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail3" class="block text-sm font-medium mb-1">Hình thức thanh
+                        <label for="payment" class="block text-sm font-medium mb-1">Hình thức thanh
                             toán</label>
                         <select class="form-select w-full" aria-label="Default select example" id="payment" name="payment">
                             <option value="1" name="billpayment">VNPay</option>
