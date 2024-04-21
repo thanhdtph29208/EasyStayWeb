@@ -27,27 +27,27 @@
         <table id="example" class="table table-striped">
         <thead>
             <tr>
+                <th>STT</th>
                 <th>Tên khách hàng</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
-                <th>Loại Phòng</th>
+                <th>Thời gian đến</th>
+                <th>Thời gian đi</th>
                 <th>Tổng tiền</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
+        <?php $i=1;$count = 0 ?>
         @foreach($userBookings as $DatPhong)
-    @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null)
+        @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null)
         <tr>
+            <td style="text-align: center;">{{ $i++ }}</td>
             <td>{{ $DatPhong->ho_ten }}</td>
             <td>{{ $DatPhong->email }}</td>
             <td>{{ $DatPhong->so_dien_thoai }}</td>
-            <td>
-                @foreach($ten_loai_phongs as $ten_loai_phong)
-                {{ $ten_loai_phong }}
-                <br>
-                @endforeach
-            </td>
+            <td>{{ $DatPhong->thoi_gian_den }}</td>
+            <td>{{ $DatPhong->thoi_gian_di }}</td>
             <td>
                 <?php
                     $tong_tien = $DatPhong->tong_tien;
@@ -63,8 +63,31 @@
                 </ul>
             </td>
         </tr>
-    @endif
-@endforeach
+        @else
+        <tr>
+            <td style="text-align: center;">{{ $i++ }}</td>
+            <td>{{ $DatPhong->user->ten_nguoi_dung }}</td>
+            <td>{{ $DatPhong->user->email }}</td>
+            <td>{{ $DatPhong->user->so_dien_thoai }}</td>
+            <td>{{ $DatPhong->thoi_gian_den }}</td>
+            <td>{{ $DatPhong->thoi_gian_di }}</td>
+            <td>
+                <?php
+                    $tong_tien = $DatPhong->tong_tien;
+                    $tong_tien_format = number_format($tong_tien, 0, ',', '.');
+                    echo $tong_tien_format . " VNĐ";
+                ?>
+            </td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ route('chi_tiet_lsphong', $DatPhong->id) }}" class="no-underline font-medium text-blue-600 dark:text-blue-500 hover:underline">Xem chi tiết đơn đặt</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        @endif
+        @endforeach
 
         </tbody>
 

@@ -26,24 +26,14 @@ class LichSuDatPhongController extends Controller
 
 
         $userBookings = DatPhong::where('user_id', auth()->id())->get();
-        $loaiPhongIds = collect();
-        foreach ($userBookings as $userBook){
-            $loaiPhongId = DatPhongLoaiPhong::where('dat_phong_id',$userBook->id)->pluck('loai_phong_id');
-            $loaiPhongIds = $loaiPhongIds->merge($loaiPhongId);
-        }
-        $ten_loai_phongs=collect();
-        foreach($loaiPhongIds as $loaiPhong){
-            $ten_loai_phong=Loai_phong::where('id', $loaiPhong)->pluck('ten');
-            $ten_loai_phongs = $ten_loai_phongs->merge($ten_loai_phong);
-        }
 
-        // dd($userBookings,$loaiPhongIds);
+        // dd($userBookings,$loaiPhongIds,$ten_loai_phongs,$loaiPhong);
         // Lấy thông tin của người dùng đang đăng nhập
         $user = auth()->user();
 
 
 
-        return view('client.pages.lich_su_dat_phong', compact('userBookings','ten_loai_phongs'));
+        return view('client.pages.lich_su_dat_phong', compact('userBookings'));
     }
 
     // Trong hàm show của controller

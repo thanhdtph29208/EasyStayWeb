@@ -77,7 +77,7 @@
                         <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                             <tr class="font-medium text-sm		  ">
                                 <th scope="col" class="px-6 py-3 ">
-                                    Loại Phòng
+                                    STT
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Tên Loại Phòng
@@ -88,10 +88,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $i = 1; ?>
                         @foreach($loaiPhong as $loai_phong)
                             <tr class="border-b border-gray-200 dark:border-gray-700 ">
                                 <td scope="row" class="px-6 py-4 ">
-                                    {{ $loai_phong[0] }}
+                                    {{ $i++ }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $loai_phong[1] }}
@@ -117,9 +118,11 @@
                             ?>
                         </h3>
                         <h3 style="padding-top: 3px;">Giá trị giảm:
-                            {{ $khuyen_mai[0]->gia_tri_giam }}
-                            @if( $khuyen_mai[0]->loai_giam_gia = 1 )
-                                %
+                            @if ($userBooking->khuyen_Mai !== null)
+                                {{ $khuyen_mai[0]->gia_tri_giam }}
+                                @if( $khuyen_mai[0]->loai_giam_gia = 1 )
+                                    %
+                                @endif
                             @endif
                         </h3>
                         <h3 style="padding-top: 3px;">Ghi chú:

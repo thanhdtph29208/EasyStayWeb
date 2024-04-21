@@ -69,9 +69,9 @@
                         @foreach($dichVu as $item)
                         <tr>
                             <td>{{ $item[0] }}</td>
-                            <td>{{ $item[1] }}</td>
+                            <td>{{ number_format($item[1], 0, ',', '.') }}</td>
                             <td>{{ $item[2] }}</td>
-                            <td>{{$item[1]*$item[2]}}</td>
+                            <td>{{number_format($item[1]*$item[2], 0, ',', '.')}}</td>
                         </tr>
                         @endforeach
 
@@ -98,14 +98,10 @@
                     @endif
                     <p>
                         Tổng tiền phòng:
-                        <span class="fw-bold">{{number_format($datPhong->tong_tien, 0, ',', '.')}}</span>
-                    </p>
-                    <p>
-                        Tổng thanh toán:
-                        <span>{{number_format($thanhTien, 0, ',', '.')}}</span>
+                        <span class="fw-bold">{{number_format($datPhong->tong_tien, 0, ',', '.')}} VNĐ</span>
                     </p>
                     <p>Hình thức thanh toán: <span class="fw-bold">{{$datPhong->payment}}</span></p>
-                    <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{number_format($datPhong->tong_tien, 0, ',', '.')}}</span> </p>
+                    <p class="text-danger fw-bold">TỔNG THANH TOÁN: <span>{{number_format($thanhTien, 0, ',', '.')}} VNĐ</span> </p>
                     </div>
                     <div style="text-align: center;">
                         <span>Cảm ơn quý khách đã sử dụng dịch vụ</span>
@@ -120,11 +116,11 @@
 
 
         </div>
+    </div>
         <a href="{{route('admin.dat_phong.index')}}" class="btn btn-danger mt-3">Quay lại</a>
         <button type="button" class="btn btn-primary mt-3" id="print">
             <i class="bi bi-printer"></i>
         </button>
-    </div>
 
 </main>
 @endsection
