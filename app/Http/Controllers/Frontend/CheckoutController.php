@@ -127,7 +127,7 @@ class CheckoutController extends Controller
         $partnerCode = 'MOMOBKUN20180529';
         $accessKey = 'klm05TvNBzhg7h7j';
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-        $orderInfo = "Thanh toán qua MoMo";
+        $orderInfo = $request->ho_ten . "~" . $request->so_dien_thoai . "~" . $request->email;
         $amount = (float)$request['cart_total'];
         $orderId = time() . "";
         $redirectUrl = "http://easystayweb.test/momo_callback";
@@ -252,7 +252,7 @@ class CheckoutController extends Controller
     {
         if ($request->get('vnp_ResponseCode') == '00') {
             $this->bookOnline($request);
-            // Cart::remove();
+            Cart::destroy();
             return redirect()->route('home');
         }
     }
@@ -261,6 +261,7 @@ class CheckoutController extends Controller
         // $isPaymentValid = $this->verifyMoMoPayment($request);
         // if($isPaymentValid){
             $this->bookOnline($request);
+            Cart::destroy();
             return redirect()->route('home');
         // }
     }
@@ -284,9 +285,11 @@ class CheckoutController extends Controller
         $datPhong->thoi_gian_di = $ngayKetThuc;
         // $cartTotal = str_replace([' ', ',', 'VNĐ'], '', $request->cart_total);
         // $datPhong->tong_tien = (float) $cartTotal;
-        $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
-        // $datPhong->payment = $request->payment;
-        $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
+        $datPhong->tong_tien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : ($request['amount'] ? $request['amount'] : 0);
+
+        // $datPhong->payment = $request['vnp_BankCode'] ? $request['vnp_BankCode'] : 'Momo';
+        $datPhong->payment = $request['vnp_BankCode'] ? 'VNPay' : 'Momo';
+
 
         // $datPhong->so_dien_thoai = $request->so_dien_thoai;
         // $datPhong->ho_ten = $request->ho_ten;
@@ -300,17 +303,29 @@ class CheckoutController extends Controller
             $datPhong->ho_ten = $separate[0];
             $datPhong->so_dien_thoai = $separate[1];
             $datPhong->email = $separate[2];
-        } else {
-            $datPhong->ho_ten = $request->ho_ten;
-            $datPhong->so_dien_thoai = $request->so_dien_thoai;
-            $datPhong->email = $request->email;
-        }
+        } 
+
+
+        if ($request['orderInfo']) {
+            $separate = explode('~', $request['orderInfo']);
+            $datPhong->ho_ten = $separate[0];
+            $datPhong->so_dien_thoai = $separate[1];
+            $datPhong->email = $separate[2];
+        } 
+        
 
         // dd($datPhong->so_dien_thoai);
 
         $datPhong->save();
 
-        $thanhtien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        if($request['vnp_Amount']){
+            $thanhtien = $request['vnp_Amount'] ? ($request['vnp_Amount'] / 100) : $request->cart_total;
+        }
+        if($request['amount']){
+            $thanhtien = $request['amount'] ? ($request['amount'] ) : $request->cart_total;
+        }
+
+        
 
         foreach (Cart::content() as $item) {
             $loaiPhongDat = new DatPhongLoaiPhong();
