@@ -149,17 +149,60 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         //dd($request);
-        $request->validate([
+
+        $rules = [
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
             'ho_ten' =>'nullable|string|max:255',
             'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
-            'so_luong_nguoi' => 'numeric|integer',
+            'so_luong_phong' => 'numeric|integer|min:0',
+            'so_luong_nguoi' => 'numeric|integer|min:0',
             'thoi_gian_den' => 'date|required',
             'thoi_gian_di' => 'date|required',
             'khuyen_mai_id' => 'nullable',
             'payment' => 'required',
             'ghi_chu' => 'nullable|string',
-        ]);
+        ];
+
+        $messages = [
+            'email.required' => 'Email không được bỏ trống',
+            'email.lowercase' => 'Email phải là chữ thường',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Email không quá 255 ký tự',
+
+            'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
+            'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
+
+            'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
+            'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
+            'so_luong.nguoi.min' => 'Số lượng người phải là 1 số dương',
+
+            'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
+            'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
+            'so_luong.phong.min' => 'Số lượng phong phải là 1 số dương',
+
+            'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
+            'thoi_gian_den.required' => 'Thời gian đến không được để trống',
+
+            'thoi_gian_di.date' => 'Thời gian đi không đúng định dạng ngày',
+            'thoi_gian_di.required' => 'Thời gian đi không được để trống',
+
+            'payment.required' => 'Hình thức thanh toán không được để trống',
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+        // $request->validate([
+        //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+        //     'ho_ten' =>'nullable|string|max:255',
+        //     'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+        //     'so_luong_nguoi' => 'numeric|integer',
+        //     'thoi_gian_den' => 'date|required',
+        //     'thoi_gian_di' => 'date|required',
+        //     'khuyen_mai_id' => 'nullable',
+        //     'payment' => 'required',
+        //     'ghi_chu' => 'nullable|string',
+        // ]);
         // dd($request);
 
         $datPhong=DatPhong::create([
@@ -320,8 +363,9 @@ class DatPhongController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DatPhong $datPhong)
+    public function edit(DatPhong $datPhong, Request $request)
     {
+    
         $j = 0;
         $so_luong_dich_vu = DichVu::count();
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
@@ -340,9 +384,27 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 
-        $request->validate([
+        $rules = [
+            'ten_dich_vu' => 'max:255|unique:dich_vus',
+            'so_luong' => 'min:0',
             'ghi_chu' => 'nullable|string',
-        ]);
+        ];
+
+        $messages = [
+            'ten_dich_vu.max' => 'Tên dịch vụ không được vượt quá 255 ký tự',
+            'ten_dich_vu.unique' => 'Tên dịch vụ đã tồn tại',
+            
+            // 'so_luong.numeric' => 'Số lượng phải là 1 số',
+            'so_luong.min' => 'Số lượng phải là 1 số dương',
+
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
+        // $request->validate([
+        //     'ghi_chu' => 'nullable|string',
+        // ]);
         // Tính toán tổng tiền cho các dịch vụ
         // Xóa các dịch vụ hiện có của DatPhong trước khi thêm mới
         $datPhong->dichVus()->detach();

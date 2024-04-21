@@ -69,7 +69,9 @@ Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.
 
 // Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
-Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
+Route::match(['get', 'post'], 'kiem_tra_loai_phong', [KiemTraPhongController::class, 'checkLoaiPhong'])->name('kiem_tra_loai_phong');
+
+// Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
 
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
 Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
