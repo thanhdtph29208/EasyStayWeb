@@ -296,8 +296,12 @@ class DatPhongController extends Controller
             $giaLoaiPhongs = $giaLoaiPhongs->merge($giaLoaiPhong);
         };
         $loaiPhong = $tenLoaiPhongs -> zip($giaLoaiPhongs,$so_luong_phong);
-
-
+        $phong_ids = DatPhongNoiPhong::where('dat_phong_id', $datPhong->id)->pluck('phong_id');
+        $tenPhongs = collect();
+        foreach($phong_ids as $phong_id){
+            $tenPhong = Phong::where('id', $phong_id)->pluck('ten_phong');
+            $tenPhongs = $tenPhongs->merge($tenPhong);
+        }
         $tenDichVus = collect();
         $giaDichVus = collect();
         $dich_vu_ids = DatPhongDichVu::where('dat_phong_id', $id)->pluck('dich_vu_id');
@@ -310,7 +314,7 @@ class DatPhongController extends Controller
         };
         $dichVu = $tenDichVus->zip($giaDichVus,$so_luong_dich_vu);
         $thanhTien = ChiTietDatPhong::where('dat_phong_id', $datPhong['id'])->pluck('thanh_tien')->first();
-        return $datatables->render('admin.dat_phong.show', compact('datPhong','loai_phong_ids','loaiPhong','dichVu','thongTinHotel','thanhTien'));
+        return $datatables->render('admin.dat_phong.show', compact('datPhong','loai_phong_ids','loaiPhong','dichVu','thongTinHotel','thanhTien','tenPhongs'));
     }
 
     /**

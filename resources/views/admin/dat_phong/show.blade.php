@@ -53,18 +53,26 @@
                         @foreach ($loaiPhong as $array)
                         <tr>
                             <td>{{ $array[0] }}</td>
-                            <td>{{ number_format($array[1], 0, '.', '.') }}</td>
+                            <td>{{ number_format($array[1], 0, ',', '.') }}</td>
                             <td>{{ $array[2] }}</td>
-                            <td>{{ number_format($array[1]*$array[2], 0, '.', '.') }}</td>
+                            <td>{{number_format($array[1]*$array[2], 0, ',', '.')}}</td>
                         </tr>
                         @endforeach
+                        <tr>
+                            <td>
+                            Tên Phòng:
+                            @foreach ($tenPhongs as $tenPhong)
+                                {{ $tenPhong }} |
+                            @endforeach
+                            </td>
+                        </tr>
                         @foreach($dichVu as $item)
-                            <tr>
-                                <td>{{ $item[0] }}</td>
-                                <td>{{ $item[1] }}</td>
-                                <td>{{ $item[2] }}</td>
-                                <td>{{$item[1]*$item[2]}}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $item[0] }}</td>
+                            <td>{{ $item[1] }}</td>
+                            <td>{{ $item[2] }}</td>
+                            <td>{{$item[1]*$item[2]}}</td>
+                        </tr>
                         @endforeach
 
                     </table>
@@ -90,14 +98,14 @@
                     @endif
                     <p>
                         Tổng tiền phòng:
-                        <span class="fw-bold">{{ number_format($datPhong->tong_tien, 0, '.', '.') }}</span>
+                        <span class="fw-bold">{{number_format($datPhong->tong_tien, 0, ',', '.')}}</span>
                     </p>
                     <p>
                         Tổng thanh toán:
-                        <span>{{ number_format($thanhTien, 0, '.', '.') }}</span>
+                        <span>{{number_format($thanhTien, 0, ',', '.')}}</span>
                     </p>
                     <p>Hình thức thanh toán: <span class="fw-bold">{{$datPhong->payment}}</span></p>
-                    <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{ number_format($datPhong->tong_tien, 0, '.', '.') }}</span> </p>
+                    <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{number_format($datPhong->tong_tien, 0, ',', '.')}}</span> </p>
                     </div>
                     <div style="text-align: center;">
                         <span>Cảm ơn quý khách đã sử dụng dịch vụ</span>

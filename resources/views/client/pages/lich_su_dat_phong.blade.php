@@ -7,11 +7,11 @@
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-200/20 to-slate-900"></div>
     <div class="container relative">
         <div class=" pb-8 text-center mt-10">
-         
+
         </div><!--end grid-->
     </div><!--end container-->
     <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
-     
+
     </div>
 </section><!--end section-->
 
@@ -37,12 +37,17 @@
         </thead>
         <tbody>
         @foreach($userBookings as $DatPhong)
-    @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null && $DatPhong->Loai_phong !== null  && $DatPhong->Phong !== null)
+    @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null)
         <tr>
             <td>{{ $DatPhong->ho_ten }}</td>
             <td>{{ $DatPhong->email }}</td>
             <td>{{ $DatPhong->so_dien_thoai }}</td>
-            <td>{{ $DatPhong->Loai_phong->ten }}</td>
+            <td>
+                @foreach($ten_loai_phongs as $ten_loai_phong)
+                {{ $ten_loai_phong }}
+                <br>
+                @endforeach
+            </td>
             <td>
                 <?php
                     $tong_tien = $DatPhong->tong_tien;
@@ -62,7 +67,7 @@
 @endforeach
 
         </tbody>
-      
+
 
     </table>
 </div>
