@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        
+
                         <label class="mt-3" for="trang_thai">Trạng thái: </label> <br>
                         <input type="radio" name="trang_thai" id="trang_thai1" @if ($khuyenMai->trang_thai == \App\Models\KhuyenMai::CHUA_AP_DUNG) checked @endif
                         value="{{\App\Models\KhuyenMai::CHUA_AP_DUNG}}">
@@ -105,8 +105,8 @@
                         <label for="trang_thai3">Kết thúc</label> <br><br>
                     </div>
                     <div class="d-flex justify-content-center">
-                    <button class="btn btn-success">Cập nhật</button>
-                    <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger ms-3">Quay lại</a>
+                        <button class="btn btn-success">Cập nhật</button>
+                        <a href="{{route('admin.khuyen_mai.index')}}" class="btn btn-danger ms-3">Quay lại</a>
                     </div>
                 </form>
             </div>

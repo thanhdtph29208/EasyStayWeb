@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('email')->nullable();
+            $table->string('ho_ten')->nullable();
+            $table->string('so_dien_thoai')->nullable();
             $table->unsignedBigInteger('loai_phong_id')->nullable();
             $table->foreign('loai_phong_id')->references('id')->on('loai_phongs');
             $table->unsignedBigInteger('phong_id')->nullable();
             $table->foreign('phong_id')->references('id')->on('phongs');
             $table->decimal('don_gia')->nullable();
-            $table->integer('so_luong_phong');
+            $table->integer('so_luong_phong')->nullable();
             $table->integer('so_luong_nguoi');
             $table->dateTime('thoi_gian_den');
             $table->dateTime('thoi_gian_di');
@@ -28,6 +31,7 @@ return new class extends Migration
             $table->foreign('dich_vu_id')->references('id')->on('dich_vus');
             $table->unsignedBigInteger('khuyen_mai_id')->nullable();
             $table->foreign('khuyen_mai_id')->references('id')->on('khuyen_mais');
+            $table->string('invoice')->nullable();
             $table->string('payment');
             $table->decimal('tong_tien')->nullable();
             $table->boolean('trang_thai')->default(0);

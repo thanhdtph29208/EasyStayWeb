@@ -16,14 +16,17 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ChiTietDatPhong;
+use App\Models\DatPhongDichVu;
 use App\Models\DatPhongLoaiPhong;
 use Illuminate\Support\Facades\DB;
 use App\Models\DatPhongNoiPhong;
+use App\Models\Hotel;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 
 use function Laravel\Prompts\alert;
 use function Livewire\store;
-
+use Yajra\DataTables\DataTables;
 
 class DatPhongController extends Controller
 {
@@ -32,8 +35,88 @@ class DatPhongController extends Controller
 
     public function index(Request $request, DatPhongDataTable $datatables)
     {
+
         // $datphong = DatPhong::query()->latest()->paginate(7);
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
+    }
+
+    public function search(Request $request, DatPhongDataTable $datatables){
+        $dataTableQuery = DatPhong::query()->with(['user']);
+
+        if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+
+            $dataTableQuery->whereBetween('thoi_gian_den', [$from, $to]);
+        }
+
+
+
+        if ($request->has('status') && $request->status != 2) {
+            $dataTableQuery->where('trang_thai','=',$request->status);
+        }
+
+        if ($request->has('create_date_time') && $request->filled('create_date_time')) {
+            $create_date_time = Carbon::createFromFormat('Y-m-d', $request->get('create_date_time'));
+            $dataTableQuery->where('created_at','>=',$create_date_time);
+        }
+        $datphong = $dataTableQuery->get();
+
+        return Datatables::of($datphong)
+        ->addColumn('action', 'datphong.action')
+        ->addColumn('ten_khach_hang', function($query){
+            return $query->user->ten_nguoi_dung;
+        })
+        ->addColumn('email', function($query){
+            return $query->user->email;
+        })
+        ->addColumn('so_dien_thoai', function($query){
+            return $query->user->so_dien_thoai;
+        })
+        // ->addColumn('don_gia', function($query){
+        //     return $query->loai_phong->gia;
+        // })
+        ->addColumn('trang_thai', function ($query) {
+            $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
+            $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
+            if ($query->trang_thai == 1) {
+                return $active;
+            } else {
+                return $inActive;
+            }
+        })
+        ->addColumn('action', function ($query) {
+            $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
+            <i class='bi bi-pen'></i>
+            </a>";
+            // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
+            // <i class='bi bi-image'></i>
+            // </a>";
+
+            // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
+            // <i class='bi bi-card-list'></i>
+            // </a>";
+            $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+            <i class='bi bi-archive'></i>
+            </a>";
+            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
+            // <i class='bi bi-houses-fill'></i>
+            // </a>";
+            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
+            // <i class='bi bi-chat-dots'></i>
+            // </a>";
+            $detailBtn = "<a href='" . route('admin.dat_phong.show', ['dat_phong' => $query->id]) . "' class='btn btn-secondary ms-2'>
+            <i class='bi bi-list-ul'></i>
+            </a>";
+
+
+
+            return $editBtn . $deleteBtn . $detailBtn ;
+        })
+        ->rawColumns(['ten_khach_hang','loai_phong_id','email','so_dien_thoai', 'phong_id','trang_thai','action'])
+        ->setRowId('id')
+        // ->rawColumns(['action'])
+        ->make(true);
     }
     public function create(DatPhong $datPhong)
     {
@@ -56,6 +139,7 @@ class DatPhongController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong','i'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
@@ -65,16 +149,67 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         //dd($request);
+
+        $rules = [
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'ho_ten' =>'nullable|string|max:255',
+            'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+            'so_luong_phong' => 'numeric|integer|min:0',
+            'so_luong_nguoi' => 'numeric|integer|min:0',
+            'thoi_gian_den' => 'date|required',
+            'thoi_gian_di' => 'date|required',
+            'khuyen_mai_id' => 'nullable',
+            'payment' => 'required',
+            'ghi_chu' => 'nullable|string',
+        ];
+
+        $messages = [
+            'email.required' => 'Email không được bỏ trống',
+            'email.lowercase' => 'Email phải là chữ thường',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Email không quá 255 ký tự',
+
+            'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
+            'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
+
+            'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
+            'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
+            'so_luong.nguoi.min' => 'Số lượng người phải là 1 số dương',
+
+            'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
+            'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
+            'so_luong.phong.min' => 'Số lượng phong phải là 1 số dương',
+
+            'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
+            'thoi_gian_den.required' => 'Thời gian đến không được để trống',
+
+            'thoi_gian_di.date' => 'Thời gian đi không đúng định dạng ngày',
+            'thoi_gian_di.required' => 'Thời gian đi không được để trống',
+
+            'payment.required' => 'Hình thức thanh toán không được để trống',
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
         // $request->validate([
-        //     'loai_phong_ids' => 'required|array',
-        //     'loai_phong_ids.*.id' => 'required|numeric',
-        //     'loai_phong_ids.*.so_luong_phong' => 'required|numeric|min:0',
+        //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+        //     'ho_ten' =>'nullable|string|max:255',
+        //     'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+        //     'so_luong_nguoi' => 'numeric|integer',
+        //     'thoi_gian_den' => 'date|required',
+        //     'thoi_gian_di' => 'date|required',
+        //     'khuyen_mai_id' => 'nullable',
+        //     'payment' => 'required',
         //     'ghi_chu' => 'nullable|string',
         // ]);
-
+        // dd($request);
 
         $datPhong=DatPhong::create([
             'user_id'=> $request->user_id,
+            'email'=> $request->email,
+            'ho_ten'=> $request->ho_ten,
+            'so_dien_thoai'=>$request->so_dien_thoai,
             'so_luong_nguoi'=>$request->so_luong_nguoi,
             'thoi_gian_den'=>$request->thoi_gian_den,
             'thoi_gian_di'=>$request->thoi_gian_di,
@@ -85,60 +220,70 @@ class DatPhongController extends Controller
         ]);
         $datPhongId = $datPhong->id;
         // Thêm dữ liệu vào bảng DatPhongLoaiPhong
-        // foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
-        //     // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        //     $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+            // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+            $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
 
-        //     // Thêm dữ liệu vào bảng liên kết
-        //     $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        // }
-
-        $phongIds = collect();
+            // Thêm dữ liệu vào bảng liên kết
+            $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        }
         $tong_tien=0;
+        // $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
+        // $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
-        // Thêm dữ liệu vào bảng liên kết
-        $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        $phongIdsForLoaiPhong = DB::table('phongs as p')
-        ->leftJoin('dat_phong_noi_phongs as dp', 'p.id', '=', 'dp.phong_id')
-        ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
-        // ->leftJoin('dat_phong_loai_phongs as dplp', 'd.id', '=', 'dplp.dat_phong_id')
-        ->Where('p.loai_phong_id', $loaiPhongId)
-        ->whereNull('dp.phong_id')
-        ->orWhere(function($query) use ($datPhong) {
-            $query->whereNotNull('dp.phong_id')
-                ->where('d.thoi_gian_di', '<=', $datPhong->thoi_gian_den);
-
-        })
-
-        ->limit($request->so_luong_phong[$key]['so_luong_phong'])
-        ->pluck('p.id');
-        $phongIds = $phongIds->merge($phongIdsForLoaiPhong);
-
-        $loaiPhong = Loai_phong::find($loaiPhongId['id']);
-        $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
-
-        $ngay_bat_dau = strtotime($request->thoi_gian_den);
-        $ngay_ket_thuc = strtotime($request->thoi_gian_di);
-        $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
-        // var_dump($loaiPhongId['id'],$khuyenMai->loai_phong_id);
-        if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
-        {
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
-        }else if($khuyenMai->loai_phong_id != $loaiPhongId['id']){
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
-        }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
-            $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
+        // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+        // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+        // // Thêm dữ liệu vào bảng liên kết
+        // $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
+        // $phongIds = Phong::where('loai_phong_id', $loaiPhongId['id'])
+        // ->whereDoesntHave('dat_phong_noi_phongs.dat_phongs', function ($query) {
+        //     $query->where('thoi_gian_di', '<=', '$datPhong->thoi_gian_di')
+        //         ->where('thoi_gian_den', '>=', '$datPhong->thoi_gian_den');
+        // })
+        // ->limit($request->so_luong_phong[$key]['so_luong_phong'])
+        // ->pluck('p.id');
+        // $datPhong->phongs()->attach($phongIds);
+        $phongIds = DB::select("
+        SELECT p.id
+        FROM phongs p
+        WHERE p.loai_phong_id = {$loaiPhongId['id']}
+        AND NOT EXISTS (
+            SELECT 1
+            FROM dat_phong_noi_phongs dp
+            LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
+            WHERE p.id = dp.phong_id
+            AND (
+                d.thoi_gian_di <= '{$datPhong->thoi_gian_di}' AND d.thoi_gian_den >= '{$datPhong->thoi_gian_den}'
+            )
+        )
+        LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
+        ");
+        foreach($phongIds as $phongId)
+        $datPhong->phongs()->attach($phongId);
         }
-        $tong_tien = $tinh_tien+$tong_tien;
-        }
-        $phongIds = $phongIds->take(array_sum(array_column($request->so_luong_phong, 'so_luong_phong')));
-        $datPhong->phongs()->attach($phongIds);
 
-        $datPhong->update([
-            'tong_tien' => $tong_tien
-        ]);
+
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+            $ngay_bat_dau = strtotime($request->thoi_gian_den);
+            $ngay_ket_thuc = strtotime($request->thoi_gian_di);
+            $loaiPhong = Loai_phong::find($loaiPhongId['id']);
+            $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
+            $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
+            foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+            if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
+            {
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
+            }else if($khuyenMai->loai_phong_id != $loaiPhongId['id'] || !$khuyenMai){
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
+            }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
+            }
+            $tong_tien = $tinh_tien+$tong_tien;
+            }
+            $datPhong->update([
+                'tong_tien' => $tong_tien
+            ]);
+        }
 
 
 
@@ -165,6 +310,8 @@ class DatPhongController extends Controller
 
             $tongTienMoi = $tongTienDatPhong;
         }
+
+
         // Tạo một chi tiết đặt phòng và lưu tổng giá trị của các dịch vụ
         ChiTietDatPhong::create([
             'dat_phong_id' => $datPhong->id,
@@ -174,63 +321,51 @@ class DatPhongController extends Controller
         return redirect()->route('admin.dat_phong.index')->with('success', 'Thêm mới dịch vụ thành công!');
     }
 
-    public function bookOnline(Request $request)
-    {
-        $loai_phong = Loai_phong::findOrFail($request->loai_phong_id);
-        $khuyen_mai = KhuyenMai::findOrFail($request->khuyen_mai_id);
-
-        $datPhong = DatPhong::create([
-            'user_id' => $request->user_id,
-            // 'loai_phong_id' => $request->loai_phong_id,
-            // 'loai_phong' => null,
-            'order_sdt' => $request->order_sdt,
-            // 'so_luong_phong' => $request->so_luong_phong,
-            'so_luong_nguoi' => null,
-            'thoi_gian_den' => $request->thoi_gian_den,
-            'thoi_gian_di' => $request->thoi_gian_di,
-            'dich_vu_id' => null,
-            'khuyen_mai_id' => null,
-            'tong_tien' => null,
-            'payment' => $request->payment,
-            'trang_thai' => 1,
-            'ghi_chu' => null,
-        ]);
-
-        foreach ($request->loai_phong as $index => $loai_phong_id) {
-            $loaiPhong = Loai_phong::find($loai_phong_id);
-            $so_luong = $request->so_luong[$index];
-            $gia_phong = $loaiPhong->gia;
-
-            $phong = DatPhong::create([
-                'dat_phong_id' => $datPhong->id,
-                'loai_phong_id' => $loai_phong_id,
-                'so_luong' => $so_luong,
-                'gia_phong' => $gia_phong,
-                // Các trường thông tin khác của phòng nếu cần
-            ]);
-        }
-
-        foreach ($request->loai_phong_id as $index => $loai_phong_id1) {
-            $datPhong->loaiPhongs()->attach($loai_phong_id1, ['so_luong' => $request->so_luong[$index]]);
-        }
-    }
-
-
     /**
      * Display the specified resource.
      */
-    public function show(ChiTietDatPhongDataTable $datatables, string $id)
+    public function show(ChiTietDatPhongDataTable $datatables, string $id, DichVu $dichVu)
     {
+        $thongTinHotel = Hotel::all();
+        $giaLoaiPhongs = collect();
         $datPhong = DatPhong::findOrFail($id);
-        $phongDat = DatPhongNoiPhong::where('dat_phong_id', $id)->with('phong')->get();
-        return $datatables->render('admin.dat_phong.show', compact('datPhong', 'phongDat'));
+        $loai_phong_ids =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('loai_phong_id');
+        $so_luong_phong =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
+        $tenLoaiPhongs = collect();
+        foreach($loai_phong_ids as $loai_phong_id){
+            $tenLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('ten');
+            $tenLoaiPhongs = $tenLoaiPhongs->merge($tenLoaiPhong);
+            $giaLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('gia');
+            $giaLoaiPhongs = $giaLoaiPhongs->merge($giaLoaiPhong);
+        };
+        $loaiPhong = $tenLoaiPhongs -> zip($giaLoaiPhongs,$so_luong_phong);
+        $phong_ids = DatPhongNoiPhong::where('dat_phong_id', $datPhong->id)->pluck('phong_id');
+        $tenPhongs = collect();
+        foreach($phong_ids as $phong_id){
+            $tenPhong = Phong::where('id', $phong_id)->pluck('ten_phong');
+            $tenPhongs = $tenPhongs->merge($tenPhong);
+        }
+        $tenDichVus = collect();
+        $giaDichVus = collect();
+        $dich_vu_ids = DatPhongDichVu::where('dat_phong_id', $id)->pluck('dich_vu_id');
+        $so_luong_dich_vu = DatPhongDichVu::where('dat_phong_id', $id)->pluck('so_luong');
+        foreach($dich_vu_ids as $dich_vu_id){
+            $tenDichVu = DichVu::where('id', $dich_vu_id)->pluck('ten_dich_vu');
+            $tenDichVus = $tenDichVus->merge($tenDichVu);
+            $giaDichVu = DichVu::Where('id', $dich_vu_id)->pluck('gia');
+            $giaDichVus = $giaDichVus->merge($giaDichVu);
+        };
+        $dichVu = $tenDichVus->zip($giaDichVus,$so_luong_dich_vu);
+        $thanhTien = ChiTietDatPhong::where('dat_phong_id', $datPhong['id'])->pluck('thanh_tien')->first();
+        return $datatables->render('admin.dat_phong.show', compact('datPhong','loai_phong_ids','loaiPhong','dichVu','thongTinHotel','thanhTien','tenPhongs'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DatPhong $datPhong)
+    public function edit(DatPhong $datPhong, Request $request)
     {
+    
         $j = 0;
         $so_luong_dich_vu = DichVu::count();
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
@@ -249,10 +384,25 @@ class DatPhongController extends Controller
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
 
+        $rules = [
+            'ten_dich_vu' => 'max:255|unique:dich_vus',
+            'so_luong' => 'min:0',
+            'ghi_chu' => 'nullable|string',
+        ];
+
+        $messages = [
+            'ten_dich_vu.max' => 'Tên dịch vụ không được vượt quá 255 ký tự',
+            'ten_dich_vu.unique' => 'Tên dịch vụ đã tồn tại',
+            
+            // 'so_luong.numeric' => 'Số lượng phải là 1 số',
+            'so_luong.min' => 'Số lượng phải là 1 số dương',
+
+
+        ];
+
+        $validated = $request->validate($rules, $messages);
+
         // $request->validate([
-        //     'dich_vu_ids' => 'required|array',
-        //     'dich_vu_ids.*.id' => 'required|numeric',
-        //     'dich_vu_ids.*.so_luong' => 'required|numeric|min:0',
         //     'ghi_chu' => 'nullable|string',
         // ]);
         // Tính toán tổng tiền cho các dịch vụ

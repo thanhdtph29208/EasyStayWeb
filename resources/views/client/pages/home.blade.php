@@ -2,8 +2,8 @@
 @section('content')
 
     <!-- Start Hero -->
-    <section class="swiper-slider-hero relative block h-screen" id="home">
-       
+    <section class="swiper-slider-hero relative block h-screen" >
+
         <div class="swiper-container absolute end-0 top-0 w-full h-full">
             <div class="swiper-wrapper">
                 @foreach ($banners as $key => $banner )
@@ -25,7 +25,7 @@
                         </div><!--end container-->
                     </div>
                 </div> <!-- end swiper-slide -->
-                @endforeach                  
+                @endforeach
             </div>
             <!-- end swiper-wrapper -->
 
@@ -34,7 +34,7 @@
             <!-- <div class="swiper-button-next bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div>
                 <div class="swiper-button-prev bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div> -->
         </div><!--end container-->
-      
+
     </section><!--end section-->
     <!-- Hero End -->
 <!-- Start -->
@@ -46,19 +46,10 @@
             @csrf
                 <div class="registration-form text-dark text-start">
                     <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                        <!-- <div>
-                            <label class="form-label font-medium text-slate-900 dark:text-white">Tìm kiếm:</label>
-                            <div class="relative mt-2">
-                                <i data-feather="search" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <input name="name" type="text" id="job-keyword" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0" placeholder="Tìm kiếm">
-                            </div>
-                        </div> -->
-
                         <div>
                             <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
                             <div class="relative mt-2">
                                 <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <!-- <input name="thoi_gian_den" required type="text" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 start" placeholder="Lựa chọn ngày đến"> -->
                                 <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
                             </div>
                         </div>
@@ -67,20 +58,16 @@
                             <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
                             <div class="relative mt-2">
                                 <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <!-- <input name="thoi_gian_di" required type="text" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi"> -->
                                 <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
                             </div>
                         </div>
-
-                        
-
                         <div class="lg:mt-[35px]">
                             <input type="submit" id="search-buy" name="search" class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" value="Tìm kiếm">
                         </div>
-                    </div><!--end grid-->
-                </div><!--end container-->
-            </form><!--end form-->
-        </div><!--end grid-->
+                    </div>
+                </div>
+            </form>
+        </div>
     </div><!--end container-->
 </section><!--end section-->
 <!-- End -->
@@ -123,7 +110,7 @@
                     <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">Nơi nên dừng chân: <br> EasyStayHotel</h3>
                     @foreach ($khach_sans as $khach_san )
                         <p class="text-slate-400 max-w-xl mb-6">{{$khach_san->mo_ta}}</p>
-                        
+
                     @endforeach
 
                     <a href="#" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đọc thêm<i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a>
@@ -148,9 +135,9 @@
             <div class="group rounded-md shadow dark:shadow-gray-700">
                 <div class="md:flex md:items-center">
                     <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
-                    
+
                     <img src="{{Storage::url($loai_phong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
-                    
+
                         <div class="absolute top-0 start-0 p-4">
                             <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">10% Off</span>
                         </div>
@@ -164,7 +151,7 @@
                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                         <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loai_phong->ten}}</a>
 
-                    
+
 
                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                             <h5 class="text-lg font-medium text-red-500">{{$loai_phong->gia}}</h5>
@@ -175,7 +162,7 @@
                     </div>
                 </div>
             </div><!--end content-->
-            @endforeach 
+            @endforeach
         </div><!--end grid-->
     </div><!--end container-->
 

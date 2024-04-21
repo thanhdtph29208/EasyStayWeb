@@ -48,7 +48,6 @@
 </head>
 
 <body class="dark:bg-slate-900">
-
     {{-- Jquery --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -115,12 +114,11 @@
             <!-- Logo container-->
 
             <a class="logo" href="<?= env('APP_URL') ?>/">
-                <span class="inline-block dark:hidden">
-                    <img src="assets/images/favicon.ico" class="h-7 l-dark" alt="ảnh logo">
-                    <img src="assets/images/favicon.ico" class="h-7 l-light" alt="ảnh logo">
+                <span class="inline-block ">
                 </span>
-                <img src="assets/images/favicon.ico" class="hidden dark:inline-block" alt="ảnh logo">
-            </a>
+                <img src="assets/images/favicon.ico" class="h-7 l-dark" alt="ảnh logo">
+                <img src="assets/images/favicon.ico" class="h-7 l-light" alt="ảnh logo">          
+                </a>
 
             <!-- End Logo container-->
 
@@ -163,7 +161,7 @@
                         <button data-dropdown-toggle="dropdown" class="dropdown-toggle items-center" type="button">
                             <span
                                 class="size-8 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-md border border-red-500 bg-red-500 text-white">
-                                <img src="{{ Auth::user()->anh }}" class="rounded-md" alt="">
+                                <img src="{{ Storage::url(auth()->user()->anh) }}" class="rounded-md" alt="">
                             </span>
                         </button>
                         <!-- Dropdown menu -->
@@ -173,27 +171,27 @@
 
                                 <li>
                                     <a href=" {{ route('client.pages.hoso') }}"
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href=" {{ route('client.pages.password-change') }}"
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="user" class="size-4 me-2"></i>Đổi mật khẩu
                                     </a>
                                 </li>
                                 <li>
                                 <a href=" {{ route('client.pages.lich_su_dat_phong') }}"
 
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline	items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
                                     </a>
                                 </li>
                                 <li>
                                     <a href=""
-                                        class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        class="flex no-underline items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                         <i data-feather="settings" class="size-4 me-2"></i>Cài đặt
                                     </a>
                                 </li>
@@ -235,7 +233,7 @@
 
 
 
-                    <li><a href="<?= env('APP_URL') ?>" class="sub-menu-item">Đặt phòng</a></li>
+                    <li><a href="<?= env('APP_URL') ?>/" class="sub-menu-item">Đặt phòng</a></li>
                     <li><a href="<?= env('APP_URL') ?>/loai_phong" class="sub-menu-item">Loại phòng</a></li>
 
                     <li><a href="<?= env('APP_URL') ?>/tin_tuc" class="sub-menu-item">Tin tức</a></li>

@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
             'gioi_tinh' => ['nullable'],
             'ngay_sinh' => ['nullable'],
             'anh'=>['nullable'],
-            'so_dien_thoai',
+            'so_dien_thoai'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
         ]);
 
         $user = User::create([
@@ -105,7 +105,15 @@ class RegisteredUserController extends Controller
         $data = $request->except('anh');
         if ($request->hasFile('anh')) {
             $data['anh'] = Storage::put('user', $request->file('anh'));
-
+            User::query()->update([
+                'anh' => $request->anh,
+                'ten_nguoi_dung' => $request->ten_nguoi_dung,
+                'so_dien_thoai' => $request->so_dien_thoai,
+                'dia_chi'=>$request->dia_chi,
+                'gioi_tinh'=>$request->gioi_tinh,
+                'ngay_sinh'=>$request->ngay_sinh,
+                'id_vai_tro'=>$request->id_vai_tro,
+            ]);
             $oldAnh = $user->anh;
             if($request->hasFile('anh') && (Storage::exists($oldAnh))){
                 Storage::delete($oldAnh);

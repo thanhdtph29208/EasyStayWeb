@@ -78,7 +78,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- ckeditor -->
-        <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+        {{-- <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script> --}}
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.3.0/classic/ckeditor.js"></script>
 
         @if ($errors->any())
         @foreach ($errors->all() as $error)

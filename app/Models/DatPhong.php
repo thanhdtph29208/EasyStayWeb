@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class DatPhong extends Model
@@ -19,8 +20,10 @@ class DatPhong extends Model
     protected $fillable = [
         'user_id',
         'loai_phong_id',
+        'email',
+        'ho_ten',
+        'so_dien_thoai',
         'phong_id',
-        'phong_ids',
         'don_gia',
         'so_luong_nguoi',
         'so_luong_phong',
@@ -33,15 +36,47 @@ class DatPhong extends Model
         'trang_thai',
         'ghi_chu',
     ];
+
+    protected $dates = [
+        'thoi_gian_den',
+        'thoi_gian_di',
+    ];
+
+    // Accessors
+    public function getThoiGianDenAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d 14:00:00');
+    }
+
+    public function getThoiGianDiAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d 12:00:00');
+    }
+
+    // Mutators
+    public function setThoiGianDenAttribute($value)
+{
+    $this->attributes['thoi_gian_den'] = Carbon::parse($value)->startOfDay()->addHours(12);
+}
+
+public function setThoiGianDiAttribute($value)
+{
+    $this->attributes['thoi_gian_di'] = Carbon::parse($value)->startOfDay()->addHours(14);
+}
+
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
     }
 
-    public function phong()
+
+    public function Phong()
     {
+        // return $this->belongsTo('App\Models\Loai_phong','loai_phong_id','id');
         return $this->belongsTo(Phong::class);
     }
+
 
     public function phongs()
     {
@@ -69,6 +104,12 @@ class DatPhong extends Model
     {
         return $this->belongsToMany(Loai_phong::class, 'dat_phong_loai_phongs', 'dat_phong_id', 'loai_phong_id')->withPivot('so_luong_phong');
     }
+
+    public function Loai_phong()
+    {
+        return $this->belongsTo(Loai_phong::class, 'loai_phong_id'); // 'user_id' là khóa ngoại trong bảng DatPhong tham chiếu đến id trong bảng User
+    }
+
 
     public function khuyen_mai()
     {

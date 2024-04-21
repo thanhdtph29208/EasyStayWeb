@@ -54,9 +54,9 @@ class Phong extends Model
         });
     }
 
-    public function Phong()
+    public function loaiPhong()
     {
-        return $this->belongsTo(Phong::class, 'id ');
+        return $this->belongsTo(Loai_phong::class, 'loai_phong_id');
     }
 
 }
