@@ -9,23 +9,6 @@
         ])
     </div>
 
-    <div class="mx-3">
-        @if (\Session::has('msg'))
-        <div class="alert alert-success">
-            {{ \Session::get('msg') }}
-        </div>
-        @endif
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-    </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="">

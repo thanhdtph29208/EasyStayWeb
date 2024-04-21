@@ -69,7 +69,9 @@ Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.
 
 // Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
-Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
+Route::match(['get', 'post'], 'kiem_tra_loai_phong', [KiemTraPhongController::class, 'checkLoaiPhong'])->name('kiem_tra_loai_phong');
+
+// Route::match(['get', 'post'], 'kiem_tra_phong1', [ChiTietLoaiPhongController::class, 'checkPhong1'])->name('kiem_tra_phong1');
 
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
 Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
@@ -93,6 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('client.pages.password-change');
     Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+    Route::get('chi_tiet_loai_phong/{loai_phong_id}', [LichSuDatPhongController::class, 'danhGiaLoaiPhong'])->name('danh_gia_loai_phong');
 
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
