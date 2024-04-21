@@ -53,9 +53,9 @@
                         @foreach ($loaiPhong as $array)
                         <tr>
                             <td>{{ $array[0] }}</td>
-                            <td>{{ $array[1] }}</td>
+                            <td>{{ number_format($array[1], 0, '.', '.') }}</td>
                             <td>{{ $array[2] }}</td>
-                            <td>{{$array[1]*$array[2]}}</td>
+                            <td>{{ number_format($array[1]*$array[2], 0, '.', '.') }}</td>
                         </tr>
                         @endforeach
                         @foreach($dichVu as $item)
@@ -90,14 +90,14 @@
                     @endif
                     <p>
                         Tổng tiền phòng:
-                        <span class="fw-bold">{{$datPhong->tong_tien}}</span>
+                        <span class="fw-bold">{{ number_format($datPhong->tong_tien, 0, '.', '.') }}</span>
                     </p>
                     <p>
                         Tổng thanh toán:
-                        <span>{{$thanhTien}}</span>
+                        <span>{{ number_format($thanhTien, 0, '.', '.') }}</span>
                     </p>
                     <p>Hình thức thanh toán: <span class="fw-bold">{{$datPhong->payment}}</span></p>
-                    <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{$datPhong->tong_tien}}</span> </p>
+                    <p class="text-danger fw-bold">TỔNG TIỀN: <span>{{ number_format($datPhong->tong_tien, 0, '.', '.') }}</span> </p>
                     </div>
                     <div style="text-align: center;">
                         <span>Cảm ơn quý khách đã sử dụng dịch vụ</span>
