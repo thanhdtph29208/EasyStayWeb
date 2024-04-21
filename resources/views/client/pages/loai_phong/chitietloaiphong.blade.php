@@ -1,26 +1,25 @@
 @extends('client.layouts.master')
 @section('content')
-<style>
+<!-- <style>
     /* CSS cho thông báo */
-.alert {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: #fff;
-    z-index: 9999;
-}
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+        z-index: 9999;
+    }
 
-.alert-success {
-    background-color: #28a745;
-}
+    .alert-success {
+        background-color: #28a745;
+    }
 
-.alert-error {
-    background-color: #dc3545;
-}
-
-</style>
+    .alert-error {
+        background-color: #dc3545;
+    }
+</style> -->
 <!-- Start Hero -->
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
@@ -108,45 +107,50 @@
                             <span class="text-slate-400 font-medium text-sm">{{ $detail->trang_thai ? 'Còn phòng' : 'Hết phòng'}}</span>
                         </div>
                     </li>
-                   
-                       
-                      
-                 
+
+
+
+
                 </ul>
 
-      
+
                 <div class="mt-6">
                     <h5 class="text-lg font-semibold">Mô tả phòng:</h5>
 
                     <p class="text-slate-400 mt-6">{{ $detail->mo_ta_dai }}</p>
                     <!-- <p class="text-slate-400 mt-3">The advantage of its Latin origin and the relative meaninglessness of Lorum Ipsum is that the text does not attract attention to itself or distract the viewer's attention from the layout.</p> -->
                 </div>
-                <div class=""> <h3>Thông tin phòng</h3>
+                <div class="">
+                    <h3>Thông tin phòng</h3>
+
+                    <div>
+
+                    </div>
 
 
-                <form action="{{ route('them_gio_hang_ct') }}" method="post">
-    @csrf
-    <input type="hidden" name="id" value="{{ $detail->id }}">
-    <label for="phong">Chọn phòng:</label>
-    <select name="phong[]" id="phong" multiple>
-        @foreach($detail->phongs as $phong)
-            @if ($phong->trang_thai == 1)
-                <option value="{{ $phong->id }}">{{ $phong->ten_phong }}</option>
-            @endif
-            
-        @endforeach
-    </select>
-    @if(session('status'))
-    <div id="notification" class="notification">
-        <p id="notificationMessage" class="alert alert-{{ session('status') == 'success' ? 'success' : 'error' }}">{{ session('message') }}</p>
-    </div>
-@endif
-    <input type="number" name="so_luong" id="so_luong" value="1" min="1">
-    <button type="submit">Đặt phòng</button>
+                    <form action="{{ route('them_gio_hang_ct') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $detail->id }}">
+                        <label for="phong">Chọn phòng:</label>
+                        <select name="phong[]" id="phong" multiple>
+                            @foreach($detail->phongs as $phong)
+                            @if ($phong->trang_thai == 1)
+                            <option value="{{ $phong->id }}">{{ $phong->ten_phong }}</option>
+                            @endif
 
-</form>
+                            @endforeach
+                        </select>
+                        @if(session('status'))
+                        <div id="notification" class="notification">
+                            <p id="notificationMessage" class="alert alert-{{ session('status') == 'success' ? 'success' : 'error' }}">{{ session('message') }}</p>
+                        </div>
+                        @endif
+                        <input type="number" name="so_luong" id="so_luong" value="1" min="1">
+                        <button type="submit">Đặt phòng</button>
 
-</div>
+                    </form>
+
+                </div>
                 <div class="border-2 rounded mt-6">
                     <div class="m-3">
                         <h2 class="mb-3 font-semibold text-xl">Đánh giá </h2>
@@ -200,11 +204,43 @@
             </div>
 
             <div class="lg:col-span-4 md:col-span-5">
+
                 <div class="p-4 rounded-md shadow dark:shadow-gray-700 sticky top-20">
 
-   <div>
+                    <div>
+                        <form class=" bg-white dark:bg-slate-900 " method="post" action="{{route('kiem_tra_loai_phong')}}" >
+                            @csrf
+                            <div class="registration-form text-dark text-start">
+                                <div class="">
+                                    <input type="hidden" value="{{$detail->id}}" name="loai_phong_id">
+                                    <div>
+                                        <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
+                                        <div class="relative mt-2">
+                                            <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                            <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
+                                        </div>
+                                    </div>
 
-   </div>
+                                    <div>
+                                        <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
+                                        <div class="relative mt-2">
+                                            <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                            <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
+                                        </div>
+                                    </div>
+                                    <div class="lg:mt-[35px]">
+                                        <input type="submit" id="search-buy" name="search" class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" value="Tìm kiếm">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="result">
+                            <!-- Thông tin về các phòng trống sẽ được hiển thị ở đây -->
+                        </div>
+
+
+                    </div>
 
 
                     <div class="mt-6">
@@ -229,7 +265,7 @@
 
 <!-- JavaScript -->
 <script src="path/to/your/javascript.js"></script>
-<script>
+<!-- <script>
     // Hàm hiển thị thông báo
     function showNotification(message) {
         var notification = document.getElementById('notification');
@@ -240,7 +276,7 @@
             notification.classList.add('hidden');
         }, 5000); // 5 giây
     }
-</script>
+</script> -->
 <!-- Switcher -->
 <div class="fixed top-1/4 -left-2 z-50">
     <span class="relative inline-block rotate-90">
@@ -279,3 +315,34 @@
 <script src="<?= env('APP_URL') ?>assets/js/app.js"></script>
 <!-- JAVASCRIPTS -->
 @endsection
+
+<!-- <script>
+    // Đợi cho trang tải hoàn thành
+    $(document).ready(function() {
+        // Intercept sự kiện submit của form
+        $('form').submit(function(event) {
+            // Ngăn chặn hành động mặc định của form
+            event.preventDefault();
+
+            // Lấy dữ liệu từ form
+            var formData = $(this).serialize();
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
+            $.ajax({
+                type: 'POST', // Phương thức POST
+                url: $(this).attr('kiem_tra_loai_phong'), // Lấy URL từ thuộc tính action của form
+                data: formData, // Dữ liệu gửi đi
+                success: function(response) {
+                    // Xử lý dữ liệu trả về từ controller
+                    // Ở đây, response chứa thông tin về các phòng trống
+                    // Bạn có thể sử dụng các phương thức jQuery như .html() hoặc .append() để thêm thông tin vào trang
+                    $('#result').html(response);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script> -->
