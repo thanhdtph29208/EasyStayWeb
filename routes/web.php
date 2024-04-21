@@ -26,6 +26,7 @@ use App\Http\Controllers\Frontend\LienHeController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\LichSuDatPhongController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Frontend\SendMailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,7 @@ Route::get('ho_so', [ProfileController::class, 'index'])->name('client.pages.hos
 Route::middleware('auth', 'throttle:1,1')->group(function () {
     Route::put('ho_so', [ProfileController::class, 'update'])->name('ho_so.update');
 });
-
+Route::get('sendMail', [App\Http\Controllers\Frontend\SendMailController::class, 'sendMail'])->name('sendMail');
 Route::get('lich_su_dat_phong', [LichSuDatPhongController::class, 'userBookingHistory'])->name('client.pages.lich_su_dat_phong');
 
 Route::get('search-rooms', [ChiTietLoaiPhongController::class, 'detail'])->name('searchRooms');
@@ -80,7 +81,7 @@ Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
 
 
-// thanh toán 
+// thanh toán
 // Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
 
 

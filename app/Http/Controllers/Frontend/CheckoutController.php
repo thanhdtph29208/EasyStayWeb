@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Frontend\SendMailController;
 
 use function Laravel\Prompts\alert;
 
@@ -178,9 +179,9 @@ class CheckoutController extends Controller
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = url('/vnpay_callback');
-        $vnp_TmnCode = "AWNZRJM5"; //Mã website tại VNPAY 
+        $vnp_TmnCode = "AWNZRJM5"; //Mã website tại VNPAY
         $vnp_HashSecret = "RPKSHDUMKYBXLNABFXEZSBHTYUWBWPNS"; //Chuỗi bí mật
-        $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
+        $vnp_TxnRef = rand(00, 9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này
         $vnp_OrderInfo = $request->ho_ten . "~" . $request->so_dien_thoai . "~" . $request->email;
         // $vnp_OrderType = $request->address;
         // $vnp_OrderInfo = 'Thanh toán đơn hàng';
@@ -234,7 +235,7 @@ class CheckoutController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(
@@ -253,6 +254,7 @@ class CheckoutController extends Controller
         if ($request->get('vnp_ResponseCode') == '00') {
             $this->bookOnline($request);
             Cart::destroy();
+            route('sendMail');
             return redirect()->route('home');
         }
     }
@@ -262,6 +264,7 @@ class CheckoutController extends Controller
         // if($isPaymentValid){
             $this->bookOnline($request);
             Cart::destroy();
+            route('sendMail');
             return redirect()->route('home');
         // }
     }
@@ -303,7 +306,7 @@ class CheckoutController extends Controller
             $datPhong->ho_ten = $separate[0];
             $datPhong->so_dien_thoai = $separate[1];
             $datPhong->email = $separate[2];
-        } 
+        }
 
 
         if ($request['orderInfo']) {
@@ -311,8 +314,8 @@ class CheckoutController extends Controller
             $datPhong->ho_ten = $separate[0];
             $datPhong->so_dien_thoai = $separate[1];
             $datPhong->email = $separate[2];
-        } 
-        
+        }
+
 
         // dd($datPhong->so_dien_thoai);
 
@@ -325,7 +328,7 @@ class CheckoutController extends Controller
             $thanhtien = $request['amount'] ? ($request['amount'] ) : $request->cart_total;
         }
 
-        
+
 
         foreach (Cart::content() as $item) {
             $loaiPhongDat = new DatPhongLoaiPhong();
