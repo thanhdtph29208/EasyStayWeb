@@ -10,7 +10,7 @@
         <div class="grid grid-cols-1 pb-8 text-center mt-10">
             <h3 class="text-3xl leading-normal tracking-wider font-semibold text-white">Tra cứu: </h3>
             <p class="text-white">Ngày bắt đầu: <?= $ngayBatDau->format('Y-m-d') ?></p>
-<p class="text-white">Ngày kết thúc: <?= $ngayKetThuc->format('Y-m-d') ?></p>
+            <p class="text-white">Ngày kết thúc: <?= $ngayKetThuc->format('Y-m-d') ?></p>
 
         </div><!--end grid-->
     </div><!--end container-->
@@ -47,8 +47,7 @@
                         <div class="p-4 w-full">
                             <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
 
-                            <form id="book-cart" action="{{ route('them_gio_hang') }}" method="POST" class="book-cart">
-                                @csrf
+                            <form action="" class="book-cart">
                                 <input type="hidden" name="id" value="{{$loaiPhong->id}}">
                                 <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
 
@@ -86,7 +85,6 @@
 
 
                                 <div>
-                                    
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
@@ -144,34 +142,34 @@
                 @endforeach
             </div>
 
-            <div class="lg:col-span-4 md:col-span-5">
+            <!-- <div class="lg:col-span-4 md:col-span-5">
                 <h2 class="text-lg font-medium dark:text-white ">Tìm kiếm</h2>
-            <form class="p-6 bg-white dark:bg-slate-900 rounded-xl shadow dark:shadow-gray-700" method="post" action="{{route('kiem_tra_phong')}}">
-            @csrf
-                <div class="registration-form text-dark text-start">
-                    <div class="">
-                        <div>
-                            <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
-                            <div class="relative mt-2">
-                                <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
+                <form class="p-6 bg-white dark:bg-slate-900 rounded-xl shadow dark:shadow-gray-700" method="post" action="{{route('kiem_tra_phong')}}">
+                    @csrf
+                    <div class="registration-form text-dark text-start">
+                        <div class="">
+                            <div>
+                                <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
+                                <div class="relative mt-2">
+                                    <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                    <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
-                            <div class="relative mt-2">
-                                <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
+                            <div>
+                                <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
+                                <div class="relative mt-2">
+                                    <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
+                                    <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
+                                </div>
                             </div>
-                        </div>
-                        <div class="lg:mt-[35px]">
-                            <input type="submit" id="search-buy" name="search" class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" value="Tìm kiếm">
+                            <div class="lg:mt-[35px]">
+                                <input type="submit" id="search-buy" name="search" class="py-1 px-5 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md w-full cursor-pointer" value="Tìm kiếm">
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-            </div>
+                </form>
+            </div> -->
         </div>
     </div>
 
@@ -182,48 +180,69 @@
 @push('scripts')
 
 <script>
-    // Khởi tạo toastr
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+    // // Khởi tạo toastr
+    // toastr.options = {
+    //     "closeButton": true,
+    //     "debug": false,
+    //     "newestOnTop": false,
+    //     "progressBar": false,
+    //     "positionClass": "toast-top-right",
+    //     "preventDuplicates": false,
+    //     "onclick": null,
+    //     "showDuration": "300",
+    //     "hideDuration": "1000",
+    //     "timeOut": "5000",
+    //     "extendedTimeOut": "1000",
+    //     "showEasing": "swing",
+    //     "hideEasing": "linear",
+    //     "showMethod": "fadeIn",
+    //     "hideMethod": "fadeOut"
+    // }
 
-    $(document).ready(function() {
-        $('#book-cart').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn hành động mặc định của biểu mẫu
+    document.addEventListener("DOMContentLoaded", function() {
+        $('.book-cart').on('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission behavior
 
-            // Lấy dữ liệu từ biểu mẫu
+            // Serialize form data
             let formData = $(this).serialize();
-            let formAction = $(this).attr('action');
 
-            // Gửi yêu cầu Ajax
+            // Send Ajax request
             $.ajax({
                 method: 'POST',
-                data: formData,
-                url: formAction,
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    data: formData
+                },
+                url: "{{ route('them_gio_hang') }}",
+                // headers: {
+                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                // },
                 success: function(data) {
-                    // Xử lý phản hồi từ máy chủ ở đây
-                    console.log(data); // In ra phản hồi từ máy chủ để kiểm tra
+                    if (data.status === 'success') {
+                        getCartCount();
+                        toastr.success(data.message);
+                    } else if (data.status == "error") {
+                        toastr.error(data.message);
+                    }
                 },
                 error: function(xhr, status, error) {
-                    // Xử lý lỗi khi gửi yêu cầu Ajax
-                    console.error('Đã xảy ra lỗi:', error);
+                    toastr.error('Đã xảy ra lỗi trong khi xử lý yêu cầu của bạn.');
                 }
             });
         });
+
+
+
+        function getCartCount() {
+            $.ajax({
+                method: 'GET',
+                url: "{{ route('cart-count') }}",
+                success: function(data) {
+                    console.log(data);
+                    $('#cart-count').text(data)
+                }
+            })
+        }
     });
 </script>
 

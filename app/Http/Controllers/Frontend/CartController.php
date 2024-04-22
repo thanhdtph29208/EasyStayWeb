@@ -36,7 +36,7 @@ class CartController extends Controller
         $random_rooms = array_slice($phongs, 0, $so_luong);
         // dd($random_rooms);
 
-        $cartData = [];
+        $cartData = []; 
         $cartData['id'] = $loai_phong->id;
         $cartData['name'] = $loai_phong->ten;
         $cartData['price'] = $loai_phong->gia;
@@ -50,18 +50,15 @@ class CartController extends Controller
     
         // dd($cartData);
         // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
-        if ($cartData['qty'] <= $weight) {
+        // if ($cartData['qty'] <= $weight) {
             Cart::add($cartData);
-            return Redirect::route('kiem_tra_phong')->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
-        } else {
-            return Redirect::route('kiem_tra_phong')->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
-        }
+            return response(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
+            // return Redirect::route('kiem_tra_phong')->with(['status' => 'success', 'message' => 'Thêm vào giỏ hàng thành công']);
+        // } else {
+            // return Redirect::route('kiem_tra_phong')->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
+        // }
     }
 
-
-
-
-    
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();
@@ -131,7 +128,7 @@ class CartController extends Controller
 
     public function getRoomTotal($rowId)
     {
-        $loai_phong = Cart::get($rowId);
+        $loai_phong = Cart::get($rowId);    
         $total = $loai_phong->price * $loai_phong->qty;
         return $total;
     }
