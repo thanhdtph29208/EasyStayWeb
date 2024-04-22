@@ -61,59 +61,52 @@
                     <h1 class="text-xl font-semibold">Thông tin đơn đặt phòng</h1>
                 </div>
                 <div class="p-4">
-                    <table class="w-full table-fixed">
+                    <table class="w-full table-auto shadow-md rounded-lg overflow-hidden">
                         <thead>
-                            <tr>
-                                <th class="px-2 py-2">#</th>
-                                <th class="px-2 py-2">Loại phòng</th>
-                                <th class="px-2 py-2">Số lượng</th>
-                                <th class="px-2 py-2">Giá</th>
-                                <th class="px-2 py-2">Tổng tiền</th>
-                                <th class="px-2 py-2">
-                                    <button class="btn btn-primary ">Clear</button>
-                                </th>
+                            <tr class="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                <th class="px-4 py-2">#</th>
+                                <th class="px-4 py-2">Loại phòng</th>
+                                <th class="px-4 py-2">Số lượng</th>
+                                <th class="px-4 py-2">Giá</th>
+                                <th class="px-4 py-2">Tổng tiền</th>
+                                <th class="px-4 py-2">Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($cartItems as $item)
-                            <tr>
-                                <td>
-                                    <img src="{{ Storage::url($item->options['image']) }}" alt="" class="w-24 h-auto">
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="px-4 py-2">
+                                    <img src="{{ Storage::url($item->options['image']) }}" alt="" class="w-24 h-auto rounded-full">
                                 </td>
-                                <td>
-                                    <p>{{ $item->name }}</p>
+                                <td class="px-4 py-2">
+                                    <p class="text-sm font-medium">{{ $item->name }}</p>
                                 </td>
-                                <td>
-                                    <button onclick="changeQuantity('{{ $item->rowId }}', 'decrease')">-</button>
-                                    <!-- <button class="btn btn-warning room-decrement">
+                                <td class="px-4 py-2 flex items-center">
+                                    <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'decrease')" class="mr-2 focus:outline-none text-gray-500 hover:text-red-500 hover:bg-gray-200 dark:hover:text-red-400 dark:hover:bg-gray-700 rounded-full p-1">
                                         <i class="bi bi-dash"></i>
-                                    </button> -->
-                                    <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
-                                    <!-- <button class="btn btn-success room-increment">
+                                    </button>
+                                    <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty border border-gray-300 dark:border-gray-600 rounded-md" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
+                                    <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'increase')" class="ml-2 focus:outline-none text-gray-500 hover:text-green-500 hover:bg-gray-200 dark:hover:text-green-400 dark:hover:bg-gray-700 rounded-full p-1">
                                         <i class="bi bi-plus-lg"></i>
-                                    </button> -->
-
-                                    <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button>
+                                    </button>
                                 </td>
-
-                                <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
-
-                                <td id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty , 0, '.', '.') }}VNĐ</td>
-
-                                <td>
-                                    <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i>
+                                <td class="px-4 py-2">{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
+                                <td class="px-4 py-2" id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty , 0, '.', '.') }}VNĐ</td>
+                                <td class="px-4 py-2">
+                                    <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}" class="inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 hover:bg-red-200 rounded-full focus:outline-none focus:shadow-outline">
+                                        <i class="bi bi-trash mr-2"></i> Xóa
                                     </a>
                                 </td>
                             </tr>
                             @endforeach
                             @if (count($cartItems) == 0)
-                            <tr>
-                                <td class="border-b-0">Bạn chưa chọn phòng nào !</td>
+                            <tr class="text-center">
+                                <td class="px-4 py-2 border-b-0" colspan="6">Bạn chưa chọn phòng nào!</td>
                             </tr>
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -131,7 +124,7 @@
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Tổng tiền:</p>
-                        <p id="total" class="font-semibold">{{ number_format($total , 0, '.', '.') }}VNĐ</p>
+                        <p id="total" class="font-semibold">{{ number_format($total * $soNgays , 0, '.', '.') }}VNĐ</p>
                         <input type="hidden" value="{{ $total }}" name="total">
                     </div>
 
@@ -142,7 +135,7 @@
 
                     <div class="flex items-center justify-between mt-2">
                         <p class="font-semibold">Thành tiền:</p>
-                        <p id="cart_total" class="font-semibold">{{ number_format($total, 0, '.', '.') }}VNĐ</p>
+                        <p id="cart_total" class="font-semibold">{{ number_format($total * $soNgays, 0, '.', '.') }}VNĐ</p>
 
                         <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                     </div>
