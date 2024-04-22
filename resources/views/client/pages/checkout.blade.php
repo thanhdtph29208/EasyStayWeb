@@ -47,32 +47,46 @@
                     <h5 class="text-xl font-bold mb-2">Yêu cầu đặt phòng của bạn</h5>
                     <hr class="my-3">
                     <p class="text-base font-medium mb-2">Khách sạn EasyStay</p>
-                    @foreach ($cartItems as $item)
-                    <input type="text" name="thoi_gian_den" value="{{$item->ngay_bat_dau}}">
-                    <input type="text" name="thoi_gian_di" value="{{$item->ngay_ket_thuc}}">
+                    <!-- @foreach ($cartItems as $item)
+                    <input type="hidden" name="thoi_gian_den" value="{{$item->ngay_bat_dau}}">
+                    <input type="hidden" name="thoi_gian_di" value="{{$item->ngay_ket_thuc}}">
                     <p class="text-base font-medium mb-2">Nhận phòng: {{$item->ngay_bat_dau}} </p>
                     <p class="text-base font-medium mb-2">Trả phòng: {{$item->ngay_ket_thuc}}</p>
                     <?php
                     $soNgay = Carbon\Carbon::parse($item->ngay_ket_thuc)->diffInDays(Carbon\Carbon::parse($item->ngay_bat_dau));
+                    $soNgays = $soNgay + 1;
                     $soDem = $soNgay - 1;
                     ?>
                     <p class="text-base font-medium mb-2">
-                        ({{ $soNgay }} ngày {{ $soDem }} đêm)
+                        ({{ $soNgays + 1 }} ngày {{ $soNgays }} đêm)
                     </p>
-                    @endforeach
+                    <hr>
+                    @endforeach -->
                 </div>
 
                 <hr>
                 <div>
-                    <h5 class="text-xl font-bold my-2">Thông tin phòng</h5>
+                    <h5 class="text-xl font-bold my-2 border-b">Thông tin phòng</h5>
+                    <hr>
                     @foreach ($cartItems as $item)
+                    <p class="text-base font-medium mb-2">Nhận phòng: {{$item->ngay_bat_dau}} </p>
+                    <p class="text-base font-medium mb-2">Trả phòng: {{$item->ngay_ket_thuc}}</p>
+                    <?php
+                    $soNgay = Carbon\Carbon::parse($item->ngay_ket_thuc)->diffInDays(Carbon\Carbon::parse($item->ngay_bat_dau));
+                    $soNgays = $soNgay + 1;
+                    $soDem = $soNgay - 1;
+                    ?>
+                    <p class="text-base font-medium mb-2">
+                        ({{ $soNgays + 1 }} ngày {{ $soNgays }} đêm)
+                    </p>
+                    <hr>
                     <p class="text-base">Tên phòng: {{ $item->name }}</p>
                     <p class="text-base">Số lượng: {{ $item->qty }}</p>
                     <p class="text-base">Giá phòng: {{ number_format($item->price, 0, '.', '.') }} VNĐ</p>
                     <p class="text-red-600 text-right text-base font-bold">
-                        {{ number_format($item->price * $item->qty , 0, '.', '.') }} VNĐ
+                        {{ number_format($item->price * $item->qty * $soNgays , 0, '.', '.') }} VNĐ
                     </p>
-                    <hr>
+                    <p>------------------</p>
                     @endforeach
                     <input type="hidden" name="so_luong_phong" value="<?= $totalQty?>">
                     <input type="hidden" name="so_luong_nguoi" value="<?= $so_luong_nguoi?>">
@@ -80,7 +94,7 @@
 
                 <div class="flex justify-between mt-3">
                     <p class="font-bold text-lg">Tổng giá:</p>
-                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal , 0, '.', '.') }} VNĐ</p>
+                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal * $soNgays, 0, '.', '.') }} VNĐ</p>
                 </div>
 
                 <div class="mt-2">

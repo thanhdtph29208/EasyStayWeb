@@ -84,7 +84,8 @@ class CartController extends Controller
         // dd($ngayKetThuc);
         $soNgay = Carbon::parse($ngayKetThuc)->diffInDays(Carbon::parse($ngayBatDau));
 
-        dd($soNgay);
+        $soNgays = $soNgay + 1;
+        // dd($soNgays);
 
         // $ngayBatDau = $cartItems->min(function ($item) {
         //     return Carbon\Carbon::parse($item->ngay_bat_dau);
@@ -101,7 +102,7 @@ class CartController extends Controller
         // }
 
 
-        return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgay'));
+        return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgays'));
     }
 
     public function updateRoomQuantity(Request $request)
