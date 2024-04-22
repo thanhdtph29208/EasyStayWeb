@@ -141,9 +141,11 @@
                     </li>
                     <li class="flex items-center">
                         Giá trị giảm:
-                        {{ $khuyen_mai[0]->gia_tri_giam }}
-                        @if( $khuyen_mai[0]->loai_giam_gia = 1 )
-                        %
+                        @if ($userBooking->khuyen_Mai !== null)
+                            {{ $khuyen_mai[0]->gia_tri_giam }}
+                            @if( $khuyen_mai[0]->loai_giam_gia = 1 )
+                                %
+                            @endif
                         @endif
                     </li>
                     <li class="flex items-center">
