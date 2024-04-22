@@ -94,7 +94,7 @@
 
                 <div class="flex justify-between mt-3">
                     <p class="font-bold text-lg">Tổng giá:</p>
-                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal * $soNgays, 0, '.', '.') }} VNĐ</p>
+                    <p class="text-red-600 font-bold text-lg">{{ number_format($cartTotal, 0, '.', '.') }} VNĐ</p>
                 </div>
 
                 <div class="mt-2">
