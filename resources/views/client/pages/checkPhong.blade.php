@@ -180,24 +180,6 @@
 @push('scripts')
 
 <script>
-    // // Khởi tạo toastr
-    // toastr.options = {
-    //     "closeButton": true,
-    //     "debug": false,
-    //     "newestOnTop": false,
-    //     "progressBar": false,
-    //     "positionClass": "toast-top-right",
-    //     "preventDuplicates": false,
-    //     "onclick": null,
-    //     "showDuration": "300",
-    //     "hideDuration": "1000",
-    //     "timeOut": "5000",
-    //     "extendedTimeOut": "1000",
-    //     "showEasing": "swing",
-    //     "hideEasing": "linear",
-    //     "showMethod": "fadeIn",
-    //     "hideMethod": "fadeOut"
-    // }
 
     document.addEventListener("DOMContentLoaded", function() {
         $('.book-cart').on('submit', function(e) {
@@ -205,14 +187,15 @@
 
             // Serialize form data
             let formData = $(this).serialize();
+            formData += '&_token={{ csrf_token() }}';
 
             // Send Ajax request
             $.ajax({
                 method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    data: formData
-                },
+                // data: {
+                //     _token: "{{ csrf_token() }}",
+                    data: formData,
+                // },
                 url: "{{ route('them_gio_hang') }}",
                 // headers: {
                 //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
