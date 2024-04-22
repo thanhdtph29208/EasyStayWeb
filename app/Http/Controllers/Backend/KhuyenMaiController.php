@@ -13,12 +13,61 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Brian2694\Toastr\Facades\Toastr;
-
+use Carbon\Carbon;
+use Yajra\DataTables\DataTables;
 class KhuyenMaiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function search(Request $request)
+    {
+        // Tạo một query builder cho model KhuyenMai
+        $query = KhuyenMai::query();
+
+        // Kiểm tra và thêm điều kiện lọc theo thời gian bắt đầu và kết thúc
+        if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+
+            $query->whereBetween('ngay_bat_dau', [$from, $to]);
+        }
+
+        // Kiểm tra và thêm điều kiện lọc theo trạng thái
+        if ($request->has('status') && $request->status != 2) {
+            $query->where('trang_thai', $request->status);
+        }
+
+        // Kiểm tra và thêm điều kiện lọc theo thời gian tạo
+        if ($request->has('create_date_time') && $request->filled('create_date_time')) {
+            $create_date_time = Carbon::createFromFormat('Y-m-d', $request->get('create_date_time'));
+            $query->where('created_at', '>=', $create_date_time);
+        }
+
+        // Truy vấn dữ liệu khuyến mãi
+        $khuyenmais = $query->get();
+
+        // Trả về dữ liệu dưới dạng DataTables
+        return DataTables::of($khuyenmais)
+            ->addColumn('action', function ($query) {
+                // Thêm các nút chỉnh sửa và xóa
+                $editBtn = "<a href='" . route('admin.khuyen_mai.edit', $query->id) . "' class='btn btn-primary'>
+                                <i class='bi bi-pen'></i>
+                            </a>";
+
+                $deleteBtn = "<a href='" . route('admin.khuyen_mai.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+                                <i class='bi bi-archive'></i>
+                            </a>";
+
+                return $editBtn . $deleteBtn;
+            })
+            ->rawColumns(['loai_giam_gia', 'gia_tri_giam', 'loai_phong_id','trang_thai', 'action'])
+            ->setRowId('id')
+            // ->rawColumns([
+            ->make(true);
+    }
+
+
     public function index(Request $request, KhuyenMaiDataTable $datatables)
     {
 
@@ -239,5 +288,5 @@ class KhuyenMaiController extends Controller
         return response(['trang_thai' => 'success']);
     }
 
-   
+
 }
