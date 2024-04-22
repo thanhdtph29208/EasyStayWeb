@@ -19,13 +19,19 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-
         $loai_phong = Loai_phong::findOrFail($request->id);
         $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
             // $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
         })->count();
 
         $phongs = $request->input('phong');
+
+        $countPhongTrong = count($phongs);
+        // dd($countPhongTrong);
+
+        if($countPhongTrong < $request->so_luong){
+            return response(['status' => 'error','message' => 'Số lượng phòng không đủ']);
+        }
         shuffle($phongs);
         // dd($phongs);
         // $ten_phong = collect($phongs)->pluck('ten_phong')->toArray();
@@ -48,7 +54,6 @@ class CartController extends Controller
         $cartData['phong'] = $random_rooms;
         $cartData['options']['image'] = $loai_phong->anh;
 
-        // dd($cartData);
         // Kiểm tra nếu số lượng phòng trống đủ để thêm vào giỏ hàng
         // if ($cartData['qty'] <= $weight) {
             Cart::add($cartData);
@@ -79,7 +84,7 @@ class CartController extends Controller
         // dd($ngayKetThuc);
         $soNgay = Carbon::parse($ngayKetThuc)->diffInDays(Carbon::parse($ngayBatDau));
 
-        // dd($soNgay);
+        dd($soNgay);
 
         // $ngayBatDau = $cartItems->min(function ($item) {
         //     return Carbon\Carbon::parse($item->ngay_bat_dau);
@@ -89,7 +94,6 @@ class CartController extends Controller
         //     return Carbon\Carbon::parse($item->ngay_ket_thuc);
         // });
 
-        // // Ensure that both $ngayBatDau and $ngayKetThuc are valid Carbon instances
         // if ($ngayBatDau && $ngayKetThuc) {
         //     $soNgay = $ngayKetThuc->diffInDays($ngayBatDau);
         // } else {

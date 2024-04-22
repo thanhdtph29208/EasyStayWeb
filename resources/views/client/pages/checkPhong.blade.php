@@ -36,7 +36,7 @@
                             <img src="{{Storage::url($loaiPhong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" data-id="{{$loaiPhong->id}}" alt="">
 
                             <div class="absolute top-0 start-0 p-4">
-                                <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">10% Off</span>
+                                <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">EasyStay</span>
                             </div>
 
                             <div class="absolute top-0 end-0 p-4">
@@ -49,7 +49,7 @@
 
                             <form action="" class="book-cart">
                                 <input type="hidden" name="id" value="{{$loaiPhong->id}}">
-                                <a href="tour-detail-one.html" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
+                                <a href="#" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{$loaiPhong->ten}}</a>
 
                                 <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                                     <h5 class="text-lg font-medium text-red-500">{{$loaiPhong->gia}}</h5> <br>
@@ -59,7 +59,7 @@
                                     @if($phong['loai_phong']->id == $loaiPhong->id) <ul>
                                         <p>Phòng trống: {{ $phong['available_rooms']->count() }}</p>
                                         @foreach($phong['available_rooms'] as $room)
-                                        <input type="text" name="phong[]" value="{{ $room->id }}">
+                                        <input type="hidden" name="phong[]" value="{{ $room->id }}">
                                         <!-- <li name class="">Phòng số: {{ $room->ten_phong }}</li> -->
                                         @endforeach
                                     </ul>
@@ -79,8 +79,8 @@
                                 </div>
 
 
-                                <input type=" text" name="ngayBatDau" value="{{$ngayBatDau}}">
-                                <input type=" text" name="ngayKetThuc" value="{{$ngayKetThuc}}">
+                                <input type=" hidden" name="ngayBatDau" value="{{$ngayBatDau}}">
+                                <input type=" hidden" name="ngayKetThuc" value="{{$ngayKetThuc}}">
 
 
 
@@ -88,12 +88,12 @@
                                     <h5>Không hoàn trả phí khi hủy phòng</h5>
                                 </div>
 
-                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800">Thêm vào giỏ hàng</button>
+                                <button type="submit" class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800"><i class="fa-solid fa-cart-plus"></i></button>
                                 <!-- <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800" href="#">Chọn phòng</a> -->
 
                             </form>
-
                             <a class="mt-3 py-1 px-3 h-10 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md cursor-pointer hover:bg-slate-800 cd-trigger" href="#0">Xem chi tiết</a>
+
                         </div>
                     </div>
                 </div>

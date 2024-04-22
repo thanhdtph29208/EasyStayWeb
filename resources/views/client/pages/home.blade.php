@@ -1,56 +1,56 @@
 @extends('client.layouts.master')
 @section('content')
 
-    <!-- Start Hero -->
-    <section class="swiper-slider-hero relative block h-screen" >
+<!-- Start Hero -->
+<section class="swiper-slider-hero relative block h-screen">
 
-        <div class="swiper-container absolute end-0 top-0 w-full h-full">
-            <div class="swiper-wrapper">
-                @foreach ($banners as $key => $banner )
-                <div class="swiper-slide flex items-center overflow-hidden">
-                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center carousel-item {{ $key == 0 ? 'active' : '' }};" data-background="{{asset($banner->anh)}}">
-                        <div class="absolute inset-0 bg-black/70"></div>
-                        <div class="container relative">
-                            <div class="grid grid-cols-1">
-                                <div class="text-center">
-                                    <img src="assets/images/map-plane.png" class="mx-auto w-[300px]" alt="ảnh banner">
-                                    <h1 class="font-bold text-white lg:leading-normal leading-normal text-4xl lg:text-6xl mb-6 mt-5">Find Your Best <br> Hotels Package</h1>
-                                    <p class="text-white/70 text-xl max-w-xl mx-auto">Cần một nơi dừng chân cho một chuyến đi? Chúng tôi sẽ mang đến cho các bạn nơi nghỉ dưỡng với những trải nghiệm tốt nhất!</p>
+    <div class="swiper-container absolute end-0 top-0 w-full h-full">
+        <div class="swiper-wrapper">
+            @foreach ($banners as $key => $banner )
+            <div class="swiper-slide flex items-center overflow-hidden">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center carousel-item {{ $key == 0 ? 'active' : '' }};" data-background="{{asset($banner->anh)}}">
+                    <div class="absolute inset-0 bg-black/70"></div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                            <div class="text-center">
+                                <img src="assets/images/map-plane.png" class="mx-auto w-[300px]" alt="ảnh banner">
+                                <h1 class="font-bold text-white lg:leading-normal leading-normal text-4xl lg:text-6xl mb-6 mt-5">Find Your Best <br> Hotels Package</h1>
+                                <p class="text-white/70 text-xl max-w-xl mx-auto">Cần một nơi dừng chân cho một chuyến đi? Chúng tôi sẽ mang đến cho các bạn nơi nghỉ dưỡng với những trải nghiệm tốt nhất!</p>
 
-                                    <div class="mt-6">
-                                        <a href="#" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Xem thêm</a>
-                                    </div>
+                                <div class="mt-6">
+                                    <a href="#" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Xem thêm</a>
                                 </div>
-                            </div><!--end grid-->
-                        </div><!--end container-->
-                    </div>
-                </div> <!-- end swiper-slide -->
-                @endforeach
-            </div>
-            <!-- end swiper-wrapper -->
+                            </div>
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div>
+            </div> <!-- end swiper-slide -->
+            @endforeach
+        </div>
+        <!-- end swiper-wrapper -->
 
-            <!-- swipper controls -->
-            <div class="swiper-pagination"></div>
-            <!-- <div class="swiper-button-next bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div>
+        <!-- swipper controls -->
+        <div class="swiper-pagination"></div>
+        <!-- <div class="swiper-button-next bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div>
                 <div class="swiper-button-prev bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div> -->
-        </div><!--end container-->
+    </div><!--end container-->
 
-    </section><!--end section-->
-    <!-- Hero End -->
+</section><!--end section-->
+<!-- Hero End -->
 <!-- Start -->
 <section class="relative py-16 bg-gray-50 dark:bg-slate-800">
     <div class="container relative">
         <div class="grid grid-cols-1">
             <!-- Check ngày -->
             <form class="p-6 bg-white dark:bg-slate-900 rounded-xl shadow dark:shadow-gray-700" method="post" action="{{route('kiem_tra_phong')}}">
-            @csrf
+                @csrf
                 <div class="registration-form text-dark text-start">
                     <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                         <div>
                             <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đến:</label>
                             <div class="relative mt-2">
                                 <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " placeholder="Lựa chọn ngày đến">
+                                <input name="thoi_gian_den" required type="date" id="thoi_gian_den" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " min="{{ date('Y-m-d') }}" placeholder="Lựa chọn ngày đến">
                             </div>
                         </div>
 
@@ -58,7 +58,7 @@
                             <label class="form-label font-medium text-slate-900 dark:text-white">Lựa chọn ngày đi:</label>
                             <div class="relative mt-2">
                                 <i data-feather="calendar" class="size-[18px] absolute top-[10px] start-3"></i>
-                                <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 end" placeholder="Lựa chọn ngày đi">
+                                <input name="thoi_gian_di" required type="date" id="thoi_gian_di" class="w-full py-2 px-3 ps-10 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border border-gray-100 dark:border-gray-800 focus:ring-0 " min="{{ date('Y-m-d') }}" placeholder="Lựa chọn ngày đi">
                             </div>
                         </div>
                         <div class="lg:mt-[35px]">
@@ -76,7 +76,7 @@
 <!-- Start -->
 <section class="relative md:py-24 py-16 overflow-hidden">
 
-<div class="container relative">
+    <div class="container relative">
         <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6 relative">
             <div class="md:col-span-5">
                 <div class="relative">
@@ -109,7 +109,7 @@
                 <div class="lg:ms-8">
                     <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">Nơi nên dừng chân: <br> EasyStayHotel</h3>
                     @foreach ($khach_sans as $khach_san )
-                        <p class="text-slate-400 max-w-xl mb-6">{{$khach_san->mo_ta}}</p>
+                    <p class="text-slate-400 max-w-xl mb-6">{{$khach_san->mo_ta}}</p>
 
                     @endforeach
 
@@ -131,12 +131,12 @@
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-2 grid-cols-1 mt-6 gap-6">
-        @foreach ($loai_phongs as $loai_phong )
+            @foreach ($loai_phongs as $loai_phong )
             <div class="group rounded-md shadow dark:shadow-gray-700">
                 <div class="md:flex md:items-center">
                     <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
 
-                    <img src="{{Storage::url($loai_phong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
+                        <img src="{{Storage::url($loai_phong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
 
                         <div class="absolute top-0 start-0 p-4">
                             <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">10% Off</span>

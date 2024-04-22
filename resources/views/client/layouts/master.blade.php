@@ -8,9 +8,7 @@
     <title>EasyStay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Tour & Travels Agency Tailwind CSS Template" name="description">
-    <meta
-        content="Tour, Travels, agency, business, corporate, tour packages, journey, trip, tailwind css, Admin, Landing"
-        name="keywords">
+    <meta content="Tour, Travels, agency, business, corporate, tour packages, journey, trip, tailwind css, Admin, Landing" name="keywords">
     <!-- <meta name="author" content="Shreethemes">
         <meta name="website" content="https://shreethemes.in/">
         <meta name="email" content="support@shreethemes.in"> -->
@@ -33,8 +31,7 @@
     <link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
 
     {{-- Bootstrap Icon --}}
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
 
     {{-- Toastr css --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css">
@@ -44,18 +41,27 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body class="dark:bg-slate-900">
+    {{-- Jquery --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    {{-- Toastr js --}}
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+
+    {{-- Sweet Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <script>
-                toastr.error('{{ $error }}', 'Lỗi');
-            </script>
-        @endforeach
+    @foreach ($errors->all() as $error)
+    <script>
+        toastr.error('{{ $error }}', 'Lỗi');
+    </script>
+    @endforeach
     @endif
 
     <div class="tagline bg-slate-900">
@@ -80,18 +86,10 @@
                         </li>
                         <li class="inline-flex items-center ms-2">
                             <ul class="list-none">
-                                <li class="inline-flex mb-0"><a href=""
-                                        class="text-slate-300 hover:text-red-500"><i data-feather="facebook"
-                                            class="size-4 align-middle" title="facebook"></i></a></li>
-                                <li class="inline-flex ms-2 mb-0"><a href=""
-                                        class="text-slate-300 hover:text-red-500"><i data-feather="instagram"
-                                            class="size-4 align-middle" title="instagram"></i></a></li>
-                                <li class="inline-flex ms-2 mb-0"><a href=""
-                                        class="text-slate-300 hover:text-red-500"><i data-feather="twitter"
-                                            class="size-4 align-middle" title="twitter"></i></a></li>
-                                <li class="inline-flex ms-2 mb-0"><a href=" tel:+"
-                                        class="text-slate-300 hover:text-red-500"><i data-feather="phone"
-                                            class="size-4 align-middle" title="phone"></i></a></li>
+                                <li class="inline-flex mb-0"><a href="" class="text-slate-300 hover:text-red-500"><i data-feather="facebook" class="size-4 align-middle" title="facebook"></i></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="" class="text-slate-300 hover:text-red-500"><i data-feather="instagram" class="size-4 align-middle" title="instagram"></i></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="" class="text-slate-300 hover:text-red-500"><i data-feather="twitter" class="size-4 align-middle" title="twitter"></i></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href=" tel:+" class="text-slate-300 hover:text-red-500"><i data-feather="phone" class="size-4 align-middle" title="phone"></i></a></li>
                             </ul><!--end icon-->
                         </li>
                     </ul>
@@ -109,8 +107,8 @@
                 <span class="inline-block ">
                 </span>
                 <img src="assets/images/favicon.ico" class="h-7 l-dark" alt="ảnh logo">
-                <img src="assets/images/favicon.ico" class="h-7 l-light" alt="ảnh logo">          
-                </a>
+                <img src="assets/images/favicon.ico" class="h-7 l-light" alt="ảnh logo">
+            </a>
 
             <!-- End Logo container-->
 
@@ -132,86 +130,75 @@
             <!--Login button Start-->
             <ul class="buy-button list-none mb-0">
                 <li class="dropdown inline-block relative pe-1">
-                    <button data-dropdown-toggle="dropdown"
-                        class="dropdown-toggle align-middle inline-flex search-dropdown" type="button">
+                    <button data-dropdown-toggle="dropdown" class="dropdown-toggle align-middle inline-flex search-dropdown" type="button">
                         <i data-feather="search" class="size-5 dark-icon"></i>
                         <i data-feather="search" class="size-5 white-icon text-white"></i>
                     </button>
                     <!-- Dropdown menu -->
-                    <div class="dropdown-menu absolute overflow-hidden end-0 m-0 mt-5 z-10 md:w-52 w-48 rounded-md bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden"
-                        onclick="event.stopPropagation();">
+                    <div class="dropdown-menu absolute overflow-hidden end-0 m-0 mt-5 z-10 md:w-52 w-48 rounded-md bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden" onclick="event.stopPropagation();">
                         <div class="relative">
                             <i data-feather="search" class="size-4 absolute top-[9px] end-3"></i>
-                            <input type="text" class="h-9 px-3 pe-10 w-full border-0 focus:ring-0 outline-none"
-                                name="s" id="searchItem" placeholder="Search...">
+                            <input type="text" class="h-9 px-3 pe-10 w-full border-0 focus:ring-0 outline-none" name="s" id="searchItem" placeholder="Search...">
                         </div>
                     </div>
                 </li>
 
                 @if (auth()->check())
-                    <li class="dropdown inline-block relative ps-0.5">
-                        <button data-dropdown-toggle="dropdown" class="dropdown-toggle items-center" type="button">
-                            <span
-                                class="size-8 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-md border border-red-500 bg-red-500 text-white">
-                                <img src="{{ Storage::url(auth()->user()->anh) }}" class="rounded-md" alt="">
-                            </span>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div class="dropdown-menu absolute end-0 m-0 mt-4 z-10 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden"
-                            onclick="event.stopPropagation();">
-                            <ul class="py-2 text-start">
+                <li class="dropdown inline-block relative ps-0.5">
+                    <button data-dropdown-toggle="dropdown" class="dropdown-toggle items-center" type="button">
+                        <span class="size-8 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-md border border-red-500 bg-red-500 text-white">
+                            <img src="{{ Storage::url(auth()->user()->anh) }}" class="rounded-md" alt="">
+                        </span>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div class="dropdown-menu absolute end-0 m-0 mt-4 z-10 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 hidden" onclick="event.stopPropagation();">
+                        <ul class="py-2 text-start">
 
-                                <li>
-                                    <a href=" {{ route('client.pages.hoso') }}"
-                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
-                                    </a>
-                                </li>
+                            <li>
+                                <a href=" {{ route('client.pages.hoso') }}" class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                    <i data-feather="user" class="size-4 me-2"></i>Quản lí tài khoản
+                                </a>
+                            </li>
 
-                                <li>
-                                    <a href=" {{ route('client.pages.password-change') }}"
-                                        class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="user" class="size-4 me-2"></i>Đổi mật khẩu
-                                    </a>
-                                </li>
-                                <li>
-                                <a href=" {{ route('client.pages.lich_su_dat_phong') }}"
+                            <li>
+                                <a href=" {{ route('client.pages.password-change') }}" class="flex no-underline	 items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                    <i data-feather="user" class="size-4 me-2"></i>Đổi mật khẩu
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('client.pages.lich_su_dat_phong') }}" class="flex no-underline	items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                    <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" class="flex no-underline items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                    <i data-feather="settings" class="size-4 me-2"></i>Cài đặt
+                                </a>
+                            </li>
+                            <li class="border-t border-gray-100 dark:border-gray-800 my-2"></li>
 
-                                        class="flex no-underline	items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href=""
-                                        class="flex no-underline items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                        <i data-feather="settings" class="size-4 me-2"></i>Cài đặt
-                                    </a>
-                                </li>
-                                <li class="border-t border-gray-100 dark:border-gray-800 my-2"></li>
-
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit"
-                                            class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
-                                            <i data-feather="log-out" class="size-4 me-2"></i>Đăng xuất
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="flex items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
+                                        <i data-feather="log-out" class="size-4 me-2"></i>Đăng xuất
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
 
 
-                    </li>
+                </li>
                 @else
-                    <li class="inline-block">
-                        <button style="color:rgb(255 255 255 / .5);" type="button">
-                            <a href="{{ route('login') }}"> Đăng nhập</a>
-                        </button>
-                        <button style="color:rgb(255 255 255 / .5); padding-left:30px" type="button">
-                            <a href="{{ route('register') }}">Đăng kí</a>
-                        </button>
-                    </li>
+                <li class="inline-block">
+                    <button style="color:rgb(255 255 255 / .5);" type="button">
+                        <a href="{{ route('login') }}"> Đăng nhập</a>
+                    </button>
+                    <button style="color:rgb(255 255 255 / .5); padding-left:30px" type="button">
+                        <a href="{{ route('register') }}">Đăng kí</a>
+                    </button>
+                </li>
                 @endif
 
 
@@ -245,8 +232,7 @@
                     <li>
                         <a class="nav-link fs-5 px-md-3 position-relative" href="{{ route('chi_tiet_gio_hang') }}">
                             <i class="bi bi-cart"></i>
-                            <span class="badge text-bg-danger position-absolute top-0 start-0" style="font-size: 10px"
-                                id="cart-count">
+                            <span class="badge text-bg-danger position-absolute top-0 start-0" style="font-size: 10px" id="cart-count">
                                 {{ Cart::content()->count() }}
                             </span>
                         </a>
@@ -263,19 +249,11 @@
 
     @yield('content')
 
-    {{-- Jquery --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    {{-- Toastr js --}}
-    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-    {!! Toastr::message() !!}
 
-    {{-- Sweet Alert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
     @stack('scripts')
-    
+
     <!-- Footer Start -->
     <footer class="footer bg-dark-footer relative text-gray-200 dark:text-gray-200">
         <div class="container relative">
@@ -291,36 +269,13 @@
                                     chuyến đi của bạn với
                                     những nơi tốt nhất và trong ngân sách tốt nhất!</p>
                                 <ul class="list-none mt-6">
-                                    <li class="inline"><a href="https://1.envato.market/travosy" target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="shopping-cart" class="size-4 align-middle"
-                                                title="Buy Now"></i></a></li>
-                                    <li class="inline"><a href="https://dribbble.com/shreethemes" target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="dribbble" class="size-4 align-middle"
-                                                title="dribbble"></i></a></li>
-                                    <li class="inline"><a href="http://linkedin.com/company/shreethemes"
-                                            target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="linkedin" class="size-4 align-middle"
-                                                title="Linkedin"></i></a></li>
-                                    <li class="inline"><a href="https://www.facebook.com/shreethemes" target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="facebook" class="size-4 align-middle"
-                                                title="facebook"></i></a></li>
-                                    <li class="inline"><a href="https://www.instagram.com/shreethemes/"
-                                            target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="instagram" class="size-4 align-middle"
-                                                title="instagram"></i></a></li>
-                                    <li class="inline"><a href="https://twitter.com/shreethemes" target="_blank"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="twitter" class="size-4 align-middle"
-                                                title="twitter"></i></a></li>
-                                    <li class="inline"><a href="mailto:support@shreethemes.in"
-                                            class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i
-                                                data-feather="mail" class="size-4 align-middle"
-                                                title="email"></i></a></li>
+                                    <li class="inline"><a href="https://1.envato.market/travosy" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="shopping-cart" class="size-4 align-middle" title="Buy Now"></i></a></li>
+                                    <li class="inline"><a href="https://dribbble.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="dribbble" class="size-4 align-middle" title="dribbble"></i></a></li>
+                                    <li class="inline"><a href="http://linkedin.com/company/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="linkedin" class="size-4 align-middle" title="Linkedin"></i></a></li>
+                                    <li class="inline"><a href="https://www.facebook.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="facebook" class="size-4 align-middle" title="facebook"></i></a></li>
+                                    <li class="inline"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="instagram" class="size-4 align-middle" title="instagram"></i></a></li>
+                                    <li class="inline"><a href="https://twitter.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="twitter" class="size-4 align-middle" title="twitter"></i></a></li>
+                                    <li class="inline"><a href="mailto:support@shreethemes.in" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i data-feather="mail" class="size-4 align-middle" title="email"></i></a></li>
                                 </ul><!--end icon-->
                             </div><!--end col-->
 
@@ -342,16 +297,14 @@
                                     <div class="flex mt-4">
                                         <i data-feather="mail" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
-                                            <a href="mailto:contact@example.com"
-                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">easystay@gmail.com</a>
+                                            <a href="mailto:contact@example.com" class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">easystay@gmail.com</a>
                                         </div>
                                     </div>
 
                                     <div class="flex mt-4">
                                         <i data-feather="phone" class="size-4 text-red-500 me-2 mt-1"></i>
                                         <div class="">
-                                            <a href="tel:+152534-468-854"
-                                                class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">+84
+                                            <a href="tel:+152534-468-854" class="text-slate-300 hover:text-slate-400 duration-500 ease-in-out">+84
                                                 981-978-061</a>
                                         </div>
                                     </div>
@@ -362,21 +315,11 @@
                                 <div class="lg:ms-8">
                                     <h5 class="tracking-[1px] text-gray-100 font-semibold">Công ty</h5>
                                     <ul class="list-none footer-list mt-6">
-                                        <li><a href="aboutus.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Về chúng tôi</a></li>
-                                        <li class="mt-[10px]"><a href="services.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Dịch vụ</a></li>
-                                        <li class="mt-[10px]"><a href="team.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Đội nhóm</a></li>
-                                        <li class="mt-[10px]"><a href="pricing.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Định giá</a></li>
-                                        <li class="mt-[10px]"><a href="blogs.html"
-                                                class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
-                                                    class="mdi mdi-chevron-right"></i> Bài viết</a></li>
+                                        <li><a href="aboutus.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Về chúng tôi</a></li>
+                                        <li class="mt-[10px]"><a href="services.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Dịch vụ</a></li>
+                                        <li class="mt-[10px]"><a href="team.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Đội nhóm</a></li>
+                                        <li class="mt-[10px]"><a href="pricing.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Định giá</a></li>
+                                        <li class="mt-[10px]"><a href="blogs.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Bài viết</a></li>
                                     </ul>
                                 </div>
                             </div><!--end col-->
@@ -387,18 +330,14 @@
                                 <form>
                                     <div class="grid grid-cols-1">
                                         <div class="my-3">
-                                            <label class="form-label">địa chỉ email của bạn<span
-                                                    class="text-red-600">*</span></label>
+                                            <label class="form-label">địa chỉ email của bạn<span class="text-red-600">*</span></label>
                                             <div class="form-icon relative mt-2">
                                                 <i data-feather="mail" class="size-4 absolute top-3 start-4"></i>
-                                                <input type="email"
-                                                    class="ps-12 rounded w-full py-2 px-3 h-10 bg-gray-800 border-0 text-gray-100 focus:shadow-none focus:ring-0 placeholder:text-gray-200 outline-none"
-                                                    placeholder="Email" name="email" required="">
+                                                <input type="email" class="ps-12 rounded w-full py-2 px-3 h-10 bg-gray-800 border-0 text-gray-100 focus:shadow-none focus:ring-0 placeholder:text-gray-200 outline-none" placeholder="Email" name="email" required="">
                                             </div>
                                         </div>
 
-                                        <button type="submit" id="submitsubscribe" name="send"
-                                            class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đặt
+                                        <button type="submit" id="submitsubscribe" name="send" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đặt
                                             mua</button>
                                     </div>
                                 </form>
@@ -416,9 +355,7 @@
                         <p class="mb-0">©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> EasyStay. Bản quyền thuộc về <i
-                                class="mdi mdi-heart text-red-600"></i> by <a href="#" target="_blank"
-                                class="text-reset">EasyStay</a>.
+                            </script> EasyStay. Bản quyền thuộc về <i class="mdi mdi-heart text-red-600"></i> by <a href="#" target="_blank" class="text-reset">EasyStay</a>.
                         </p>
                     </div>
                 </div><!--end grid-->
@@ -430,13 +367,10 @@
     <div class="fixed top-1/4 -left-2 z-50">
         <span class="relative inline-block rotate-90">
             <input type="checkbox" class="checkbox opacity-0 absolute" id="chk">
-            <label
-                class="label bg-slate-900 dark:bg-white shadow dark:shadow-gray-800 cursor-pointer rounded-full flex justify-between items-center p-1 w-14 h-8"
-                for="chk">
+            <label class="label bg-slate-900 dark:bg-white shadow dark:shadow-gray-800 cursor-pointer rounded-full flex justify-between items-center p-1 w-14 h-8" for="chk">
                 <i data-feather="moon" class="w-[18px] h-[18px] text-yellow-500"></i>
                 <i data-feather="sun" class="w-[18px] h-[18px] text-yellow-500"></i>
-                <span
-                    class="ball bg-white dark:bg-slate-900 rounded-full absolute top-[2px] left-[2px] w-7 h-7"></span>
+                <span class="ball bg-white dark:bg-slate-900 rounded-full absolute top-[2px] left-[2px] w-7 h-7"></span>
             </label>
         </span>
     </div>
@@ -449,18 +383,14 @@
     <!-- LTR & RTL Mode Code -->
     <div class="fixed top-[40%] -left-3 z-50">
         <a href="#" id="switchRtl">
-            <span
-                class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold rtl:block ltr:hidden">LTR</span>
-            <span
-                class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold ltr:block rtl:hidden">RTL</span>
+            <span class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold rtl:block ltr:hidden">LTR</span>
+            <span class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold ltr:block rtl:hidden">RTL</span>
         </a>
     </div>
     <!-- LTR & RTL Mode Code -->
 
     <!-- Back to top -->
-    <a href="#" onclick="topFunction()" id="back-to-top"
-        class="back-to-top fixed hidden text-lg rounded-md z-10 bottom-5 end-5 size-8 text-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white justify-center items-center"><i
-            class="mdi mdi-arrow-up"></i></a>
+    <a href="#" onclick="topFunction()" id="back-to-top" class="back-to-top fixed hidden text-lg rounded-md z-10 bottom-5 end-5 size-8 text-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white justify-center items-center"><i class="mdi mdi-arrow-up"></i></a>
     <!-- Back to top -->
 
 
