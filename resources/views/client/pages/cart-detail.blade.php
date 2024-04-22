@@ -124,18 +124,18 @@
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Tổng tiền:</p>
-                        <p id="total" class="font-semibold">{{ number_format($total * $soNgays , 0, '.', '.') }}VNĐ</p>
+                        <p id="total" class="font-semibold">{{ number_format($total  , 0, '.', '.') }}VNĐ</p>
                         <input type="hidden" value="{{ $total }}" name="total">
                     </div>
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Khuyến mãi:</p>
-                        <p id="discount" class="font-semibold">0VNĐ</p>
+                        <p id="disco    unt" class="font-semibold">0VNĐ</p>
                     </div>
 
                     <div class="flex items-center justify-between mt-2">
                         <p class="font-semibold">Thành tiền:</p>
-                        <p id="cart_total" class="font-semibold">{{ number_format($total * $soNgays, 0, '.', '.') }}VNĐ</p>
+                        <p id="cart_total" class="font-semibold">{{ number_format($total , 0, '.', '.') }}VNĐ</p>
 
                         <input type="hidden" value="{{ $total }}" name="cart_total" id="input_cart_total">
                     </div>
@@ -262,12 +262,12 @@
 
         $('#coupon_form').on('submit', function(e) {
             e.preventDefault();
-            let fromData = $(this).serialize();
-            console.log(fromData);
+            let formData = $(this).serialize();
+            console.log(formData);
             $.ajax({
                 type: 'GET',
                 url: "{{ route('apply-coupon') }}",
-                data: fromData,
+                data: formData,
                 success: function(data) {
                     console.log(data);
                     if (data.status == 'error') {
