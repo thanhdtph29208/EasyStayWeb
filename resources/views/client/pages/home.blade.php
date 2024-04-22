@@ -139,7 +139,7 @@
                         <img src="{{Storage::url($loai_phong->anh)}}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
 
                         <div class="absolute top-0 start-0 p-4">
-                            <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">10% Off</span>
+                            <span class="bg-red-500 text-white text-[12px] px-2.5 py-1 font-medium rounded-md h-5">EasyStay</span>
                         </div>
 
                         <div class="absolute top-0 end-0 p-4">

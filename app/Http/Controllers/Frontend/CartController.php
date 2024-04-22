@@ -150,16 +150,22 @@ class CartController extends Controller
 
     function getCartTotal()
     {
+        $cartItems = Cart::content();
+        $ngayBatDau = $cartItems->min('ngay_bat_dau');        
+        $ngayKetThuc = $cartItems->max('ngay_ket_thuc');       
+        $soNgay = Carbon::parse($ngayKetThuc)->diffInDays(Carbon::parse($ngayBatDau));
+        $soNgays = $soNgay + 1;
+
         $total = 0;
         foreach (Cart::content() as $loai_phong) {
-            $total += $loai_phong->price * $loai_phong->qty;
+            $total += $loai_phong->price * $loai_phong->qty * $soNgays;
         }
         return $total;
     }
 
     public function applyCoupon(Request $request){
-        dd(123);
-        dd($request->all());
+        // dd(123);
+        // dd($request->all());
         if($request -> coupon_code == null){
             return response([
                 'status' => 'error',
@@ -192,11 +198,11 @@ class CartController extends Controller
                 'loai_giam_gia' => 1,
                 'gia_tri_giam' => $coupon->gia_tri_giam,
             ]);
-        }else if($coupon->loai_giam_gia == 2){
+        }else if($coupon->loai_giam_gia == 0){
             Session::put('coupon',[
                 'ten_khuyen_mai' => $coupon->ten_khuyen_mai,
                 'ma_giam_gia' => $coupon->ma_giam_gia,
-                'loai_giam_gia' => 1,
+                'loai_giam_gia' => 0,
                 'gia_tri_giam' => $coupon->gia_tri_giam,
             ]);
         }
@@ -211,16 +217,16 @@ class CartController extends Controller
         if(Session::has('coupon')){
             $khuyen_mai = Session::get('coupon');
 
-            if($khuyen_mai['loai_giam_gia'] == 1){
+            if($khuyen_mai['loai_giam_gia'] == 0){
                 $total = (double)$this->getCartTotal() - (double)$khuyen_mai['gia_tri_giam'];
                 return response([
                     'status' => 'success',
                     'cart_total' => (double)$total,
                     'discount' => $khuyen_mai['gia_tri_giam'],
                 ]);
-            }else if($khuyen_mai['loai_khuyen_mai'] == 2){
-                $khuyen_mai = (double)$this->getCartCount() * (double)$khuyen_mai['gia_tri_giam'] / 100;
-                $total = (double)$this->getCartCount() - (double)$khuyen_mai;
+            }else if($khuyen_mai['loai_giam_gia'] == 1){
+                $khuyen_mai = (double)$this->getCartTotal() * (double)$khuyen_mai['gia_tri_giam'] / 100;
+                $total = (double)$this->getCartTotal() - (double)$khuyen_mai;
                 return response([
                     'status' => 'success',
                     'cart_total' => (double)$total,
