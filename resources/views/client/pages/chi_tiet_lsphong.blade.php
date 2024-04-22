@@ -109,7 +109,7 @@
 
                     <li>
 
-                    <button type="button" class="btn btn-outline-primary">
+<button type="button" class="btn btn-outline-primary">
                             <a href=" {{ route('client.pages.lich_su_dat_phong') }}">
                                 Quay lại
                             </a>
@@ -130,21 +130,16 @@
                         <?php
                         if ($userBooking->khuyen_Mai !== null) {
                             // Nếu đối tượng "khuyen_Mai" tồn tại, thì truy cập thuộc tính "ma_giam_gia"
-                            $ma_giam_gia = $userBooking->khuyen_Mai->ma_giam_gia;
-                            echo $ma_giam_gia;
+                            $gia_tri_giam =  $userBooking->khuyen_Mai->gia_tri_giam;
+                            echo  $gia_tri_giam;
+                            if ($userBooking->khuyen_Mai->loai_giam_gia == 1) {
+                                echo "%";
+                            }
                         } else {
                             // Nếu đối tượng "khuyen_Mai" không tồn tại, hiển thị thông báo tương ứng
-                            echo "Bạn không có mã giảm giá";
+                            echo "Bạn không sử dụng mã giảm giá";
                         }
-                        ?>
-
-                    </li>
-                    <li class="flex items-center">
-                        Giá trị giảm:
-                        {{ $khuyen_mai[0]->gia_tri_giam }}
-                        @if( $khuyen_mai[0]->loai_giam_gia = 1 )
-                        %
-                        @endif
+                            ?>
                     </li>
                     <li class="flex items-center">
                         Ghi chú:
@@ -154,7 +149,7 @@
                         if (!empty($ghi_chu)) {
                             echo $ghi_chu;
                         } else {
-                            echo "Bạn chưa có ghi chú";
+                            echo "Chưa có ghi chú";
                         }
                         ?>
                     </li>
@@ -169,7 +164,6 @@
                     </li>
                     <p>Trạng thái: <span class="{{ $userBooking->trang_thai ? 'badge text-bg-success' : 'badge text-bg-danger' }} fw-bold">{{ $userBooking->trang_thai ? 'Xác nhận' : 'Chưa xác nhận' }}</span></p>
 
-                    <h2 style=" color:red">Tổng tiền phải trả hiện tại (chưa có dịch vụ): {{ number_format($thanh_tien[0], 0, ',', '.') }} VNĐ</h2>
                 </ul>
             </div>
     </div>
