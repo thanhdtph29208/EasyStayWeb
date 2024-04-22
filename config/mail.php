@@ -46,6 +46,19 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+    // 'mailers' => [
+    //     'smtp' => [
+    //         'transport' => 'smtp',
+    //         'url' => env('MAIL_URL'),
+    //         'host' => 'smtp.gmail.com',
+    //         'port' => 587,
+    //         'encryption' => 'tls',
+    //         'username' => 'longphph29186@fpt.edu.vn',
+    //         'password' => 'sywpzrurhakeushl',
+    //         'timeout' => null,
+    //         'local_domain' => env('MAIL_EHLO_DOMAIN'),
+    //     ],
+
         'ses' => [
             'transport' => 'ses',
         ],

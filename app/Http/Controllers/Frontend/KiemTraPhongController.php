@@ -19,6 +19,8 @@ class KiemTraPhongController extends Controller
     function checkPhong(Request $request)
     {
         // try {
+        // $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
+        // $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
         $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'))->setTime(14, 0);
         $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'))->setTime(12, 0);
 

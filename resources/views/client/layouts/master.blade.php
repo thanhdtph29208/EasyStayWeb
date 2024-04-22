@@ -48,15 +48,7 @@
 </head>
 
 <body class="dark:bg-slate-900">
-    {{-- Jquery --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    {{-- Toastr js --}}
-    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-    {!! Toastr::message() !!}
-
-    {{-- Sweet Alert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -271,6 +263,19 @@
 
     @yield('content')
 
+    {{-- Jquery --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    {{-- Toastr js --}}
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+
+    {{-- Sweet Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+    @stack('scripts')
+    
     <!-- Footer Start -->
     <footer class="footer bg-dark-footer relative text-gray-200 dark:text-gray-200">
         <div class="container relative">
@@ -472,6 +477,7 @@
     <script src="/assets/js/velocity.min.js"></script>
     <script src="/assets/js/main.js"></script> <!-- Resource jQuery -->
     <!-- JAVASCRIPTS -->
+
 </body>
 
 <!-- Mirrored from shreethemes.in/travosy/layouts/index-two.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 15 Mar 2024 16:14:23 GMT -->
