@@ -25,10 +25,11 @@ class SendMailController extends Controller
             $tenLoaiPhongs = $tenLoaiPhongs->merge($tenLoaiPhong);
         };
         $loaiPhong = $tenLoaiPhongs -> zip($so_luong_phong);
-        // dd($loaiPhong);
-        Mail::send('client.emails.form', compact('ttNguoiDung','ttKhachSan','loaiPhong','datPhong'), function($email) use ($ttNguoiDung,$ttKhachSan) {
-            $email->to($ttNguoiDung->email, $ttNguoiDung->ten_nguoi_dung);
+        // dd($datPhong);
+        Mail::send('client.emails.form', compact('ttNguoiDung','ttKhachSan','loaiPhong','datPhong'), function($email) use ($ttNguoiDung,$ttKhachSan,$datPhong) {
+            $email->to($datPhong->email, $ttNguoiDung->ten_nguoi_dung);
             $email->subject('Xác nhận đặt phòng khách sạn ' . $ttKhachSan[0]->ten . ' thành công.');
         });
+        return redirect()->route('home');
     }
 }

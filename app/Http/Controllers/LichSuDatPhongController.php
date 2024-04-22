@@ -59,5 +59,13 @@ class LichSuDatPhongController extends Controller
 
 
 
+    public function danhGiaLoaiPhong($loai_phong_id)
+    {
+        // Xử lý mã logic để hiển thị trang đánh giá cho loại phòng có ID tương ứng
+        // Ví dụ:
+        $loaiPhong = Loai_phong::findOrFail($loai_phong_id);
+        return view('client.pages.chi_tiet_loai_phong', compact('loaiPhong'));
+    }
+
 
 }

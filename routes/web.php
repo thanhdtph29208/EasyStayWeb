@@ -96,6 +96,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+    Route::get('chi_tiet_loai_phong/{loai_phong_id}', [LichSuDatPhongController::class, 'danhGiaLoaiPhong'])->name('danh_gia_loai_phong');
+
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
     Route::get('/momo_payment', [CheckoutController::class, 'momo_payment'])->name('momo_payment'); // thanh toán bằng momo

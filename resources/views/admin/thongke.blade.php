@@ -48,8 +48,13 @@
           More info <i class="bi bi-link-45deg"></i></a>
       </div><!--end::Small Box Widget 4-->
     </div><!--end::Col-->
-    <div class="container">
-      <h1>Thống kê số lượng đặt phòng theo ngày</h1>
+
+
+    
+   
+     <div class="row">
+      <div class="col col-md-8">
+        <h1>Thống kê số lượng đặt phòng theo ngày</h1>
 
       <form action="{{ route('admin.dashboard.index') }}" method="GET" class="form-inline">
         <div class="form-group">
@@ -64,6 +69,8 @@
 
         <button type="submit" class="btn btn-primary">Lọc</button>
       </form> 
+
+      
 
 <canvas  id="mychart" style="width: 400px; height: 200px;"></canvas>
 
@@ -95,4 +102,188 @@
       }
     });
   </script>
+      </div>
+
+<div class="col col-md-4">
+  <div class="col-md-7">
+    <p class="text-center"><strong><h4>Tỉ Lệ Phòng Đã Đặt</h4></strong></p>
+    
+    </div><!-- /.progress-group -->
+    <div class="progress-group">
+        Phòng đã đặt/Tổng phòng
+        <span class="float-end"><b>{{ $tong_so_phong_da_dat }}</b>/{{ $tong_so_phong }}</span>
+        <div class="progress progress-sm">
+            <div class="progress-bar text-bg-warning" style="" id="tile"></div>
+        </div>
+    </div><!-- /.progress-group -->
+
+    <script>
+      // Assuming 'tongSoPhongDaDat' and 'tongSoPhong' are updated dynamically
+      function updateOccupancyRate() {
+        const tongSoPhongDaDat = {{ $tong_so_phong_da_dat }};
+        const tongSoPhong = {{ $tong_so_phong }};
+    
+        const occupancyRate = (tongSoPhongDaDat / tongSoPhong) * 100;
+     
+        const element = document.getElementById('tile');
+  element.style.width = occupancyRate + '%';
+       
+    
+      }
+    
+      // Update initially
+      updateOccupancyRate();
+    
+      // You can update the occupancy rate dynamically based on your data source
+      // (e.g., using websockets, AJAX, etc.)
+    </script>
+</div><!-- /.col -->
+</div>
+     </div>
+
+     <h1>Lọc thống kê doanh thu</h1>
+   
+     <form action="{{ route('admin.dashboard.index') }}" method="GET" class="form-inline">
+    
+
+       <div class="form-group">
+         <label for="loc_doanh_thu">Chọn ngày tháng cần lọc</label>
+         <input type="date" name="loc_doanh_thu" id="loc_doanh_thu" class="form-control">
+       </div>
+
+       <button type="submit" class="btn btn-success">Lọc</button>
+     </form> 
+     <div class="row">
+      <div class="col col-md-3">
+        
+        <h4>Thống kê doanh thu  năm</h4>
+
+        <canvas id="myChart" width="400" height="200"></canvas>
+        
+        <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:[{{ $locNam }}],
+                datasets: [{
+                    label: 'Doanh thu theo năm',
+                    data: {!! json_encode($nam->pluck('doanh_thu')) !!},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+      </div>
+    {{-- end 1 --}}
+      <div  class="col col-md-3">
+        <h4>Thống kê doanh thu tháng</h4>
+
+        <canvas id="myChart2" width="400" height="200"></canvas>
+        
+        <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:[{{ $thang }}],
+                datasets: [{
+                    label: 'Doanh thu theo tháng',
+                    data: {!! json_encode($doanh_thu_thang_nay->pluck('doanh_thu')) !!},
+                    backgroundColor: '#FF7F50',
+                    borderColor: '#FF7F50',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+      </div>
+    {{-- end 2 --}}
+      <div  class="col col-md-3">
+        <h4>Thống kê doanh thu tuần</h4>
+
+        <canvas id="myChart3" width="400" height="200"></canvas>
+        
+        <script>
+        var ctx = document.getElementById('myChart3').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:['tuần  '],
+                datasets: [{
+                    label: 'Doanh thu theo tuần',
+                    data: {!! json_encode($doanh_thu_tuan_nay->pluck('doanh_thu')) !!},
+                    backgroundColor: '#FFFF00',
+                    borderColor: '#FFFF00',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+      </div>
+      {{-- end 3 --}}
+      <div  class="col col-md-3">
+        <h4>Thống kê doanh thu ngày</h4>
+
+        <canvas id="myChart4" width="400" height="200"></canvas>
+        
+        <script>
+        var ctx = document.getElementById('myChart4').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:[{{ $today }}],
+                datasets: [{
+                    label: 'Doanh thu theo ngày',
+                    data: {!! json_encode($doanh_thu_hom_nay->pluck('doanh_thu')) !!},
+                    backgroundColor: '#7CFC00',
+                    borderColor: '#7CFC00',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+      </div>
+      {{-- end 4 --}}
+    </div>
+
+    
 @endsection
