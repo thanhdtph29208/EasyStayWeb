@@ -60,6 +60,9 @@ Route::get('search-rooms', [ChiTietLoaiPhongController::class, 'detail'])->name(
 Route::post('them_gio_hang_ct', [ChiTietLoaiPhongController::class, 'addCTLS'])->name('them_gio_hang_ct');
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');
+Route::get('check-phong-trong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('check_phong_trong');
+
+
 Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('clients.pages.loai_phong.loai_phong');
 
 Route::get('tin_tuc', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'index'])->name('client.pages.bai_viet.index');
@@ -131,6 +134,8 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
         Route::resource('vai_tro', VaiTroController::class);
         Route::resource('dat_phong', DatPhongController::class);
         Route::get('dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
+        Route::get('khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
+
         Route::resource('chi_tiet_dat_phong', ChiTietDatPhongController::class);
         Route::put('loai_phong/change-status', [LoaiPhongController::class, 'changeStatus'])->name('loai_phong.change-status');
         Route::get('exportUser', [ExportController::class, 'exportUser'])->name('exportUser');

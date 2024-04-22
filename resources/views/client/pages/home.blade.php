@@ -113,7 +113,7 @@
 
                     @endforeach
 
-                    <a href="#" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đọc thêm<i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a>
+                    <!-- <a href="#" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Đọc thêm<i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a> -->
                 </div>
             </div>
 
@@ -170,7 +170,7 @@
         <div class="grid grid-cols-1 pb-6 text-center">
             <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">EasyStay Blog</h3>
 
-            <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome template, you can replace it with any text.</p>
+            <p class="text-slate-400 max-w-xl mx-auto">Với những trải nghiệm và dịch vụ của chúng tôi, các bạn hãy khám phá để không bỏ lỡ nhé.</p>
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
