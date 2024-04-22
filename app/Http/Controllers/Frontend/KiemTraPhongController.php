@@ -10,6 +10,8 @@ use App\Models\DatPhong;
 use App\Models\Loai_phong;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Contracts\Validation\Validator;
 use Carbon\Carbon;
 use Exception;
 
@@ -21,6 +23,23 @@ class KiemTraPhongController extends Controller
         // try {
         // $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'));
         // $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'));
+
+        $rules = [
+            'thoi_gian_den' => 'required|date',
+            'thoi_gian_di' => 'required|date|after:thoi_gian_den',
+        ];
+
+        $messages = [
+            'thoi_gian_den.required' => 'Thời gian đến không được để trống',
+            'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
+
+            'thoi_gian_di.required' => 'Thời gian đi không được để trống',
+            'thoi_gian_di.date' => 'Thời gian đi không đúng định dạng',
+            'thoi_gian_di.after' => 'Thời gian đi phải lớn hơn thời gian đến',
+        ];
+        
+        $validated = $request->validate($rules, $messages);
+
         $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'))->setTime(14, 0);
         $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'))->setTime(12, 0);
 

@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('content')
-<script>
+<!-- <script>
     function changeQuantity(rowId, action) {
         var inputElement = document.querySelector('input[data-rowid="' + rowId + '"]');
         var currentQuantity = parseInt(inputElement.value);
@@ -31,7 +31,7 @@
 
 
     
-</script>
+</script> -->
 
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
@@ -84,9 +84,16 @@
                                     <p>{{ $item->name }}</p>
                                 </td>
                                 <td>
-                                    <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button>
-                                    <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
                                     <button onclick="changeQuantity('{{ $item->rowId }}', 'decrease')">-</button>
+                                    <!-- <button class="btn btn-warning room-decrement">
+                                        <i class="bi bi-dash"></i>
+                                    </button> -->
+                                    <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
+                                    <!-- <button class="btn btn-success room-increment">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button> -->
+
+                                    <button onclick="changeQuantity('{{ $item->rowId }}', 'increase')">+</button>
                                 </td>
 
                                 <td>{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
@@ -165,7 +172,8 @@
 <script>
     $(document).ready(function() {
         $('.room-increment').on('click', function() {
-            alert(123);
+            // alert(123);
+
             let input = $(this).siblings('.phong-qty')
             let quantity = parseInt(input.val()) + 1;
             console.log(quantity);
@@ -174,6 +182,7 @@
                 url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
                 method: "POST",
                 data: {
+                    _token: "{{ csrf_token() }}",
                     quantity: quantity,
                     rowId: rowId
                 },
@@ -206,6 +215,7 @@
                 url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
                 method: "POST",
                 data: {
+                    _token: "{{ csrf_token() }}",
                     quantity: quantity,
                     rowId: rowId
                 },

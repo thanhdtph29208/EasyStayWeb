@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Storage;
 
 class UserDataTable extends DataTable
 {
@@ -23,6 +24,12 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'user.action')
+
+            ->addColumn('anh', function($query){
+                $anh =  "<img src='" . Storage::url($query->anh) . "' width='100px' alt='Ảnh người dùng'>";
+                return $anh;
+                
+            })
 
             ->addColumn('id_vai_tro', function($query){
                 return $query->vaiTro->ten_chuc_vu;
@@ -41,7 +48,7 @@ class UserDataTable extends DataTable
                 return $editBtn . $deleteBtn;
             })
 
-            ->rawColumns(['id_vai_tro', 'action'])
+            ->rawColumns(['anh','id_vai_tro', 'action'])
 
             ->setRowId('id');
     }
