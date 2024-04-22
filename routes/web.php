@@ -131,6 +131,8 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
         Route::resource('vai_tro', VaiTroController::class);
         Route::resource('dat_phong', DatPhongController::class);
         Route::get('dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
+        Route::get('khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
+
         Route::resource('chi_tiet_dat_phong', ChiTietDatPhongController::class);
         Route::put('loai_phong/change-status', [LoaiPhongController::class, 'changeStatus'])->name('loai_phong.change-status');
         Route::get('exportUser', [ExportController::class, 'exportUser'])->name('exportUser');
