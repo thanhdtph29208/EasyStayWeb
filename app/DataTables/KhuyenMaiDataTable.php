@@ -36,9 +36,9 @@ class KhuyenMaiDataTable extends DataTable
                 }
             })
 
-            ->addColumn('loai_phong_id', function($query){
-                return $query->loai_phong->ten;
-            })
+            // ->addColumn('loai_phong_id', function($query){
+            //     return $query->loai_phong->ten;
+            // })
             
             ->addColumn('trang_thai', function ($query) {
                 $activeafter = "<span class='badge text-bg-warning'>Chưa áp dụng</span>";
@@ -65,7 +65,7 @@ class KhuyenMaiDataTable extends DataTable
                 return $editBtn . $deleteBtn;
             })
 
-            ->rawColumns(['loai_giam_gia', 'gia_tri_giam', 'loai_phong_id','trang_thai', 'action'])
+            ->rawColumns(['loai_giam_gia', 'gia_tri_giam','trang_thai', 'action'])
 
             ->setRowId('id');
     }
@@ -108,7 +108,7 @@ class KhuyenMaiDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('ten_khuyen_mai'),
-            Column::make('loai_phong_id'),
+            // Column::make('loai_phong_id'),
             Column::make('ma_giam_gia'),
             Column::make('loai_giam_gia'),
             Column::make('gia_tri_giam'),

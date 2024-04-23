@@ -150,18 +150,20 @@ class DatPhongController extends Controller
         }
         //dd($request);
 
-        // $rules = [
-        //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-        //     'ho_ten' =>'nullable|string|max:255',
-        //     'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
-        //     // 'so_luong_phong' => 'numeric|min:0',
-        //     'so_luong_nguoi' => 'numeric|min:0',
-        //     'thoi_gian_den' => 'date|required',
-        //     'thoi_gian_di' => 'date|required',
-        //     'khuyen_mai_id' => 'nullable',
-        //     'payment' => 'required',
-        //     'ghi_chu' => 'nullable|string',
-        // ];
+
+        $rules = [
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'ho_ten' =>'nullable|string|max:255',
+            'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+            'so_luong_phong' => 'min:0',
+            'so_luong_nguoi' => 'numeric|min:0',
+            'thoi_gian_den' => 'date|required',
+            'thoi_gian_di' => 'date|required',
+            'khuyen_mai_id' => 'nullable',
+            'payment' => 'required',
+            'ghi_chu' => 'nullable|string',
+        ];
+
 
         // $messages = [
         //     'email.required' => 'Email không được bỏ trống',
@@ -172,13 +174,16 @@ class DatPhongController extends Controller
         //     'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
         //     'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
 
-        //     'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
-        //     'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
-        //     'so_luong.nguoi.min' => 'Số lượng người phải là 1 số dương',
 
-        //     // 'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
-        //     'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
-        //     'so_luong.phong.min' => 'Số lượng phong phải là 1 số dương',
+            'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
+            // 'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
+            'so_luong.nguoi.min' => 'Số lượng người phải là 1 số dương',
+
+            // 'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
+            // 'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
+            'so_luong.phong.min' => 'Số lượng phong phải là 1 số dương',
+
+
 
         //     'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
         //     'thoi_gian_den.required' => 'Thời gian đến không được để trống',
