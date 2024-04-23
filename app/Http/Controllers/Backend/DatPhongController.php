@@ -165,14 +165,14 @@ class DatPhongController extends Controller
         ];
 
 
-        // $messages = [
-        //     'email.required' => 'Email không được bỏ trống',
-        //     'email.lowercase' => 'Email phải là chữ thường',
-        //     'email.email' => 'Email không đúng định dạng',
-        //     'email.max' => 'Email không quá 255 ký tự',
+        $messages = [
+            'email.required' => 'Email không được bỏ trống',
+            'email.lowercase' => 'Email phải là chữ thường',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Email không quá 255 ký tự',
 
-        //     'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
-        //     'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
+            'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
+            'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
 
 
             'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
@@ -185,17 +185,17 @@ class DatPhongController extends Controller
 
 
 
-        //     'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
-        //     'thoi_gian_den.required' => 'Thời gian đến không được để trống',
+            'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
+            'thoi_gian_den.required' => 'Thời gian đến không được để trống',
 
-        //     'thoi_gian_di.date' => 'Thời gian đi không đúng định dạng ngày',
-        //     'thoi_gian_di.required' => 'Thời gian đi không được để trống',
+            'thoi_gian_di.date' => 'Thời gian đi không đúng định dạng ngày',
+            'thoi_gian_di.required' => 'Thời gian đi không được để trống',
 
-        //     'payment.required' => 'Hình thức thanh toán không được để trống',
+            'payment.required' => 'Hình thức thanh toán không được để trống',
 
-        // ];
+        ];
 
-        // $validated = $request->validate($rules, $messages);
+        $validated = $request->validate($rules, $messages);
 
         // $request->validate([
         //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
