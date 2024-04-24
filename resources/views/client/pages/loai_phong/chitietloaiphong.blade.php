@@ -1,26 +1,91 @@
 @extends('client.layouts.master')
 @section('content')
-<!-- <style>
-    /* CSS cho thông báo */
-    .alert {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        border-radius: 5px;
-        color: #fff;
-        z-index: 9999;
-    }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // Intercept sự kiện submit của form
+    $('form').submit(function(event) {
+        // Ngăn chặn hành động mặc định của form
+        event.preventDefault();
 
-    .alert-success {
-        background-color: #28a745;
-    }
+        // Lấy dữ liệu từ form
+        var formData = $(this).serialize();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    .alert-error {
-        background-color: #dc3545;
-    }
-</style> -->
-<!-- Start Hero -->
+        // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
+        $.ajax({
+            type: 'POST', // Phương thức POST
+            url: $(this).attr('action'), // Lấy URL từ thuộc tính action của form
+            data: formData, // Dữ liệu gửi đi
+            success: function(response) {
+                // Xóa nội dung cũ của phần tử HTML
+                $('#result').empty();
+
+                // Lặp qua danh sách phòng trống và chỉ hiển thị những phòng có trạng thái bằng 1
+                $.each(response.availableRooms, function(index, room) {
+                    // Nếu trạng thái của phòng là 1, thêm dữ liệu vào phần tử HTML
+                    if (room.trang_thai === 1) {
+                        // Tạo phần tử HTML mới cho mỗi phòng
+                        var roomElement = $('<div class="room"></div>');
+                        roomElement.append('<input type="checkbox" name="selectedRooms[]" value="' + room.id + '">');
+                        roomElement.append('<p>ID: ' + room.id + '</p>');
+                        roomElement.append('<p>Tên phòng: ' + room.ten_phong + '</p>');
+                        roomElement.append('<p>Mô tả: ' + room.mo_ta + '</p>');
+                        roomElement.append('<p>Trạng thái: ' + room.trang_thai + '</p>');
+
+                        // Thêm phòng vào phần tử #result trên giao diện người dùng
+                        $('#result').append(roomElement);
+                    }
+                });
+
+                // Hiển thị nút "Đặt phòng"
+                $('#result').append('<button type="button" id="bookRooms">Đặt phòng</button>');
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                console.error(error);
+            }
+        });
+    });
+
+    // Xử lý sự kiện click khi người dùng ấn nút "Đặt phòng"
+    $('#bookRooms').click(function() {
+    // Lấy CSRF Token từ meta tag trong trang HTML
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    var selectedRooms = [];
+    // Lặp qua danh sách các phòng đã chọn
+    $('input[name="selectedRooms[]"]:checked').each(function() {
+        selectedRooms.push($(this).val());
+    });
+
+    // Gửi yêu cầu Ajax để đặt phòng
+    $.ajax({
+        type: 'POST',
+        url: '{{ route("them_gio_hang_ct") }}',
+        data: {
+            _token: csrfToken, // Thêm CSRF Token vào dữ liệu gửi
+            selectedRooms: selectedRooms
+        },
+        success: function(response) {
+            // Xử lý kết quả đặt phòng
+        },
+        error: function(xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+        }
+
+        });
+    });
+});
+
+</script>
+
+
+
+
+
+
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
     <div class="container relative">
@@ -41,6 +106,42 @@
     </div>
 </section><!--end section-->
 <!-- End Hero -->
+
+
+
+<!-- JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // Đợi cho trang tải hoàn thành
+    $(document).ready(function() {
+        // Intercept sự kiện submit của form
+        $('form').submit(function(event) {
+            // Ngăn chặn hành động mặc định của form
+            event.preventDefault();
+
+            // Lấy dữ liệu từ form
+            var formData = $(this).serialize();
+
+            // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
+            $.ajax({
+                type: 'POST', // Phương thức POST
+                url: $(this).attr('action'), // Lấy URL từ thuộc tính action của form
+                data: formData, // Dữ liệu gửi đi
+                success: function(response) {
+                    // Xử lý dữ liệu trả về từ controller
+                    // Ở đây, response chứa thông tin về các phòng trống
+                    $('#result').html(response);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+
+
 <section class="relative md:py-24 py-16">
     <div class="container relative">
         <div class="grid md:grid-cols-12 grid-cols-1 gap-6">
@@ -182,33 +283,37 @@
                     <div>
 
                     </div>
-                    <form action="{{ route('them_gio_hang_ct') }}" method="post">
-    @csrf
-    <input type="hidden" name="id" value="{{ $detail->id }}">
-    <label for="phong" class="text-gray-700">Danh sách phòng:</label>
-    <select name="phong[]" id="phong" multiple class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        @foreach($detail->phongs as $phong)
-            @if ($phong->trang_thai == 1)
-                <option value="{{ $phong->id }}" class="text-gray-900">{{ $phong->ten_phong }}</option>
-            @endif
-        @endforeach
-    </select>
-    @if(session('status'))
-        <div id="notification" class="notification">
-            <p id="notificationMessage" class="alert alert-{{ session('status') == 'success' ? 'success' : 'error' }}">{{ session('message') }}</p>
-        </div>
-    @endif
-    <input type="number" name="so_luong" id="so_luong" value="1" min="1" class=" hidden  mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    <button type="submit" class="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Đặt phòng</button>
-</form>
+       
 
 
                 </div>
-                    
-<br>
-<br>
+  
+
 
                     <div class="mt-6">
+<form method="post" action="{{ route('kiem_tra_loai_phong', ['id' => $detail->id]) }}">
+    @csrf
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="mb-3">
+        <label for="thoi_gian_den" class="form-label">Ngày đến:</label>
+        <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den" required>
+    </div>
+    <div class="mb-3">
+        <label for="thoi_gian_di" class="form-label">Ngày đi:</label>
+        <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" required>
+    </div>
+    
+    <div id="result">
+    <!-- Danh sách phòng trống sẽ được hiển thị ở đây -->
+</div>
+
+    
+    <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+    <button type="button" id="bookRooms">Đặt phòng</button>
+  
+</form>
+
+
                         <h5 class="text-lg font-medium">Google Map</h5>
 
                         <div class="mt-3">
@@ -216,10 +321,13 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
+            
         </div>
     </div><!--end container-->
 </section>
+
 <!-- End -->
 <div id="notification" class="notification hidden">
     <p id="notificationMessage"></p>
@@ -281,33 +389,3 @@
 <!-- JAVASCRIPTS -->
 @endsection
 
-<!-- <script>
-    // Đợi cho trang tải hoàn thành
-    $(document).ready(function() {
-        // Intercept sự kiện submit của form
-        $('form').submit(function(event) {
-            // Ngăn chặn hành động mặc định của form
-            event.preventDefault();
-
-            // Lấy dữ liệu từ form
-            var formData = $(this).serialize();
-
-            // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
-            $.ajax({
-                type: 'POST', // Phương thức POST
-                url: $(this).attr('kiem_tra_loai_phong'), // Lấy URL từ thuộc tính action của form
-                data: formData, // Dữ liệu gửi đi
-                success: function(response) {
-                    // Xử lý dữ liệu trả về từ controller
-                    // Ở đây, response chứa thông tin về các phòng trống
-                    // Bạn có thể sử dụng các phương thức jQuery như .html() hoặc .append() để thêm thông tin vào trang
-                    $('#result').html(response);
-                },
-                error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu có
-                    console.error(error);
-                }
-            });
-        });
-    });
-</script> -->

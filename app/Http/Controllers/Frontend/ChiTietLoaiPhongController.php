@@ -21,6 +21,10 @@ class ChiTietLoaiPhongController extends Controller
     public function detail(string $id)
     {
         $detail = Loai_phong::find($id);
+        if (!$detail) {
+            // Xử lý khi không tìm thấy loại phòng
+            return response()->view('errors.404', [], 404); // Hoặc bất kỳ xử lý nào phù hợp
+        }
         $loaiPhongIds = $detail->phongs->pluck('loai_phong_id')->unique();
         $khach_sans = Hotel::all();
         $danh_gias = DanhGia::where('loai_phong_id', $id)->get();
@@ -30,6 +34,43 @@ class ChiTietLoaiPhongController extends Controller
         return view('client.pages.loai_phong.chitietloaiphong', compact('detail', 'khach_sans', 'danh_gias', 'khach_hangs', 'trang_thai', 'loaiPhongIds'));
     }
 
+
+public function checkLoaiPhong(Request $request, $id)
+{
+    // Lấy thông tin về loại phòng cụ thể
+    $detail = Loai_phong::find($id);
+    
+    // Kiểm tra nếu không tìm thấy loại phòng
+    if (!$detail) {
+        return response()->json(['error' => 'Loại phòng không tồn tại'], 404);
+    }
+
+    // Xử lý thời gian đến và thời gian đi
+    $ngayBatDau = Carbon::parse($request->input('thoi_gian_den'))->setTime(14, 0);
+    $ngayKetThuc = Carbon::parse($request->input('thoi_gian_di'))->setTime(12, 0);
+
+       // Lưu thời gian vào session
+       $request->session()->put('ngay_bat_dau', $ngayBatDau);
+       $request->session()->put('ngay_ket_thuc', $ngayKetThuc);
+       
+    // Lấy danh sách các phòng thuộc loại phòng cụ thể
+    $phongs = Phong::where('loai_phong_id', $id)->get();
+    
+    // Lọc các phòng không có đặt phòng nào trong khoảng thời gian đã chỉ định
+    $availableRooms = $phongs->filter(function ($phong) use ($ngayBatDau, $ngayKetThuc) {
+        return !$phong->datPhongs()->where('thoi_gian_den', '<', $ngayKetThuc)
+                                    ->where('thoi_gian_di', '>', $ngayBatDau)
+                                    ->exists();
+    });
+
+    // Trả về dữ liệu dưới dạng JSON
+    return response()->json(['availableRooms' => $availableRooms]);
+}
+    
+        
+    
+
+
     public function allRoom()
     {
         $rooms = Loai_phong::all();
@@ -38,23 +79,19 @@ class ChiTietLoaiPhongController extends Controller
 
     public function addCTLS(Request $request)
     {
-
-        $loai_phong = Loai_phong::findOrFail($request->id);
+        $loai_phong = Loai_phong::find($request->id);
         $weight = Phong::where('loai_phong_id', $loai_phong->id)->whereDoesntHave('datPhongs', function ($query) {
             // $query->where('thoi_gian_den', '<', Carbon::now())->where('thoi_gian_di', '>', Carbon::now());
         })->count();
-
         $phongs = $request->input('phong');
         shuffle($phongs);
         // dd($phongs);
         // $ten_phong = collect($phongs)->pluck('ten_phong')->toArray();
         // dd($ten_phong);
-
         $so_luong = $request->so_luong;
 
         $random_rooms = array_slice($phongs, 0, $so_luong);
         // dd($random_rooms);
-
         $cartData = [];
         $cartData['id'] = $loai_phong->id;
         $cartData['name'] = $loai_phong->ten;
@@ -114,4 +151,17 @@ class ChiTietLoaiPhongController extends Controller
         return view('client.pages.loai_phong.loai_phong', compact('rooms'));
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
