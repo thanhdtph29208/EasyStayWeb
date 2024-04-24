@@ -130,7 +130,7 @@
 
                     <div class="flex items-center justify-between mb-2 mt-2">
                         <p class="font-semibold">Khuyến mãi:</p>
-                        <p id="disco    unt" class="font-semibold">0VNĐ</p>
+                        <p id="discount" class="font-semibold">0VNĐ</p>
                     </div>
 
                     <div class="flex items-center justify-between mt-2">
