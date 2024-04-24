@@ -150,18 +150,20 @@ class DatPhongController extends Controller
         }
         //dd($request);
 
+
         $rules = [
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
             'ho_ten' =>'nullable|string|max:255',
             'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
-            'so_luong_phong' => 'numeric|integer|min:0',
-            'so_luong_nguoi' => 'numeric|integer|min:0',
+            'so_luong_phong' => 'min:0',
+            'so_luong_nguoi' => 'numeric|min:0',
             'thoi_gian_den' => 'date|required',
             'thoi_gian_di' => 'date|required',
             'khuyen_mai_id' => 'nullable',
             'payment' => 'required',
             'ghi_chu' => 'nullable|string',
         ];
+
 
         $messages = [
             'email.required' => 'Email không được bỏ trống',
@@ -172,13 +174,16 @@ class DatPhongController extends Controller
             'so_dien_thoai.regex' => 'Số điện thoại không đúng định dạng',
             'so_dien_thoai.min' => 'Số điện thoại tối thiểu 9 số',
 
+
             'so_luong_nguoi.numeric' => 'Số lượng người phải là 1 số',
-            'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
+            // 'so_luong.nguoi.integer' => 'Số lượng người phải là 1 số nguyên',
             'so_luong.nguoi.min' => 'Số lượng người phải là 1 số dương',
 
-            'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
-            'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
+            // 'so_luong_phong.numeric' => 'Số lượng phong phải là 1 số',
+            // 'so_luong.phong.integer' => 'Số lượng phong phải là 1 số nguyên',
             'so_luong.phong.min' => 'Số lượng phong phải là 1 số dương',
+
+
 
             'thoi_gian_den.date' => 'Thời gian đến không đúng định dạng',
             'thoi_gian_den.required' => 'Thời gian đến không được để trống',
@@ -253,7 +258,10 @@ class DatPhongController extends Controller
             LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
             WHERE p.id = dp.phong_id
             AND (
-                d.thoi_gian_di <= '{$datPhong->thoi_gian_di}' AND d.thoi_gian_den >= '{$datPhong->thoi_gian_den}'
+                ('$datPhong->thoi_gian_di' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                OR ('$datPhong->thoi_gian_den' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                OR (d.thoi_gian_di BETWEEN '$datPhong->thoi_gian_den' AND '$datPhong->thoi_gian_di')
+                OR (d.thoi_gian_den BETWEEN '$datPhong->thoi_gian_den' AND '$datPhong->thoi_gian_di')
             )
         )
         LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
@@ -365,7 +373,7 @@ class DatPhongController extends Controller
      */
     public function edit(DatPhong $datPhong, Request $request)
     {
-    
+
         $j = 0;
         $so_luong_dich_vu = DichVu::count();
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
@@ -393,7 +401,7 @@ class DatPhongController extends Controller
         $messages = [
             'ten_dich_vu.max' => 'Tên dịch vụ không được vượt quá 255 ký tự',
             'ten_dich_vu.unique' => 'Tên dịch vụ đã tồn tại',
-            
+
             // 'so_luong.numeric' => 'Số lượng phải là 1 số',
             'so_luong.min' => 'Số lượng phải là 1 số dương',
 

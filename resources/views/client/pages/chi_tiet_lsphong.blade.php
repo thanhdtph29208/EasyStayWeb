@@ -139,7 +139,17 @@
                             // Nếu đối tượng "khuyen_Mai" không tồn tại, hiển thị thông báo tương ứng
                             echo "Bạn không sử dụng mã giảm giá";
                         }
-                            ?>
+                        ?>
+
+                    </li>
+                    <li class="flex items-center">
+                        Giá trị giảm:
+                        @if ($userBooking->khuyen_Mai !== null)
+                            {{ $khuyen_mai[0]->gia_tri_giam }}
+                            @if( $khuyen_mai[0]->loai_giam_gia = 1 )
+                                %
+                            @endif
+                        @endif
                     </li>
                     <li class="flex items-center">
                         Ghi chú:

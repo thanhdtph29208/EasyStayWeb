@@ -212,7 +212,7 @@
 
 
 
-                    <li><a href="<?= env('APP_URL') ?>/" class="sub-menu-item">Đặt phòng</a></li>
+                    <li><a href="<?= env('APP_URL') ?>/" class="sub-menu-item">Trang chủ</a></li>
                     <li><a href="<?= env('APP_URL') ?>/loai_phong" class="sub-menu-item">Loại phòng</a></li>
 
                     <li><a href="<?= env('APP_URL') ?>/tin_tuc" class="sub-menu-item">Tin tức</a></li>
