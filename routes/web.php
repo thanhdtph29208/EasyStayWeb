@@ -61,6 +61,7 @@ Route::post('them_gio_hang_ct', [ChiTietLoaiPhongController::class, 'addCTLS'])-
 
 Route::get('chi_tiet_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('client.pages.loai_phong.chitietloaiphong');
 Route::get('check-phong-trong/{id}', [ChiTietLoaiPhongController::class, 'detail'])->name('check_phong_trong');
+Route::get('loc-phong', [ChiTietLoaiPhongController::class, 'filter'])->name('client.pages.loai_phong.filter');
 
 
 Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('clients.pages.loai_phong.loai_phong');

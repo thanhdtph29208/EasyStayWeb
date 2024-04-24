@@ -14,10 +14,6 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Brian2694\Toastr\Facades\Toastr;
-
-
-
-
 use PHPUnit\Event\TestSuite\Loaded;
 
 class ChiTietLoaiPhongController extends Controller
@@ -86,4 +82,36 @@ class ChiTietLoaiPhongController extends Controller
                 ->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
         }
     }
+    public function filter(Request $request)
+    {
+        $query = Loai_phong::query();
+    
+        // Kiểm tra và áp dụng điều kiện lọc
+        if ($request->has('ten_phong')) {
+            $query->where('ten', 'like', '%' . $request->ten_phong . '%');
+        }
+    
+        if ($request->has('gia')) {
+            $query->where('gia', '=', $request->gia);
+        }
+    
+        if ($request->has('trang_thai')) {
+            // Thay đổi giá trị của trường trang_thai
+            $trangThai = $request->trang_thai === '1' ? 1 : 0;
+            $query->where('trang_thai', '=', $trangThai);
+        }
+    
+        // Lấy danh sách kết quả sau khi lọc
+        $rooms = $query->get();
+    
+        // Kiểm tra xem có dữ liệu được tìm thấy không
+        if ($rooms->isEmpty()) {
+            // Nếu không có dữ liệu, hiển thị thông báo không có dữ liệu được tìm thấy
+            return view('client.pages.loai_phong.no_result');
+        }
+    
+        // Nếu có dữ liệu, trả về view với danh sách các phòng đã lọc
+        return view('client.pages.loai_phong.loai_phong', compact('rooms'));
+    }
+    
 }
