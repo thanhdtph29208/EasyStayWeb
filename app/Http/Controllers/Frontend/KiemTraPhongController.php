@@ -87,6 +87,8 @@ class KiemTraPhongController extends Controller
 
 
 
+
+
     public function addToCart(Request $request)
     {
         // Kiểm tra xem người dùng đã đặt phòng trước đó chưa

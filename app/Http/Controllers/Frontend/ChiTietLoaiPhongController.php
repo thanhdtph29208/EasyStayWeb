@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Brian2694\Toastr\Facades\Toastr;
 use PHPUnit\Event\TestSuite\Loaded;
+use Illuminate\Support\Facades\Session;
 
 class ChiTietLoaiPhongController extends Controller
 {
@@ -71,11 +72,7 @@ public function checkLoaiPhong(Request $request, $id)
     
 
 
-    public function allRoom()
-    {
-        $rooms = Loai_phong::all();
-        return view('client.pages.loai_phong.loai_phong', compact('rooms'));
-    }
+    
 
     public function addCTLS(Request $request)
     {
@@ -119,6 +116,12 @@ public function checkLoaiPhong(Request $request, $id)
                 ->with(['status' => 'error', 'message' => 'Không đủ phòng trống để thêm vào giỏ hàng']);
         }
     }
+
+    public function allRoom()
+    {
+        $rooms = Loai_phong::all();
+        return view('client.pages.loai_phong.loai_phong', compact('rooms'));
+    }
     public function filter(Request $request)
     {
         $query = Loai_phong::query();
@@ -128,8 +131,9 @@ public function checkLoaiPhong(Request $request, $id)
             $query->where('ten', 'like', '%' . $request->ten_phong . '%');
         }
     
-        if ($request->has('gia')) {
-            $query->where('gia', '=', $request->gia);
+        if ($request->has('gia_min') && $request->has('gia_max')) {
+            // Lọc theo khoảng giá
+            $query->whereBetween('gia', [$request->gia_min, $request->gia_max]);
         }
     
         if ($request->has('trang_thai')) {
@@ -141,14 +145,15 @@ public function checkLoaiPhong(Request $request, $id)
         // Lấy danh sách kết quả sau khi lọc
         $rooms = $query->get();
     
-        // Kiểm tra xem có dữ liệu được tìm thấy không
-        if ($rooms->isEmpty()) {
-            // Nếu không có dữ liệu, hiển thị thông báo không có dữ liệu được tìm thấy
-            return view('client.pages.loai_phong.no_result');
-        }
+   
+       // Kiểm tra xem có dữ liệu được tìm thấy không
+       if ($rooms->isEmpty()) {
+        // Nếu không có dữ liệu, trả về một phản hồi JSON với thông báo lỗi
+        return response()->json(['error' => 'Không tìm thấy kết quả phù hợp.'], 404);
+    }
     
         // Nếu có dữ liệu, trả về view với danh sách các phòng đã lọc
-        return view('client.pages.loai_phong.loai_phong', compact('rooms'));
+        return response()->json(['rooms' => $rooms]);
     }
     
 

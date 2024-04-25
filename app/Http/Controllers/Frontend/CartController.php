@@ -69,6 +69,8 @@ class CartController extends Controller
 
 
 
+
+
     public function cartDetail(Request $request)
     {
         $cartItems = Cart::content();
@@ -105,36 +107,51 @@ class CartController extends Controller
         return view('client.pages.cart-detail', compact('total', 'cartItems','ngayBatDau','ngayKetThuc','soNgays'));
     }
 
-    public function updateRoomQuantity(Request $request)
-    {
-        $id = Cart::get($request->rowId)->id;
-        $loai_phong = Loai_phong::findOrFail($id);
-        if ($loai_phong->qty < $request->so_luong) {
-            return response(['status' => 'error', 'message' => 'Quá số lượng phòng không đủ']);
-        }
-        Cart::update($request->rowId, $request->so_luong);
-        $phongTotal = $this->getRoomTotal($request->rowId);
-        $total = $this->getCartTotal();
-        return response([
-            'status' => 'success',
-            'message' => 'Số lượng phòng được cập nhật',
-            'phong_total' => $phongTotal,
-            'total' => $total
-        ]);
+  public function updateRoomQuantity(Request $request)
+{
+    // Kiểm tra xem có rowId và số lượng mới được gửi hay không
+    if (!$request->has('rowId') || !$request->has('so_luong')) {
+        return response(['status' => 'error', 'message' => 'Invalid request']);
     }
 
-    public function removeRoom($rowId)
-    {
-        Cart::remove($rowId);
-        return redirect()->back();
+    $rowId = $request->input('rowId');
+    $so_luong = $request->input('so_luong');
+
+    // Kiểm tra xem số lượng mới có lớn hơn 0 không
+    if ($so_luong <= 0) {
+        return response(['status' => 'error', 'message' => 'Invalid quantity']);
     }
 
-    public function clearCart()
-    {
-        Cart::destroy();
-        return response(['status' => 'success', 'message' => 'Cart cleared successfully']);
+    // Kiểm tra số lượng phòng còn đủ không
+    $phong = Cart::get($rowId)->id;
+    $loai_phong = Loai_phong::findOrFail($phong);
+    if ($loai_phong->qty < $so_luong) {
+        return response(['status' => 'error', 'message' => 'Quá số lượng phòng không đủ']);
     }
 
+    // Cập nhật số lượng phòng trong giỏ hàng
+    Cart::update($rowId, $so_luong);
+
+    // Tính toán lại tổng giá trị của giỏ hàng
+    $phongTotal = $this->getRoomTotal($rowId);
+    $total = $this->getCartTotal();
+
+    // Trả về kết quả thành công cùng với thông tin cập nhật
+    return response([
+        'status' => 'success',
+        'message' => 'Số lượng phòng đã được cập nhật',
+        'phong_total' => $phongTotal,
+        'total' => $total
+    ]);
+}
+
+
+
+    public function clearCart($rowId)
+    {
+        Cart::remove($rowId); // Sử dụng phương thức remove() để xóa mục dựa trên rowId
+        return response(['status' => 'success', 'message' => 'Cart item cleared successfully']);
+    }
 
     public function getRoomTotal($rowId)
     {

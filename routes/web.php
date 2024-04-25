@@ -80,7 +80,7 @@ Route::match(['get', 'post'], 'kiem_tra_loai_phong/{id}', [ChiTietLoaiPhongContr
 Route::post('them_gio_hang', [CartController::class, 'addToCart'])->name('them_gio_hang');
 Route::get('chi_tiet_gio_hang', [CartController::class, 'cartDetail'])->name('chi_tiet_gio_hang');
 Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
-Route::get('chi_tiet_gio_hang/xoa_loai_phong/{rowId}', [CartController::class, 'removeRoom'])->name('chi_tiet_gio_hang.xoa_loai_phong');
+Route::get('clear-cart/{rowId}', [CartController::class, 'clearCart'])->name('clear-cart');
 Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQuantity'])->name('chi_tiet_gio_hang.them_phong');
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
 Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
