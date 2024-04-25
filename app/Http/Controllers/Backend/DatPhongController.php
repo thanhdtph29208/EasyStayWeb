@@ -42,19 +42,28 @@ class DatPhongController extends Controller
 
     public function search(Request $request, DatPhongDataTable $datatables){
         $dataTableQuery = DatPhong::query()->with(['user']);
+        if ($request->filled('startTime') && $request->filled('startHour')) {
+            $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('startTime') . ' ' . $request->input('startHour'));
+            $dataTableQuery->where('thoi_gian_den', '>=', $startDateTime);
+        }
 
-        if ($request->has('startTime') || $request->has('endTime')) {
-            // Nếu ngày bắt đầu đã được điền
-            if ($request->filled('startTime')) {
-                $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
-                $dataTableQuery->where('thoi_gian_den', '>=', $from);
-            }
+        if ($request->filled('endTime') && $request->filled('endHour')) {
+            $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('endTime') . ' ' . $request->input('endHour'));
+            $dataTableQuery->where('thoi_gian_den', '<=', $endDateTime);
+        }
+       if ($request->has('startTime') || $request->has('endTime')) {
+        // Nếu ngày bắt đầu đã được điền
+        if ($request->filled('startTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+            $dataTableQuery->where('thoi_gian_den', '>=', $from);
+        }
 
-            // Nếu ngày kết thúc đã được điền
-            if ($request->filled('endTime')) {
-                $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
-                $dataTableQuery->where('thoi_gian_den', '<=', $to);
-            }
+        // Nếu ngày kết thúc đã được điền
+        if ($request->filled('endTime')) {
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+            $dataTableQuery->where('thoi_gian_den', '<=', $to);
+        }
+    }
 
 
 
@@ -79,7 +88,9 @@ class DatPhongController extends Controller
         ->addColumn('so_dien_thoai', function($query){
             return $query->user->so_dien_thoai;
         })
-
+        // ->addColumn('don_gia', function($query){
+        //     return $query->loai_phong->gia;
+        // })
         ->addColumn('trang_thai', function ($query) {
             $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
             $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
@@ -93,11 +104,22 @@ class DatPhongController extends Controller
             $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
             <i class='bi bi-pen'></i>
             </a>";
+            // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
+            // <i class='bi bi-image'></i>
+            // </a>";
 
+            // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
+            // <i class='bi bi-card-list'></i>
+            // </a>";
             $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
             <i class='bi bi-archive'></i>
             </a>";
-
+            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
+            // <i class='bi bi-houses-fill'></i>
+            // </a>";
+            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
+            // <i class='bi bi-chat-dots'></i>
+            // </a>";
             $detailBtn = "<a href='" . route('admin.dat_phong.show', ['dat_phong' => $query->id]) . "' class='btn btn-secondary ms-2'>
             <i class='bi bi-list-ul'></i>
             </a>";
@@ -111,7 +133,6 @@ class DatPhongController extends Controller
         // ->rawColumns(['action'])
         ->make(true);
     }
-}
     public function create(DatPhong $datPhong)
     {
         // $loai_phongs = Loai_phong::where('trang_thai',1)->with('phongs')->get();

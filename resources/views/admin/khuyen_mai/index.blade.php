@@ -145,13 +145,7 @@
                                 orderable: true,
                                 searchable: true
                             },
-                            {
-                                data: "gia_tri_giam",
-                                name: "gia_tri_giam",
-                                title: "Giá trị giảm",
-                                orderable: true,
-                                searchable: true
-                            },
+
                             {
                                 data: "ngay_bat_dau",
                                 name: "ngay_bat_dau",

@@ -11,13 +11,13 @@
 
         <div class="container" id="invoice-print" style="width:50%">
             <div class="card">
-                {{-- <div class="card-header" style="text-align:center">
-                <h5>{{$thongTinHotel[0]->ten}}</h5>
-                <h6>Địa chỉ: {{$thongTinHotel[0]->dia_chi}}</h6>
-                <h6>Điện thoại: {{$thongTinHotel[0]->so_dien_thoai}}</h6>
-                <h6>Email: {{$thongTinHotel[0]->email}}</h6>
-                <h5>Hóa đơn: {{$datPhong->id}}</h5>
-            </div> --}}
+                <div class="card-header" style="text-align:center">
+                    <h5>{{ $thongTinHotel[0]->ten }}</h5>
+                    <h6>Địa chỉ: {{ $thongTinHotel[0]->dia_chi }}</h6>
+                    <h6>Điện thoại: {{ $thongTinHotel[0]->so_dien_thoai }}</h6>
+                    <h6>Email: {{ $thongTinHotel[0]->email }}</h6>
+                    <h5>Hóa đơn: {{ $datPhong->id }}</h5>
+                </div>
 
                 <div class="card-body">
                     @if ($datPhong->ho_ten == null && $datPhong->so_dien_thoai == null && $datPhong->email == null)
@@ -110,7 +110,8 @@
                             </p>
                             <p>Hình thức thanh toán: <span class="fw-bold">{{ $datPhong->payment }}</span></p>
                             <p class="text-danger fw-bold">TỔNG THANH TOÁN:
-                                <span>{{ number_format($thanhTien, 0, ',', '.') }} VNĐ</span> </p>
+                                <span>{{ number_format($thanhTien, 0, ',', '.') }} VNĐ</span>
+                            </p>
                         </div>
                         <div style="text-align: center;">
                             <span>Cảm ơn quý khách đã sử dụng dịch vụ</span>
