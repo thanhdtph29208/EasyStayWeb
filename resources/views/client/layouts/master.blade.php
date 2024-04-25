@@ -191,7 +191,7 @@
 
                 </li>
                 @else
-                <li class="inline-block">
+                <li class="inline-block ">
                     <button style="color:rgb(255 255 255 / .5);" type="button">
                         <a href="{{ route('login') }}"> Đăng nhập</a>
                     </button>
@@ -209,8 +209,6 @@
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu justify-end nav-light">
-
-
 
                     <li><a href="<?= env('APP_URL') ?>/" class="sub-menu-item">Trang chủ</a></li>
                     <li><a href="<?= env('APP_URL') ?>/loai_phong" class="sub-menu-item">Loại phòng</a></li>
