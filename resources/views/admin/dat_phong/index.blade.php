@@ -36,13 +36,22 @@
                                 </div>
                                 <form action="" id="searchForm">
                                     <div class="modal-body px-2">
-                                        <label for="startTime" class="form-label mb-2">Thời gian bắt đầu - Thời gian kết
-                                            thúc</label>
-                                        <div class="d-flex align-items-center mb-4">
-                                            <input type="date" name="startTime" id="startTime" class="form-control">
-                                            <i class="bi bi-arrow-left-right mx-2"></i>
-                                            <input type="date" name="endTime" class="form-control">
+                                        <div class="modal-body px-2">
+                                            <label for="startTime" class="form-label mb-2">Thời gian bắt đầu</label>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="date" name="startTime" id="startTime"
+                                                    class="form-control me-2">
+                                                <input type="time" name="startHour" id="startHour" class="form-control">
+                                            </div>
+
+                                            <label for="endTime" class="form-label mb-2">Thời gian kết thúc</label>
+                                            <div class="d-flex align-items-center mb-4">
+                                                <input type="date" name="endTime" id="endTime"
+                                                    class="form-control me-2">
+                                                <input type="time" name="endHour" id="endHour" class="form-control">
+                                            </div>
                                         </div>
+
 
                                         <select class="form-select" name="status" aria-label="Default select example">
                                             <option selected value="2">Chọn Trạng thái</option>
@@ -58,6 +67,7 @@
                                             data-bs-dismiss="modal">Thoát</button>
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                                             id="btnSubmitSearch">Tìm kiếm</button>
+                                        <button type="button" class="btn btn-secondary" id="btnReset">Reset</button>
                                     </div>
                                 </form>
                             </div>
@@ -74,9 +84,13 @@
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
-    }
+
 
     <script type="module">
+        $('#btnReset').click(function(e) {
+
+            $('#searchForm')[0].reset();
+        });
         $(document).ready(function() {
             $('#btnSubmitSearch').click(function(e) {
                 // Lấy dữ liệu từ form tìm kiếm

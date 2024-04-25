@@ -98,12 +98,9 @@
 @endsection
 @push('scripts')
 <script>
-ClassicEditor.create( document.querySelector( '#editor' ) )
-    .then( editor => {
-        editor.ui.view.editable.element.style.height = '500px';
-    } )
-    .catch( error => {
-        console.error( error );
-    } );
+    CKEDITOR.replace('noi_dung', {
+        filebrowserUploadUrl: "{{ route('admin.bai_viet.upload', ['_token' => csrf_token()]) }}",
+        filebrowserUploadMethod: 'form'
+    });
 </script>
 @endpush

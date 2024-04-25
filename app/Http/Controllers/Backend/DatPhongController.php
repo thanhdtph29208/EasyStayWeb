@@ -42,13 +42,28 @@ class DatPhongController extends Controller
 
     public function search(Request $request, DatPhongDataTable $datatables){
         $dataTableQuery = DatPhong::query()->with(['user']);
-
-        if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
-            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
-            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
-
-            $dataTableQuery->whereBetween('thoi_gian_den', [$from, $to]);
+        if ($request->filled('startTime') && $request->filled('startHour')) {
+            $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('startTime') . ' ' . $request->input('startHour'));
+            $dataTableQuery->where('thoi_gian_den', '>=', $startDateTime);
         }
+
+        if ($request->filled('endTime') && $request->filled('endHour')) {
+            $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('endTime') . ' ' . $request->input('endHour'));
+            $dataTableQuery->where('thoi_gian_den', '<=', $endDateTime);
+        }
+       if ($request->has('startTime') || $request->has('endTime')) {
+        // Nếu ngày bắt đầu đã được điền
+        if ($request->filled('startTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+            $dataTableQuery->where('thoi_gian_den', '>=', $from);
+        }
+
+        // Nếu ngày kết thúc đã được điền
+        if ($request->filled('endTime')) {
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+            $dataTableQuery->where('thoi_gian_den', '<=', $to);
+        }
+    }
 
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\BinhLuanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\AnhPhongController;
 use App\Http\Controllers\Backend\BaiVietController;
@@ -68,6 +69,7 @@ Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('
 
 Route::get('tin_tuc', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'index'])->name('client.pages.bai_viet.index');
 Route::get('chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'show'])->name('client.pages.bai_viet.show');
+Route::post('comments', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'comment'])->name('client.pages.bai_viet.comment');
 
 Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.lien_he');
 
@@ -128,6 +130,9 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
         Route::resource('anh_phong', AnhPhongController::class); // Ảnh phòng
         Route::resource('khach_san', hotelController::class); // Hotel
         Route::resource('bai_viet', BaiVietController::class); // Bài viết
+        Route::resource('binh_luan_bai_viet',BinhLuanController::class); // Bình Luận
+        Route::delete('binh_luan_bai_viet/delete/{id}',[BinhLuanController::class,"delete"])->name('binh_luan_bai_viet.delete'); // Xóa Bình Luận
+        Route::post('bai_viet/upload-image', [BaiVietController::class,"upload"])->name('bai_viet.upload'); // acb
         Route::resource('user', RegisteredUserController::class); // Registered
         Route::resource('banners', BannerController::class); // Banner
         // Route::resource('danh_gia', DanhGiaController::class);

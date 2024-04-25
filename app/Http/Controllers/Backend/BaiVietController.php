@@ -32,13 +32,31 @@ class BaiVietController extends Controller
         return view(self::PATH_VIEW . 'create');
     }
 
+    public function upload(Request $request){
+
+        if($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName(); $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName.'_'.time().'.'.$extension;
+            $request->file("upload")->move (public_path("images"), $fileName);
+            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $url = asset('images/'.$fileName);
+            $msg = 'Image uploaded successfully';
+            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+
+            @header('Content-type: text/html; charset=utf-8');
+            echo $response;
+            }
+       return false;
+    }
+
     public function store(Request $request , User $user): RedirectResponse
     {
         $rules = [
             'tieu_de' => 'required|max:255',
 			'anh' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'mo_ta_ngan' => 'required|max:225',
-            'noi_dung' => 'required',
+            'noi_dung_create' => 'required',
             'trang_thai' => [
                 Rule::in([
                     Bai_viet::XUAT_BAN,
@@ -59,7 +77,7 @@ class BaiVietController extends Controller
             'mo_ta_ngan.required' => 'Mô tả ngắn không được bỏ trống',
             'mo_ta_ngan.max' => 'Mô tả ngắn tối đa 255 ký tự',
 
-            'noi_dung.required' => 'Nội dung không được bỏ trống',
+            'noi_dung_create.required' => 'Nội dung không được bỏ trống',
 
         ];
 
@@ -78,15 +96,17 @@ class BaiVietController extends Controller
         //         ])
         //     ],
         // ]);
-        
+
         $data = $request->except('anh');
 
         if ($request->hasFile('anh')) {
-            $data['anh'] = Storage::put(self::PATH_UPLOAD, $request->file('anh'));
+            $data['anh'] = $request->file('anh')->store(self::PATH_UPLOAD, 'public');
         }
 
+        $data['noi_dung'] = $request->noi_dung_create;
+
         Bai_viet::query()->create($data);
-        
+
         Toastr::success('Thêm bài viết thành công','Thành công');
         return redirect()->route('admin.bai_viet.index');
 
@@ -147,7 +167,7 @@ class BaiVietController extends Controller
         $data = $request->except('anh');
 
         if ($request->hasFile('anh')) {
-            $data['anh'] = Storage::put(self::PATH_UPLOAD, $request->file('anh'));
+            $data['anh'] = $request->file('anh')->store(self::PATH_UPLOAD, 'public');
 
             if (Storage::exists($bai_viet->anh)) {
                 Storage::delete($bai_viet->anh);
