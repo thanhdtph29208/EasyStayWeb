@@ -56,7 +56,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
-   
+
 </head><!--end::Head--><!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary"><!--begin::App Wrapper-->
@@ -78,8 +78,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- ckeditor -->
-        {{-- <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script> --}}
-        <script src="https://cdn.ckeditor.com/ckeditor5/41.3.0/classic/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
         @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -153,6 +152,8 @@
                         }
                     })
                 })
+
+
 
             })
         </script>

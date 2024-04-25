@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\Bai_viet;
+use App\Models\comments;
+use http\Client\Request;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BaiVietDataTable extends DataTable
+class BinhLuanDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,53 +24,44 @@ class BaiVietDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'baiviet.action')
+            ->addColumn('action', 'binhluan.action')
 
-            ->addColumn('anh', function ($query) {
-                return  "<img src='"  . Storage::url($query->anh) .  "' width='100px' alt='ảnh bài viết'>";
+            ->addColumn('Tên người dùng', function ($query) {
+                return  $query->user->ten_nguoi_dung;
             })
-            ->addColumn('noi_dung', function ($query) {
-                return  "<div class='text-truncate' style='max-width: 150px;height: 20px;'>
-".$query->noi_dung."
-</div>";
+            ->addColumn('Tên Bài viết', function ($query) {
+                return  $query->bai_viet->tieu_de;
             })
-
-            ->addColumn('trang_thai', function ($query) {
-                $active = "<span class='badge text-bg-success'>Xuất bản</span>";
-                $inActive = "<span class='badge text-bg-danger'>Nháp</span>";
-                if ($query->trang_thai == 1) {
-                    return $active;
-                } else {
-                    return $inActive;
-                }
+            ->addColumn('Nội dung', function ($query) {
+                return  $query->content;
+            })
+            ->addColumn('Thời gian tạo', function ($query) {
+                return  $query->created_at;
             })
 
             ->addColumn('action', function ($query) {
 
-                $editBtn = "<a href='" . route('admin.bai_viet.edit', $query->id) . "' class='btn btn-primary'>
-                <i class='bi bi-pen'></i>
-                </a>";
 
-                $deleteBtn = "<a href='" . route('admin.bai_viet.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+
+                $deleteBtn = "<a href='" . route('admin.binh_luan_bai_viet.delete', $query->id) . "' class='btn btn-danger delete-item ms-2'>
                 <i class='bi bi-archive'></i>
                 </a>";
 
-                $viewComment = "<a href='" . route('admin.binh_luan_bai_viet.index',['id'=>$query->id] ) . "' class='btn btn-success ms-2'>
-                <i class='bi bi-eye-fill'></i>
-                </a>";
-                return "<div class='d-flex'>" . $editBtn . $deleteBtn.$viewComment . "</div>";
+
+                return "<div class='d-flex'>"  . $deleteBtn . "</div>";
             })
 
-            ->rawColumns(['anh', 'trang_thai', 'action','noi_dung'])
+
+            ->rawColumns(['Tên người dùng', 'Tên Bài viết', 'action','Tên người dùng'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Bai_viet $model): QueryBuilder
+    public function query(comments $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->with(['user','bai_viet'])->where('bai_viet_id', $this->id)->newQuery();
     }
 
     /**
@@ -78,7 +70,7 @@ class BaiVietDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('baiviet-table')
+            ->setTableId('binhluan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -101,13 +93,10 @@ class BaiVietDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('tieu_de'),
-            Column::make('anh'),
-            Column::make('mo_ta_ngan'),
-            Column::make('noi_dung'),
-            Column::make('trang_thai'),
-            // Column::make('created_at'),
-            // Column::make('updated_at'),
+            Column::make('Tên người dùng'),
+            Column::make('Tên Bài viết'),
+            Column::make('Nội dung'),
+             Column::make('Thời gian tạo'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -121,6 +110,6 @@ class BaiVietDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'BaiViet_' . date('YmdHis');
+        return 'BinhLuan_' . date('YmdHis');
     }
 }

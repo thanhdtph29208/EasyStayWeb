@@ -215,7 +215,7 @@
                     <li><a href="<?= env('APP_URL') ?>/" class="sub-menu-item">Trang chủ</a></li>
                     <li><a href="<?= env('APP_URL') ?>/loai_phong" class="sub-menu-item">Loại phòng</a></li>
 
-                    <li><a href="<?= env('APP_URL') ?>/tin_tuc" class="sub-menu-item">Tin tức</a></li>
+                    <li><a href="{{ route('client.pages.bai_viet.index') }}" class="sub-menu-item">Tin tức</a></li>
 
                     <li><a href="<?= env('APP_URL') ?>/lien_he" class="sub-menu-item">Liên hệ</a></li>
                     <?php

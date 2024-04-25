@@ -1,13 +1,5 @@
 @extends('admin.layouts.master')
 @section('content')
-    <style>
-        .title {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
 @if(session('error'))
 <script>
     alert("{{ session('error') }}");
@@ -16,7 +8,7 @@
     <main class="app-main">
     <div class="app-content-header">
         @include('admin.layouts.components.content-header', [
-        'name' => 'Bài viết',
+        'name' => 'Danh sách bình luận theo bài viết',
         'key' => 'EasyStay',
         ])
     </div>
@@ -24,7 +16,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h5>Danh sách</h5>
+                <h5>Danh sách Bình luận</h5>
             </div>
             <div class="card-body">
                 {{ $dataTable->table() }}
