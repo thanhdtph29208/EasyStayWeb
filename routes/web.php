@@ -67,8 +67,8 @@ Route::get('loc-phong', [ChiTietLoaiPhongController::class, 'filter'])->name('cl
 
 Route::get('loai_phong', [ChiTietLoaiPhongController::class, 'allRoom'])->name('clients.pages.loai_phong.loai_phong');
 
-Route::get('tin_tuc', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'index'])->name('client.pages.bai_viet.index');
-Route::get('chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'show'])->name('client.pages.bai_viet.show');
+Route::get('/tin_tuc', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'index'])->name('client.pages.bai_viet.index');
+Route::get('/chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'show'])->name('client.pages.bai_viet.show');
 Route::post('comments', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'comment'])->name('client.pages.bai_viet.comment');
 
 Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.lien_he');
@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('client.pages.password-update');
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 
-    Route::get('chi_tiet_loai_phong/{loai_phong_id}', [LichSuDatPhongController::class, 'danhGiaLoaiPhong'])->name('danh_gia_loai_phong');
+    Route::get('/chi_tiet_loai_phong/{loai_phong_id}', [LichSuDatPhongController::class, 'danhGiaLoaiPhong'])->name('danh_gia_loai_phong');
 
     Route::get('/vnpay_payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::get('/vnpay_callback', [CheckoutController::class, 'vnpayCallBack'])->name('vnpay_callback');
@@ -124,34 +124,34 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
     ->as('admin.')
     ->group(function () {
 
-        Route::resource('dashboard', ThongKeController::class); // Thống kê
-        Route::resource('loai_phong', LoaiPhongController::class); // Loại phòng
-        Route::resource('phong', PhongController::class); // Phòng
-        Route::resource('anh_phong', AnhPhongController::class); // Ảnh phòng
-        Route::resource('khach_san', hotelController::class); // Hotel
-        Route::resource('bai_viet', BaiVietController::class); // Bài viết
-        Route::resource('binh_luan_bai_viet',BinhLuanController::class); // Bình Luận
-        Route::delete('binh_luan_bai_viet/delete/{id}',[BinhLuanController::class,"delete"])->name('binh_luan_bai_viet.delete'); // Xóa Bình Luận
-        Route::post('bai_viet/upload-image', [BaiVietController::class,"upload"])->name('bai_viet.upload'); // acb
-        Route::resource('user', RegisteredUserController::class); // Registered
-        Route::resource('banners', BannerController::class); // Banner
+        Route::resource('/dashboard', ThongKeController::class); // Thống kê
+        Route::resource('/loai_phong', LoaiPhongController::class); // Loại phòng
+        Route::resource('/phong', PhongController::class); // Phòng
+        Route::resource('/anh_phong', AnhPhongController::class); // Ảnh phòng
+        Route::resource('/khach_san', hotelController::class); // Hotel
+        Route::resource('/bai_viet', BaiVietController::class); // Bài viết
+        Route::resource('/binh_luan_bai_viet',BinhLuanController::class); // Bình Luận
+        Route::delete('/binh_luan_bai_viet/delete/{id}',[BinhLuanController::class,"delete"])->name('binh_luan_bai_viet.delete'); // Xóa Bình Luận
+        Route::post('/bai_viet/upload-image', [BaiVietController::class,"upload"])->name('bai_viet.upload'); // acb
+        Route::resource('/user', RegisteredUserController::class); // Registered
+        Route::resource('/banners', BannerController::class); // Banner
         // Route::resource('danh_gia', DanhGiaController::class);
 
-        Route::resource('vai_tro', VaiTroController::class);
-        Route::resource('dat_phong', DatPhongController::class);
-        Route::get('dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
-        Route::get('khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
+        Route::resource('/vai_tro', VaiTroController::class);
+        Route::resource('/dat_phong', DatPhongController::class);
+        Route::get('/dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
+        Route::get('/khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
 
-        Route::resource('chi_tiet_dat_phong', ChiTietDatPhongController::class);
-        Route::put('loai_phong/change-status', [LoaiPhongController::class, 'changeStatus'])->name('loai_phong.change-status');
-        Route::get('exportUser', [ExportController::class, 'exportUser'])->name('exportUser');
-        Route::get('exportHoaDon', [ExportController::class, 'exportHoaDon'])->name('exportHoaDon');
+        Route::resource('/chi_tiet_dat_phong', ChiTietDatPhongController::class);
+        Route::put('/loai_phong/change-status', [LoaiPhongController::class, 'changeStatus'])->name('loai_phong.change-status');
+        Route::get('/exportUser', [ExportController::class, 'exportUser'])->name('exportUser');
+        Route::get('/exportHoaDon', [ExportController::class, 'exportHoaDon'])->name('exportHoaDon');
 
-        Route::put('searchKhuyenMai', [DatPhongController::class, 'searchKhuyenMai'])->name('searchKhuyenMai');
-        Route::resource('khuyen_mai', KhuyenMaiController::class);
-        Route::resource('dich_vu', DichVuController::class);
+        Route::put('/searchKhuyenMai', [DatPhongController::class, 'searchKhuyenMai'])->name('searchKhuyenMai');
+        Route::resource('/khuyen_mai', KhuyenMaiController::class);
+        Route::resource('/dich_vu', DichVuController::class);
 
-        Route::resource('lien_he', LienHeController::class);
+        Route::resource('/lien_he', LienHeController::class);
     });
 
 Route::middleware(['auth', 'verified'])->prefix('admin')
