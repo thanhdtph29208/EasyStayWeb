@@ -35,8 +35,8 @@
                     <img src="{{Storage::url($detail->anh)}}" alt="">
 
                     <div class="p-6">
-                        <!-- <p class="text-slate-400">{{$detail->noi_dung}}</p> -->
-                        <p class="text-slate-400 italic border-x-4 border-red-500 rounded-ss-xl rounded-ee-xl mt-3 p-3">{{$detail->noi_dung}}</p>
+                        <!-- <p class="text-slate-400">{!! $detail->noi_dung !!}</p> -->
+                        <p class="text-slate-400 italic border-x-4 border-red-500 rounded-ss-xl rounded-ee-xl mt-3 p-3">{!! $detail->noi_dung !!}</p>
                         <!-- <p class="text-slate-400 mt-3">The advantage of its Latin origin and the relative meaninglessness of Lorum Ipsum is that the text does not attract attention to itself or distract the viewer's attention from the layout.</p> -->
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                                             <input name="name" id="name" type="text" class="mt-3 w-full py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0" placeholder="Name :">
                                         </div>
                                     </div>
-    
+
                                     <div class="lg:col-span-6 mb-5">
                                         <div class="text-left">
                                             <label for="email" class="font-semibold">Your Email:</label>
@@ -74,7 +74,7 @@
                         </div> -->
             </div>
 
-            
+
         </div>
     </div>
 
@@ -111,4 +111,61 @@
     </div><!--end container-->
 </section><!--end section-->
 <!-- End -->
+<div class="m-4 bg-white rounded-lg border p-2 ">
+
+    <h3 class="font-bold text-gray-600">Discussion</h3>
+    <div class="flex flex-col">
+
+        @foreach($comments as $comment)
+        <div class="border rounded-md p-3 ml-3 my-3">
+            <div class="flex gap-3 items-center">
+
+                <img src="https://avatars.githubusercontent.com/u/22263436?v=4"
+                     class="object-cover w-8 h-8 rounded-full
+                            border-2 border-emerald-400  shadow-emerald-400
+                            ">
+
+                <h3 class="font-bold text-gray-600">
+                    {{ $comment->user->ten_nguoi_dung }}
+                </h3>
+            </div>
+
+
+            <p class="text-gray-600 mt-2">
+                {{ $comment->content }}
+            </p>
+
+        </div>
+        @endforeach
+
+
+
+
+
+    </div>
+    <form action="{{ route('client.pages.bai_viet.comment') }}" method="POST">
+        @csrf
+        <input type="hidden" name="id_user" value="{{ \Illuminate\Support\Facades\Auth::user()->id }}">
+        <input type="hidden" name="id_post" value="{{ $id }}">
+        <div class="w-full px-3 my-2">
+                <textarea
+                    class="bg-gray-100 rounded text-gray-600 border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                    name="content" placeholder='Type Your Comment' required></textarea>
+        </div>
+        @error('content')
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ $message }}</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+            <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+          </span>
+        </div>
+        @enderror
+
+        <div class="w-full flex justify-end px-3">
+            <input type='submit' class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500" value='Post Comment'>
+        </div>
+    </form>
+
+
+</div>
 @endsection

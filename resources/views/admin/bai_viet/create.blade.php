@@ -58,7 +58,7 @@
 
                                 <div class="mb-3 mx-auto ">
                                     <label for="noi_dung" class="form-label">Nội dung:</label>
-                                    <textarea name="noi_dung" id="editor" cols="30" rows="8" class="form-control"></textarea>
+                                    <textarea name="noi_dung_create" id="NoidungCreate" cols="30" rows="8" class="form-control"></textarea>
                                 </div>
 
                                 <div class="mb-3 mx-auto ">
@@ -92,12 +92,10 @@
 
 @push('scripts')
 <script>
-ClassicEditor.create( document.querySelector( '#editor' ) )
-    .then( editor => {
-        editor.ui.view.editable.element.style.height = '500px';
-    } )
-    .catch( error => {
-        console.error( error );
-    } );
+    CKEDITOR.replace('noi_dung_create', {
+        filebrowserUploadUrl: "{{ route('admin.bai_viet.upload', ['_token' => csrf_token()]) }}",
+        filebrowserUploadMethod: 'form'
+    });
+
 </script>
 @endpush
