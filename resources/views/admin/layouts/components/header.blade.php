@@ -82,7 +82,7 @@
                             <div class="col-4 text-center"><a href="#">Friends</a></div>
                         </div>
                     </li> -->
-                    <li class="user-footer"><a href="#" class="btn btn-default btn-flat">Profile</a><a href="#" class="btn btn-default btn-flat float-end">Sign out</a></li><!--end::Menu Footer-->
+                    <li class="user-footer"><a href="{{ route('client.pages.hoso') }}" class="btn btn-default btn-flat">Profile</a><a href="{{ route('home') }}" class="btn btn-default btn-flat float-end">Sign out</a></li><!--end::Menu Footer-->
                 </ul>
             </li><!--end::User Menu Dropdown-->
         </ul><!--end::End Navbar Links-->
