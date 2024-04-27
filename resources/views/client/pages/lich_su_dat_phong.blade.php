@@ -27,7 +27,6 @@
         <table id="example" class="table table-striped">
         <thead>
             <tr>
-                <th>STT</th>
                 <th>Tên khách hàng</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
@@ -37,10 +36,9 @@
         </thead>
         <tbody>
         <?php $i=1;$count = 0 ?>
-        @foreach($userBookings as $DatPhong)
+        @foreach($userBookings->sortByDesc('id') as $DatPhong)
         @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null)
         <tr>
-            <td style="text-align: center;">{{ $i++ }}</td>
             <td>{{ $DatPhong->ho_ten }}</td>
             <td>{{ $DatPhong->email }}</td>
             <td>{{ $DatPhong->so_dien_thoai }}</td>
