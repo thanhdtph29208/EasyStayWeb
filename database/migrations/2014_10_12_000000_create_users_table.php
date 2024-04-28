@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -29,6 +31,14 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreign('id_vai_tro')->references('id')->on('vai_tros');
         });
+        $password = Hash::make('admin');
+        DB::table('users')->insert([
+            'ten_nguoi_dung' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => $password,
+            'so_dien_thoai' => '1234567890',
+            'id_vai_tro' => 2,
+        ]);
     }
 
     /**

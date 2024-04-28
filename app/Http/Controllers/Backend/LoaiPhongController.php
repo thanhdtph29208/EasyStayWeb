@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\DataTables\ChiTietLoaiPhongDataTable;
 use App\DataTables\LoaiPhongDataTable;
 use App\Models\Loai_phong;
 use Illuminate\Http\Request;
@@ -17,9 +16,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+use App\Models\DatPhong;
+
 
 use function Termwind\render;
 use Brian2694\Toastr\Facades\Toastr;
+use Yajra\DataTables\Facades\DataTables;
 
 class LoaiPhongController extends Controller
 {
@@ -45,7 +48,126 @@ class LoaiPhongController extends Controller
 
         return $datatable->with('so_luong', $so_luong)->with('phong_trong', $phong_trong)->render('admin.loai_phong.index');
     }
+    public function search(Request $request, LoaiPhongDataTable $datatables){
 
+        $dataTableQuery = Loai_phong::query()->with('loai_phong');
+
+        if ($request->has('startTime') && $request->has('endTime') && $request->filled('startTime') && $request->filled('endTime')) {
+            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'))->setTime(12, 0);
+            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'))->setTime(14, 0);
+            $dataTableQuery->whereBetween('thoi_gian_den', [$from, $to]);
+        }
+
+        if ($request->has('status') && $request->status != 2) {
+            $dataTableQuery->where('trang_thai','=',$request->status);
+        }
+
+        $loai_phong = $dataTableQuery->get();
+        $loai_phong->each(function ($item) use ($request) {
+            $phong_trong = DB::table('phongs')
+                ->where('loai_phong_id', $item->id)
+                ->whereNotExists(function ($query) use ($request) {
+                    $query->select(DB::raw(1))
+                        ->from('dat_phong_noi_phongs as dp')
+                        ->leftJoin('dat_phongs as d', 'dp.dat_phong_id', '=', 'd.id')
+                        ->where('dp.phong_id', '=', DB::raw('phongs.id'))
+                        ->where(function ($subQuery) use ($request) {
+                            $subQuery->whereBetween($request->endTime, ['d.thoi_gian_di', 'd.thoi_gian_den'])
+                                ->orWhereBetween($request->startTime, ['d.thoi_gian_di', 'd.thoi_gian_den'])
+                                ->orWhereBetween('d.thoi_gian_di', [$request->startTime, $request->endTime])
+                                ->orWhereBetween('d.thoi_gian_den', [$request->startTime, $request->endTime]);
+                        });
+                })
+                ->count();
+
+            $item->phong_trong = $phong_trong;
+        });
+        return DataTables::of($loai_phong)
+        ->addColumn('action', 'loai_phong.action')
+        ->addColumn('so_luong', function($query,$so_luong){
+            $so_luong = Phong::Where('loai_phong_id',$query->id)->count();
+            return $so_luong;
+
+        })
+
+        ->addColumn('anh', function($query){
+            return  "<img src='" . Storage::url($query->anh) . "' width='100px' alt='ảnh phòng'>";
+
+        })
+        ->addColumn('phong_trong', function($query,$phong_trong)
+        {
+            return $phong_trong;
+        })
+        // ->addColumn('trang_thai', function ($query) {
+        //     if ($query->phong_trong == 0) {
+        //         $query->trang_thai = 0;
+        //         $query->save();
+        //     }
+        //     return $query->trang_thai == 1 ? "<span class='badge text-bg-success'>Còn phòng</span>" : "<span class='badge text-bg-danger'>Hết phòng</span>";
+
+        // })
+
+        ->addColumn('trang_thai', function ($query,$phong_trong) {$phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
+            if ($phong_trong == 0) {
+                return "<span class='badge text-bg-danger'>Hết phòng</span>";
+            } else {
+                return "<span class='badge text-bg-success'>Còn phòng</span>";
+            }
+        })
+
+        ->addColumn('action', function ($query) {
+            $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
+            </a>";
+            $editBtn = "<a href='" . route('admin.loai_phong.edit', $query->id) . "' class='btn btn-primary'>
+            <i class='bi bi-pen'></i>
+            </a>";
+            // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
+            // <i class='bi bi-image'></i>
+            // </a>";
+
+            // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
+            // <i class='bi bi-card-list'></i>
+            // </a>";
+            $deleteBtn = "<a href='" . route('admin.loai_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+            <i class='bi bi-archive'></i>
+            </a>";
+            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
+            // <i class='bi bi-houses-fill'></i>
+            // </a>";
+            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
+            // <i class='bi bi-chat-dots'></i>
+            // </a>";
+
+            $moreBtn = "
+            <div class='dropdown d-inline ms-1'>
+                <button class='btn btn-secondary dropdown-toggle' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                <i class='bi bi-list-ul'></i>
+                </button>
+                <ul class='dropdown-menu'>
+                    <li><a class='dropdown-item' href='" . route('admin.anh_phong.index', ['loai_phong' => $query->id]) . "'>
+                    <i class='bi bi-image'></i> Ảnh phòng
+                    </a></li>
+                    <li><a class='dropdown-item' href='" . route('admin.loai_phong.show', ['loai_phong' => $query->id]) . "'>
+                    <i class='bi bi-card-list'></i> Chi tiết loại phòng
+                    </a></li>
+                    <li><a class='dropdown-item' href='" . route('admin.phong.index', ['loai_phong' => $query->id]) . "'>
+                    <i class='bi bi-houses-fill'></i> Phòng
+                    </a></li>
+                    <li><a class='dropdown-item' href='" . route('admin.danh_gia.index', ['loai_phong' => $query->id]) . "'>
+                    <i class='bi bi-chat-dots'></i> Đánh giá
+                    </a></li>
+                </ul>
+            </div>
+            ";
+
+            return $datPhongBtn . $editBtn . $deleteBtn . $moreBtn ;
+        })
+
+        ->rawColumns(['so_luong','anh','phong_trong','trang_thai', 'action'])
+        ->setRowId('id')
+        // ->rawColumns(['action'])
+        ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -110,7 +232,7 @@ class LoaiPhongController extends Controller
         ];
 
         $validated = $request->validate($rules, $messages);
-        
+
         // $request->validate([
         //     'ten' => 'required|unique:loai_phongs',
         //     'anh' => 'nullable', 'image',
@@ -156,7 +278,7 @@ class LoaiPhongController extends Controller
      */
     public function edit(Loai_phong $loai_phong)
     {
-        
+
         return view('admin.loai_phong.edit', compact('loai_phong'));
     }
 

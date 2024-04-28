@@ -135,6 +135,7 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
         Route::resource('vai_tro', VaiTroController::class);
         Route::resource('dat_phong', DatPhongController::class);
         Route::get('dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
+        Route::get('loai_phong_tim_Kiem',[LoaiPhongController::class,'search'])->name('search_loai_phong');
         Route::get('khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
 
         Route::resource('chi_tiet_dat_phong', ChiTietDatPhongController::class);

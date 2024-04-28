@@ -25,21 +25,19 @@ class LoaiPhongDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'loai_phong.action')
+            // ->addColumn('so_luong', function($query){
+            //     $so_luong = $this->so_luong->where('ten',$query->ten)->first();
+            //     return $so_luong ? $so_luong->so_luong : 0;
+            // })
 
-            
-            ->addColumn('so_luong', function($query){
-                $so_luong = $this->so_luong->where('ten',$query->ten)->first();
-                return $so_luong ? $so_luong->so_luong : 0;
-            })
-            
             ->addColumn('anh', function($query){
                 return  "<img src='" . Storage::url($query->anh) . "' width='100px' alt='ảnh phòng'>";
-                
+
             })
-            ->addColumn('phong_trong', function($query){
-                $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
-                return $phong_trong;            
-            })
+            // ->addColumn('phong_trong', function($query){
+            //     $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
+            //     return $phong_trong;
+            // })
             // ->addColumn('trang_thai', function ($query) {
             //     if ($query->phong_trong == 0) {
             //         $query->trang_thai = 0;
@@ -49,16 +47,18 @@ class LoaiPhongDataTable extends DataTable
 
             // })
 
-            ->addColumn('trang_thai', function ($query) {
-                $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
-                if ($phong_trong == 0) {
-                    return "<span class='badge text-bg-danger'>Hết phòng</span>";
-                } else {
-                    return "<span class='badge text-bg-success'>Còn phòng</span>";
-                }
-            })
+            // ->addColumn('trang_thai', function ($query) {
+            //     $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
+            //     if ($phong_trong == 0) {
+            //         return "<span class='badge text-bg-danger'>Hết phòng</span>";
+            //     } else {
+            //         return "<span class='badge text-bg-success'>Còn phòng</span>";
+            //     }
+            // })
 
             ->addColumn('action', function ($query) {
+                $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
+                </a>";
                 $editBtn = "<a href='" . route('admin.loai_phong.edit', $query->id) . "' class='btn btn-primary'>
                 <i class='bi bi-pen'></i>
                 </a>";
@@ -98,13 +98,14 @@ class LoaiPhongDataTable extends DataTable
                         <i class='bi bi-chat-dots'></i> Đánh giá
                         </a></li>
                     </ul>
-                </div>  
+                </div>
                 ";
 
-                return $editBtn . $deleteBtn . $moreBtn ;
+                return $datPhongBtn . $editBtn . $deleteBtn . $moreBtn ;
             })
-            
-            ->rawColumns(['so_luong','anh','phong_trong','trang_thai', 'action'])
+
+            ->rawColumns(['anh', 'action'])
+            // ->rawColumns(['so_luong','anh', 'action'])
             ->setRowId('id');
     }
     /**
@@ -143,24 +144,23 @@ class LoaiPhongDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            
+
             Column::make('id'),
             Column::make('ten'),
             Column::make('anh'),
             Column::make('gia'),
-            Column::make('gia_ban_dau'),
             // Column::make('gioi_han_nguoi'),
-            Column::make('so_luong'),
-            Column::make('phong_trong'),
+            // Column::make('so_luong'),
+            // Column::make('phong_trong'),
             // Column::make('mo_ta_ngan'),
             // Column::make('mo_ta_dai'),
-            Column::make('trang_thai'),
+            // Column::make('trang_thai'),
             // Column::make('created_at'),
             // Column::make('updated_at'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(160)
+                  ->width(280)
                   ->addClass('text-center'),
         ];
     }
