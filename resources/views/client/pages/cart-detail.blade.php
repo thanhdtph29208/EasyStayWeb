@@ -1,5 +1,38 @@
 @extends('client.layouts.master')
 @section('content')
+<!-- <script>
+    function changeQuantity(rowId, action) {
+        var inputElement = document.querySelector('input[data-rowid="' + rowId + '"]');
+        var currentQuantity = parseInt(inputElement.value);
+        var price = parseFloat(inputElement.getAttribute('data-price'));
+
+        if (action === 'increase') {
+            inputElement.value = currentQuantity + 1;
+        } else if (action === 'decrease' && currentQuantity > 0) {
+            inputElement.value = currentQuantity - 1;
+        }
+
+        var subtotal = price * parseInt(inputElement.value);
+        document.getElementById(rowId).textContent = `${subtotal.toLocaleString()} VNĐ`;
+
+        // Cập nhật tổng số tiền
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        var total = 0;
+        var subtotals = document.querySelectorAll('td[id^="row"]');
+        subtotals.forEach(function(subtotal) {
+            total += parseFloat(subtotal.textContent.replace('VNĐ', '').replace(/\./g, '').trim());
+        });
+        document.getElementById('totalPrice').textContent = `${total.toLocaleString()} VNĐ`;
+    }
+
+
+
+    
+</script> -->
+
 <section class="relative table w-full items-center py-36 bg-[url('../../assets/images/bg/cta.html')] bg-top bg-no-repeat bg-cover">
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/80 to-slate-900"></div>
     <div class="container relative">
@@ -49,20 +82,21 @@
                                     <p class="text-sm font-medium">{{ $item->name }}</p>
                                 </td>
                                 <td class="px-4 py-2 flex items-center">
-                                    <button id="room-decrement" type="button" onclick="changeQuantity('{{ $item->rowId }}', 'decrease')" class="mr-2 focus:outline-none text-gray-500 hover:text-red-500 hover:bg-gray-200 dark:hover:text-red-400 dark:hover:bg-gray-700 rounded-full p-1">
-                                        <i  class="bi bi-dash"></i>
+                                    <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'decrease')" class="mr-2 focus:outline-none text-gray-500 hover:text-red-500 hover:bg-gray-200 dark:hover:text-red-400 dark:hover:bg-gray-700 rounded-full p-1">
+                                        <i class="bi bi-dash"></i>
                                     </button>
                                     <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty border border-gray-300 dark:border-gray-600 rounded-md" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
-                                    <button id="room-increment" type="button" onclick="changeQuantity('{{ $item->rowId }}', 'increase')" class="ml-2 focus:outline-none text-gray-500 hover:text-green-500 hover:bg-gray-200 dark:hover:text-green-400 dark:hover:bg-gray-700 rounded-full p-1">
-                                        <i  class="bi bi-plus-lg"></i>
+                                    <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'increase')" class="ml-2 focus:outline-none text-gray-500 hover:text-green-500 hover:bg-gray-200 dark:hover:text-green-400 dark:hover:bg-gray-700 rounded-full p-1">
+                                        <i class="bi bi-plus-lg"></i>
                                     </button>
                                 </td>
                                 <td class="px-4 py-2">{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
                                 <td class="px-4 py-2" id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty , 0, '.', '.') }}VNĐ</td>
                                 <td class="px-4 py-2">
-                    <span id="clear-cart" class="bi bi-trash mr-2" data-row-id="{{ $item->rowId }}"></span> 
-</td>
-
+                                    <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}" class="inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 hover:bg-red-200 rounded-full focus:outline-none focus:shadow-outline">
+                                        <i class="bi bi-trash mr-2"></i> Xóa
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                             @if (count($cartItems) == 0)
@@ -129,92 +163,101 @@
 
 @push('scripts')
 <script>
-   function updateRoomQuantity(input, quantity) {
-    let rowId = input.data('rowid');
-    $.ajax({
-        url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
-        method: "POST",
-        data: {
-            _token: "{{ csrf_token() }}",
-            quantity: quantity,
-            rowId: rowId
-        },
-        success: function(data) {
-            console.log(data);
-            if (data.status === 'success') {
-                let id = "#" + rowId;
-                toastr.success(data.message);
-                $(id).text(data.phong_total.toLocaleString() + "VNĐ");
-                $('#total').text(data.total.toLocaleString() + "VNĐ");
-                calcCouponDiscount();
-            } else if (data.status === 'error') {
-                toastr.error(data.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            toastr.error('Đã xảy ra lỗi khi cập nhật số lượng phòng.');
-        }
-    });
-}
+    $(document).ready(function() {
+        $('.room-increment').on('click', function() {
+            // alert(123);
 
-$('#room-increment').on('click', function() {
-    let input = $(this).siblings('.phong-qty');
-    let quantity = parseInt(input.val()) + 1;
-    updateRoomQuantity(input, quantity);
-});
-
-$('#room-decrement').on('click', function() {
-    let input = $(this).siblings('.phong-qty');
-    let quantity = parseInt(input.val()) - 1;
-    if (quantity < 1) {
-        quantity = 1;
-    }
-    input.val(quantity);
-    updateRoomQuantity(input, quantity);
-});
-
-
-
-
-
-        $(document).on('click', '#clear-cart', function() {
-    Swal.fire({
-        title: 'Bạn có muốn xóa?',
-        text: "Hành động này sẽ xóa loại phòng!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Lấy rowId từ thuộc tính data-row-id của nút xóa
-            var rowId = $(this).data('row-id');
-            // Gửi yêu cầu AJAX để xóa sản phẩm khỏi giỏ hàng
+            let input = $(this).siblings('.phong-qty')
+            let quantity = parseInt(input.val()) + 1;
+            console.log(quantity);
+            let rowId = input.data('rowid')
             $.ajax({
-                type: 'GET',
-                url: "{{ route('clear-cart') }}/" + rowId, // Thêm rowId vào URL
+                url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    quantity: quantity,
+                    rowId: rowId
+                },
                 success: function(data) {
                     console.log(data);
-                    if (data.status == 'success') {
-                        Swal.fire(
-                            'Xóa!',
-                            data.message,
-                            'success'
-                        )
-                        window.location.reload();
+                    if (data.status === 'success') {
+                        input.val(quantity)
+                        let id = "#" + rowId;
+                        toastr.success(data.message)
+                        $(id).text(data.phong_total + "VNĐ")
+                        VNĐ('#total').text(data.total + "VNĐ");
+                        calcCouponDiscount()
+                    } else if (data.status === 'error') {
+                        toastr.error(data.message)
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
                 }
             })
-        }
-    })
-})
+        });
 
+        $('.room-decrement').on('click', function() {
+            let input = $(this).siblings('.phong-qty')
+            let quantity = parseInt(input.val()) - 1;
+            if (quantity < 1) {
+                quantity = 1
+            }
+            input.val(quantity)
+            // console.log(quantity);
+            let rowId = input.data('rowid')
+            $.ajax({
+                url: "{{ route('chi_tiet_gio_hang.them_phong') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    quantity: quantity,
+                    rowId: rowId
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        let id = "#" + rowId;
+                        toastr.success(data.message)
+                        $(id).text(data.phong_total + "VNĐ")
+                        $('#total').text(data.total + "VNĐ");
+                        calcCouponDiscount()
+                    }
+                }
+            })
+        })
 
+        $('.clear-cart').on('click', function() {
+            Swal.fire({
+                title: 'Bạn có muốn xóa?',
+                text: "Hành động này sẽ xóa loại phòng!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{ route('clear-cart') }}",
+                        success: function(data) {
+                            console.log(data);
+                            if (data.status == 'success') {
+                                Swal.fire(
+                                    'Xóa!',
+                                    data.message,
+                                    'success'
+                                )
+                                window.location.reload();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                        }
+                    })
+                }
+            })
+        })
 
 
         $('#coupon_form').on('submit', function(e) {
@@ -253,7 +296,7 @@ $('#room-decrement').on('click', function() {
                 }
             })
         }
-    
+    })
 </script>
 
 

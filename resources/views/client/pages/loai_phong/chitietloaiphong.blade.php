@@ -3,82 +3,81 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-    // Intercept sự kiện submit của form
-    $('form').submit(function(event) {
-        // Ngăn chặn hành động mặc định của form
-        event.preventDefault();
+        // Intercept sự kiện submit của form
+        $('form').submit(function(event) {
+            // Ngăn chặn hành động mặc định của form
+            event.preventDefault();
 
-        // Lấy dữ liệu từ form
-        var formData = $(this).serialize();
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // Lấy dữ liệu từ form
+            var formData = $(this).serialize();
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
-        $.ajax({
-            type: 'POST', // Phương thức POST
-            url: $(this).attr('action'), // Lấy URL từ thuộc tính action của form
-            data: formData, // Dữ liệu gửi đi
-            success: function(response) {
-                // Xóa nội dung cũ của phần tử HTML
-                $('#result').empty();
+            // Gửi yêu cầu Ajax để lấy dữ liệu về các phòng trống
+            $.ajax({
+                type: 'POST', // Phương thức POST
+                url: $(this).attr('action'), // Lấy URL từ thuộc tính action của form
+                data: formData, // Dữ liệu gửi đi
+                success: function(response) {
+                    // Xóa nội dung cũ của phần tử HTML
+                    $('#result').empty();
 
-                // Lặp qua danh sách phòng trống và chỉ hiển thị những phòng có trạng thái bằng 1
-                $.each(response.availableRooms, function(index, room) {
-                    // Nếu trạng thái của phòng là 1, thêm dữ liệu vào phần tử HTML
-                    if (room.trang_thai === 1) {
-                        // Tạo phần tử HTML mới cho mỗi phòng
-                        var roomElement = $('<div class="room"></div>');
-                        roomElement.append('<input type="checkbox" name="selectedRooms[]" value="' + room.id + '">');
-                        roomElement.append('<p>ID: ' + room.id + '</p>');
-                        roomElement.append('<p>Tên phòng: ' + room.ten_phong + '</p>');
-                        roomElement.append('<p>Mô tả: ' + room.mo_ta + '</p>');
-                        roomElement.append('<p>Trạng thái: ' + room.trang_thai + '</p>');
+                    // Lặp qua danh sách phòng trống và chỉ hiển thị những phòng có trạng thái bằng 1
+                    $.each(response.availableRooms, function(index, room) {
+                        // Nếu trạng thái của phòng là 1, thêm dữ liệu vào phần tử HTML
+                        if (room.trang_thai === 1) {
+                            // Tạo phần tử HTML mới cho mỗi phòng
+                            var roomElement = $('<div class="room"></div>');
+                            roomElement.append('<input type="checkbox" name="selectedRooms[]" value="' + room.id + '">');
+                            roomElement.append('<p>ID: ' + room.id + '</p>');
+                            roomElement.append('<p>Tên phòng: ' + room.ten_phong + '</p>');
+                            roomElement.append('<p>Mô tả: ' + room.mo_ta + '</p>');
+                            roomElement.append('<p>Trạng thái: ' + room.trang_thai + '</p>');
 
-                        // Thêm phòng vào phần tử #result trên giao diện người dùng
-                        $('#result').append(roomElement);
-                    }
-                });
+                            // Thêm phòng vào phần tử #result trên giao diện người dùng
+                            $('#result').append(roomElement);
+                        }
+                    });
 
-                // Hiển thị nút "Đặt phòng"
-                $('#result').append('<button type="button" id="bookRooms">Đặt phòng</button>');
-            },
-            error: function(xhr, status, error) {
-                // Xử lý lỗi nếu có
-                console.error(error);
-            }
+                    // Hiển thị nút "Đặt phòng"
+                    $('#result').append('<button type="button" id="bookRooms">Đặt phòng</button>');
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(error);
+                }
+            });
+        });
+
+        // Xử lý sự kiện click khi người dùng ấn nút "Đặt phòng"
+        $('#bookRooms').click(function() {
+            // Lấy CSRF Token từ meta tag trong trang HTML
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            var selectedRooms = [];
+            // Lặp qua danh sách các phòng đã chọn
+            $('input[name="selectedRooms[]"]:checked').each(function() {
+                selectedRooms.push($(this).val());
+            });
+
+            // Gửi yêu cầu Ajax để đặt phòng
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("them_gio_hang_ct") }}',
+                data: {
+                    _token: csrfToken, // Thêm CSRF Token vào dữ liệu gửi
+                    selectedRooms: selectedRooms
+                },
+                success: function(response) {
+                    // Xử lý kết quả đặt phòng
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(error);
+                }
+
+            });
         });
     });
-
-    // Xử lý sự kiện click khi người dùng ấn nút "Đặt phòng"
-    $('#bookRooms').click(function() {
-    // Lấy CSRF Token từ meta tag trong trang HTML
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-    var selectedRooms = [];
-    // Lặp qua danh sách các phòng đã chọn
-    $('input[name="selectedRooms[]"]:checked').each(function() {
-        selectedRooms.push($(this).val());
-    });
-
-    // Gửi yêu cầu Ajax để đặt phòng
-    $.ajax({
-        type: 'POST',
-        url: '{{ route("them_gio_hang_ct") }}',
-        data: {
-            _token: csrfToken, // Thêm CSRF Token vào dữ liệu gửi
-            selectedRooms: selectedRooms
-        },
-        success: function(response) {
-            // Xử lý kết quả đặt phòng
-        },
-        error: function(xhr, status, error) {
-            // Xử lý lỗi nếu có
-            console.error(error);
-        }
-
-        });
-    });
-});
-
 </script>
 
 
@@ -208,10 +207,6 @@
                             <span class="text-slate-400 font-medium text-sm">{{ $detail->trang_thai ? 'Còn phòng' : 'Hết phòng'}}</span>
                         </div>
                     </li>
-
-
-
-
                 </ul>
 
 
@@ -221,7 +216,7 @@
                     <p class="text-slate-400 mt-6">{{ $detail->mo_ta_dai }}</p>
                     <!-- <p class="text-slate-400 mt-3">The advantage of its Latin origin and the relative meaninglessness of Lorum Ipsum is that the text does not attract attention to itself or distract the viewer's attention from the layout.</p> -->
                 </div>
-            
+
                 <div class="border-2 rounded mt-6">
                     <div class="m-3">
                         <h2 class="mb-3 font-semibold text-xl">Đánh giá </h2>
@@ -251,7 +246,6 @@
                             <p class="text-red-500 italic mt-8">***Chưa có đánh giá nào cho loại phòng này***</p>
                             @endif
                         </div>
-
                     </div>
 
                     <form class="px-3" action="{{ route('admin.danh_gia.store', $detail) }}" method="post">
@@ -277,41 +271,41 @@
             <div class="lg:col-span-4 md:col-span-5">
 
                 <div class="p-4 rounded-md shadow dark:shadow-gray-700 sticky top-20">
-                <div class="">
-                    <h3 class="text-xl font-semibold">Thông tin phòng</h3>
+                    <div class="">
+                        <h3 class="text-xl font-semibold">Thông tin phòng</h3>
 
-                    <div>
+                        <div>
+
+                        </div>
+
+
 
                     </div>
-       
 
-
-                </div>
-  
 
 
                     <div class="mt-6">
-<form method="post" action="{{ route('kiem_tra_loai_phong', ['id' => $detail->id]) }}">
-    @csrf
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="mb-3">
-        <label for="thoi_gian_den" class="form-label">Ngày đến:</label>
-        <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den" required>
-    </div>
-    <div class="mb-3">
-        <label for="thoi_gian_di" class="form-label">Ngày đi:</label>
-        <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" required>
-    </div>
-    
-    <div id="result">
-    <!-- Danh sách phòng trống sẽ được hiển thị ở đây -->
-</div>
+                        <form method="post" action="{{ route('kiem_tra_loai_phong', ['id' => $detail->id]) }}">
+                            @csrf
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                            <div class="mb-3">
+                                <label for="thoi_gian_den" class="form-label">Ngày đến:</label>
+                                <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="thoi_gian_di" class="form-label">Ngày đi:</label>
+                                <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" required>
+                            </div>
 
-    
-    <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
-    <button type="button" id="bookRooms">Đặt phòng</button>
-  
-</form>
+                            <div id="result">
+                                <!-- Danh sách phòng trống sẽ được hiển thị ở đây -->
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+                            <button type="button" id="bookRooms">Đặt phòng</button>
+
+                        </form>
 
 
                         <h5 class="text-lg font-medium">Google Map</h5>
@@ -321,9 +315,9 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </div>
     </div><!--end container-->
 </section>
@@ -388,4 +382,3 @@
 <script src="<?= env('APP_URL') ?>assets/js/app.js"></script>
 <!-- JAVASCRIPTS -->
 @endsection
-
