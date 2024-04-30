@@ -87,6 +87,7 @@ Route::post('chi_tiet_gio_hang/them_phong', [CartController::class, 'updateRoomQ
 Route::get('coupon-calc', [CartController::class, 'couponCalc'])->name('coupon-calc');
 Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear-cart');
+Route::delete('xoa_loai_phong/{rowId}', [CartController::class, 'clearCart'])->name('chi_tiet_gio_hang.xoa_loai_phong');
 
 
 // thanh toán

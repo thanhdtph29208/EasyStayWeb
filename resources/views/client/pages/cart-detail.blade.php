@@ -1,5 +1,7 @@
 @extends('client.layouts.master')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- <script>
     function changeQuantity(rowId, action) {
         var inputElement = document.querySelector('input[data-rowid="' + rowId + '"]');
@@ -93,10 +95,11 @@
                                 <td class="px-4 py-2">{{ number_format($item->price, 0, '.', '.') }}VNĐ</td>
                                 <td class="px-4 py-2" id="{{ $item->rowId }}">{{ number_format($item->price * $item->qty , 0, '.', '.') }}VNĐ</td>
                                 <td class="px-4 py-2">
-                                    <a href="{{ route('chi_tiet_gio_hang.xoa_loai_phong', $item->rowId) }}" class="inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 hover:bg-red-200 rounded-full focus:outline-none focus:shadow-outline">
-                                        <i class="bi bi-trash mr-2"></i> Xóa
-                                    </a>
-                                </td>
+
+    <button  class="clear-cart inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 hover:bg-red-200 rounded-full focus:outline-none focus:shadow-outline" data-row-id="{{ $item->rowId }}">
+        <i class="bi bi-trash mr-2"></i> Xóa
+    </button>
+</td>
                             </tr>
                             @endforeach
                             @if (count($cartItems) == 0)
@@ -226,38 +229,44 @@
         })
 
         $('.clear-cart').on('click', function() {
-            Swal.fire({
-                title: 'Bạn có muốn xóa?',
-                text: "Hành động này sẽ xóa loại phòng!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý'
-            }).then((result) => {
-                if (result.isConfirmed) {
+    var rowId = $(this).data('row-id'); // Lấy rowId từ data-attribute của thẻ 'button'
 
-                    $.ajax({
-                        type: 'GET',
-                        url: "{{ route('clear-cart') }}",
-                        success: function(data) {
-                            console.log(data);
-                            if (data.status == 'success') {
-                                Swal.fire(
-                                    'Xóa!',
-                                    data.message,
-                                    'success'
-                                )
-                                window.location.reload();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                        }
-                    })
+    Swal.fire({
+        title: 'Bạn có muốn xóa?',
+        text: "Hành động này sẽ xóa loại phòng!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'DELETE', // Sử dụng phương thức DELETE
+                url: "{{ route('chi_tiet_gio_hang.xoa_loai_phong', '') }}/" + rowId,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        Swal.fire(
+                            'Xóa!',
+                            data.message,
+                            'success'
+                        )
+                        window.location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
                 }
             })
-        })
+        }
+    })
+});
+
+
 
 
         $('#coupon_form').on('submit', function(e) {
