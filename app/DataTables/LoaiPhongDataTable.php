@@ -26,19 +26,19 @@ class LoaiPhongDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', 'loai_phong.action')
 
-            
+
             ->addColumn('so_luong', function($query){
                 $so_luong = $this->so_luong->where('ten',$query->ten)->first();
                 return $so_luong ? $so_luong->so_luong : 0;
             })
-            
+
             ->addColumn('anh', function($query){
                 return  "<img src='" . Storage::url($query->anh) . "' width='100px' alt='ảnh phòng'>";
-                
+
             })
             ->addColumn('phong_trong', function($query){
                 $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
-                return $phong_trong;            
+                return $phong_trong;
             })
             // ->addColumn('trang_thai', function ($query) {
             //     if ($query->phong_trong == 0) {
@@ -98,12 +98,12 @@ class LoaiPhongDataTable extends DataTable
                         <i class='bi bi-chat-dots'></i> Đánh giá
                         </a></li>
                     </ul>
-                </div>  
+                </div>
                 ";
 
                 return $editBtn . $deleteBtn . $moreBtn ;
             })
-            
+
             ->rawColumns(['so_luong','anh','phong_trong','trang_thai', 'action'])
             ->setRowId('id');
     }
@@ -143,7 +143,7 @@ class LoaiPhongDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            
+
             Column::make('id'),
             Column::make('ten'),
             Column::make('anh'),
