@@ -31,8 +31,9 @@
                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                         <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                            <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
-                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
+                        <h5 class="text-lg font-medium text-red-500">
+    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+</h5>                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                         </div>
                         <div class="mt-3">
                             ${room.trang_thai == 0 ? '<button class="py-1 px-3 inline-block tracking-wide align-middle duration-500 text-base text-center bg-gray-500 text-white rounded-md">Hết phòng</button>' : ''}
@@ -152,8 +153,9 @@
                                             <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                                             <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                                             <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                                <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
-                                                <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
+                                            <h5 class="text-lg font-medium text-red-500">
+    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+</h5>                                                <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                                             </div>
                                             <div class="mt-3">
                                                 ${room.trang_thai == 0 ? '<button class="py-1 px-3 inline-block tracking-wide align-middle duration-500 text-base text-center bg-gray-500 text-white rounded-md">Hết phòng</button>' : ''}
@@ -216,8 +218,9 @@
                                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                                         <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                            <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
-                                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
+                                        <h5 class="text-lg font-medium text-red-500">
+    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+</h5>                                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                                         </div>
                                         <div class="mt-3">
                                             <button class="py-1 px-3 inline-block tracking-wide align-middle duration-500 text-base text-center rounded-md ${statusClass}">${statusText}</button>
