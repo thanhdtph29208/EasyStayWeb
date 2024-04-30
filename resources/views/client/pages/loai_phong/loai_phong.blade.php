@@ -31,7 +31,7 @@
                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                         <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                            <h5 class="text-lg font-medium text-red-500">${room.gia}</h5>
+                            <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
                             <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                         </div>
                         <div class="mt-3">
@@ -51,11 +51,11 @@
                         Toastify({
                             text: "Đã xảy ra lỗi khi lọc dữ liệu.",
                             duration: 3000,
-                    gravity: "top",
-                    position: 'right',
-                    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-                    className: "info",
-                }).showToast();
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                            className: "info",
+                        }).showToast();
                     }
                 });
             });
@@ -75,12 +75,12 @@
                     // Hiển thị thông báo lỗi
                     Toastify({
                         text: "Giá tiền không thể là số âm.",
-                                        duration: 3000,
-                    gravity: "top",
-                    position: 'right',
-                    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-                    className: "info",
-                }).showToast();
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        className: "info",
+                    }).showToast();
                     return; // Dừng việc thực hiện các lệnh tiếp theo
                 }
 
@@ -91,11 +91,11 @@
                     Toastify({
                         text: "Giá tối đa không thể nhỏ hơn giá tối thiểu.",
                         duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        className: "info",
+                    }).showToast();
                     return; // Dừng việc thực hiện các lệnh tiếp theo
                 }
 
@@ -104,11 +104,11 @@
                     Toastify({
                         text: "Giá tối đa không thể bằng hơn giá tối thiểu.",
                         duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        className: "info",
+                    }).showToast();
                     return; // Dừng việc thực hiện các lệnh tiếp theo
                 }
 
@@ -117,11 +117,11 @@
                     Toastify({
                         text: "Giá tiền phải là số.",
                         duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        className: "info",
+                    }).showToast();
                     return; // Dừng việc thực hiện các lệnh tiếp theo
                 }
 
@@ -152,7 +152,7 @@
                                             <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                                             <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                                             <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                                <h5 class="text-lg font-medium text-red-500">${room.gia}</h5>
+                                                <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
                                                 <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                                             </div>
                                             <div class="mt-3">
@@ -173,11 +173,11 @@
                         Toastify({
                             text: "Không có loại phòng phù hợp",
                             duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                            className: "info",
+                        }).showToast();
                     }
                 });
             });
@@ -216,7 +216,7 @@
                                         <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                                         <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                            <h5 class="text-lg font-medium text-red-500">${room.gia}</h5>
+                                            <h5 class="text-lg font-medium text-red-500">{ number_format(${room->gia}, 0, ',', '.') }}₫</h5>
                                             <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                                         </div>
                                         <div class="mt-3">
@@ -236,75 +236,74 @@
                         Toastify({
                             text: "Đã xảy ra lỗi khi lọc dữ liệu.",
                             duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
+                            gravity: "top",
+                            position: 'right',
+                            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                            className: "info",
+                        }).showToast();
                     }
                 });
             });
         });
     </script>
-<script>
-$(document).ready(function() {
-    // Hiển thị menu dropdown khi nhấp vào nút
-    $('#dropdownDelayButton').click(function() {
-        $('#dropdownDelay').toggleClass('hidden');
-    });
+    <script>
+        $(document).ready(function() {
+            // Hiển thị menu dropdown khi nhấp vào nút
+            $('#dropdownDelayButton').click(function() {
+                $('#dropdownDelay').toggleClass('hidden');
+            });
 
-    // Đóng menu dropdown khi người dùng click vào nút lọc dữ liệu
-    $('#filterFormten, #filterForm, #filterFormtrangthai').submit(function(event) {
-        // Ngăn chặn hành động mặc định của form
-        event.preventDefault();
+            // Đóng menu dropdown khi người dùng click vào nút lọc dữ liệu
+            $('#filterFormten, #filterForm, #filterFormtrangthai').submit(function(event) {
+                // Ngăn chặn hành động mặc định của form
+                event.preventDefault();
 
-        // Đóng menu dropdown bằng cách thêm lớp hidden
-        $('#dropdownDelay').addClass('hidden');
+                // Đóng menu dropdown bằng cách thêm lớp hidden
+                $('#dropdownDelay').addClass('hidden');
 
-        // Tiến hành lọc dữ liệu...
-        // (Thêm mã xử lý lọc dữ liệu của bạn ở đây)
-    });
-});
-
-</script>
-
-
-<script>
-    $(document).ready(function() {
-        // Xử lý sự kiện click cho nút "Xóa bộ lọc"
-        $('#clearFiltersButton').click(function() {
-            // Lấy giá trị của ba ô input
-            var tenPhongValue = $('#ten_phong').val().trim();
-            var giaMinValue = $('#gia_min').val().trim();
-            var giaMaxValue = $('#gia_max').val().trim();
-            
-            // Kiểm tra xem có ít nhất một ô input có dữ liệu hay không
-            if (tenPhongValue === '' && giaMinValue === '' && giaMaxValue === '') {
-                // Nếu không có ô nào có dữ liệu, hiển thị toast thông báo
-                Toastify({
-    text: "Bạn chưa nhập thông tin.",
-    duration: 3000,
-    gravity: "top",
-    position: 'right',
-    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-    className: "info",
-}).showToast();
-                return;
-            }
-            
-            // Nếu có ít nhất một ô input có dữ liệu, tiến hành xóa bộ lọc và chuyển hướng
-            // Reset giá trị của các ô input
-            $('#ten_phong').val('');
-            $('#gia_min').val('');
-            $('#gia_max').val('');
-            // Reset giá trị của dropdown chọn trạng thái về giá trị mặc định
-            $('#trang_thai').val('');
-            
-            // Chuyển hướng về trang loai_phong
-            window.location.href = '<?= env('APP_URL') ?>/loai_phong';
+                // Tiến hành lọc dữ liệu...
+                // (Thêm mã xử lý lọc dữ liệu của bạn ở đây)
+            });
         });
-    });
-</script>
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Xử lý sự kiện click cho nút "Xóa bộ lọc"
+            $('#clearFiltersButton').click(function() {
+                // Lấy giá trị của ba ô input
+                var tenPhongValue = $('#ten_phong').val().trim();
+                var giaMinValue = $('#gia_min').val().trim();
+                var giaMaxValue = $('#gia_max').val().trim();
+
+                // Kiểm tra xem có ít nhất một ô input có dữ liệu hay không
+                if (tenPhongValue === '' && giaMinValue === '' && giaMaxValue === '') {
+                    // Nếu không có ô nào có dữ liệu, hiển thị toast thông báo
+                    Toastify({
+                        text: "Bạn chưa nhập thông tin.",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'right',
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        className: "info",
+                    }).showToast();
+                    return;
+                }
+
+                // Nếu có ít nhất một ô input có dữ liệu, tiến hành xóa bộ lọc và chuyển hướng
+                // Reset giá trị của các ô input
+                $('#ten_phong').val('');
+                $('#gia_min').val('');
+                $('#gia_max').val('');
+                // Reset giá trị của dropdown chọn trạng thái về giá trị mặc định
+                $('#trang_thai').val('');
+
+                // Chuyển hướng về trang loai_phong
+                window.location.href = '<?= env('APP_URL') ?>/loai_phong';
+            });
+        });
+    </script>
 
 
     <section
@@ -373,69 +372,76 @@ $(document).ready(function() {
 
 
 
-           
 
-        
 
-         
-                <button id="dropdownDelayButton" data-dropdown-toggle="dropdownDelay" data-dropdown-delay="500" data-dropdown-trigger="hover" class=" mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Bộ Lọc <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-</svg>
-</button>
 
-<!-- Dropdown menu -->
-<div id="dropdownDelay" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ">
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 mt-4" aria-labelledby="dropdownDelayButton">
-      <li>
-      <form action="{{ route('client.pages.loai_phong.filter') }}" method="GET" id="filterFormten"
-                    class="flex items-center justify-between mb-6 mr-4">
-                    <div class="flex items-center space-x-4">
-                        <input type="text" name="ten_phong" required placeholder="Tên phòng"
-                            class="px-4 py-2 border border-gray-300 rounded-md" id="ten_phong">
-                        <button type="submit"
-                            class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Lọc</button>
-                    </div>
-                </form>
 
-      </li>
-      <li>
-                <form action="{{ route('client.pages.loai_phong.filter') }}" id="filterForm" method="GET"
-                    class="mb-6 searchForm5  mr-4">
 
-                    <div class="flex justify-between items-center">
-                        <input id="gia_min" type="text" name="gia_min" required placeholder="Giá tối thiểu"
-                            class="px-4 py-2 border border-gray-300 rounded-md  mr-4 ">
-                        <input id="gia_max" type="text" name="gia_max" required placeholder="Giá tối đa"
-                            class="px-4 py-2 border border-gray-300 rounded-md  mr-4">
-                        <button type="submit"
-                            class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Lọc</button>
-                    </div>
+            <button id="dropdownDelayButton" data-dropdown-toggle="dropdownDelay" data-dropdown-delay="500"
+                data-dropdown-trigger="hover"
+                class=" mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">Bộ Lọc <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
 
-                </form>
-      </li>
-      <li>
-      <form action="{{ route('client.pages.loai_phong.filter') }}" id="filterFormtrangthai" method="GET"
-                    class="flex items-center justify-between mb-6 mr-4">
-                    <div class="flex items-center space-x-4">
-                        <!-- Dropdown để lọc theo trạng thái -->
-                        <select required name="trang_thai" class="px-4 py-2 border border-gray-300 rounded-md">
-                            <option value="">Chọn trạng thái</option>
-                            <option value="1">Còn phòng</option>
-                            <option value="0">Hết phòng</option>
-                        </select>
-                        <!-- Nút submit để thực hiện lọc -->
-                        <button type="submit"
-                            class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ">Lọc</button>
-                    </div>
-                </form>
-      </li>
-    <li>
-    <button id="clearFiltersButton" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Xóa bộ lọc</button>
+            <!-- Dropdown menu -->
+            <div id="dropdownDelay"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 mt-4" aria-labelledby="dropdownDelayButton">
+                    <li>
+                        <form action="{{ route('client.pages.loai_phong.filter') }}" method="GET" id="filterFormten"
+                            class="flex items-center justify-between mb-6 mr-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="text" name="ten_phong" required placeholder="Tên phòng"
+                                    class="px-4 py-2 border border-gray-300 rounded-md" id="ten_phong">
+                                <button type="submit"
+                                    class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Lọc</button>
+                            </div>
+                        </form>
 
-                </button>
-    </li>
-    </ul>
-</div>
+                    </li>
+                    <li>
+                        <form action="{{ route('client.pages.loai_phong.filter') }}" id="filterForm" method="GET"
+                            class="mb-6 searchForm5  mr-4">
+
+                            <div class="flex justify-between items-center">
+                                <input id="gia_min" type="text" name="gia_min" required placeholder="Giá tối thiểu"
+                                    class="px-4 py-2 border border-gray-300 rounded-md  mr-4 ">
+                                <input id="gia_max" type="text" name="gia_max" required placeholder="Giá tối đa"
+                                    class="px-4 py-2 border border-gray-300 rounded-md  mr-4">
+                                <button type="submit"
+                                    class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Lọc</button>
+                            </div>
+
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{{ route('client.pages.loai_phong.filter') }}" id="filterFormtrangthai" method="GET"
+                            class="flex items-center justify-between mb-6 mr-4">
+                            <div class="flex items-center space-x-4">
+                                <!-- Dropdown để lọc theo trạng thái -->
+                                <select required name="trang_thai" class="px-4 py-2 border border-gray-300 rounded-md">
+                                    <option value="">Chọn trạng thái</option>
+                                    <option value="1">Còn phòng</option>
+                                    <option value="0">Hết phòng</option>
+                                </select>
+                                <!-- Nút submit để thực hiện lọc -->
+                                <button type="submit"
+                                    class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ">Lọc</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <button id="clearFiltersButton"
+                            class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Xóa bộ lọc</button>
+
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
 
 
@@ -467,7 +473,9 @@ $(document).ready(function() {
                             class="font-medium hover:text-red-500 duration-500 ease-in-out">{{ $room->ten }}</a>
                         <div
                             class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                            <h5 class="text-lg font-medium text-red-500">{{ $room->gia }}</h5>
+                            <h5 class="text-lg font-medium text-red-500">
+                                {{ number_format($room->gia, 0, ',', '.') }}₫
+                            </h5>
                             <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/<?= $room->id ?>"
                                 class="text-slate-400 hover:text-red-500">Khám phá ngay<i
                                     class="mdi mdi-arrow-right"></i></a>
