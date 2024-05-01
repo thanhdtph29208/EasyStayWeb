@@ -45,3 +45,25 @@
 @push('scripts')
 {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $('body').on('click', '.change-status', function() {
+            let isChecked = $(this).is(':checked')
+            console.log(isChecked);
+
+            let id = $(this).data('id')
+            $.ajax({
+                url: "{{ route('admin.banner.change-status') }}",
+                method: 'PUT',
+                data: {
+                    status: isChecked,
+                    id: id
+                },
+                success: function(data) {
+                    toastr.success(data.message);
+                }
+            })
+        })
+    })
+</script>

@@ -167,4 +167,14 @@ class BannerController extends Controller
 
 		// return redirect(route('admin.banners.index'))->with('success', 'Xoá bản ghi thành công.');
 	}
+
+	public function changeStatus(Request $request)
+    {
+        $banner = Banner::findOrFail($request->id);
+        $banner->trang_thai = $request->trang_thai == 'true' ? 1 : 0;
+		// $newStatus = $request->trang_thai == 'true' ? 1 : 0;
+		// $banner->trang_thai = $newStatus;
+        $banner->save();
+        return response(['message' => 'Cập nhật trạng thái thành công']);
+    }
 }
