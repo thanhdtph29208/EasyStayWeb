@@ -16,42 +16,29 @@
                     <div class="card-header">
                         <h5>Đặt phòng mới</h5>
                     </div>
-
                     <div class="card-body">
                         <form action="{{ route('admin.dat_phong.store') }}" method="post" id="addServiceForm">
                             @csrf
-
-                            <div class="form-group mx-auto ">
-                                <label for="user_id_input">Email người đặt</label><span style="color: red;"> *</span>
-                                <input type="text" id="user_id_input" class="form-control" list="user">
-                                <input id="user_id" name="user_id" hidden>
-                                <datalist id="user">
-                                    @foreach ($user as $id => $email)
-                                    <option value="{{$email}}" data-id="{{$id}}" id="option_user_{{$email}}">{{$email}}</option>
-                                    @endforeach
-                                </datalist>
-                                <span class="text-danger error-user_id"></span>
-                            </div>
-
                             <div class="form-group mt-3 mx-auto">
-                                <label for="email">Email khách hàng</label>
+                                <label for="email">Email khách hàng</label><span style="color: red;"> *</span>
                                 <input type="text" class="form-control" name="email" id="email">
                                 <span class="text-danger error-email"></span>
                             </div>
 
                             <div class="form-group mt-3 mx-auto">
-                                <label for="ho_ten">Họ tên</label>
+                                <label for="ho_ten">Họ tên</label><span style="color: red;"> *</span>
                                 <input type="text" class="form-control" name="ho_ten" id="ho_ten">
                                 <span class="text-danger error-ho_ten"></span>
                             </div>
 
                             <div class="form-group mt-3 mx-auto">
-                                <label for="so_dien_thoai">Số điện thoại</label>
+                                <label for="so_dien_thoai">Số điện thoại</label><span style="color: red;"> *</span>
                                 <input type="text" class="form-control" name="so_dien_thoai" id="so_dien_thoai">
                                 <span class="text-danger error-so_dien_thoai"></span>
                             </div>
 
                             <div id="dynamic-form">
+                                @if($loai_phong_id == null)
                                 <div class="form-group mt-3 mx-auto">
                                     <label for="loai_phong_ids_{{$i}}">Loại Phòng</label><span style="color: red;"> *</span>
                                     <select name="loai_phong_ids[{{$i}}][id]" id="loai_phong_ids_{{$i}}" class="form-control">
@@ -61,6 +48,15 @@
                                     </select>
                                     <span class="text-danger error-loai_phong_id_{{$i}}"></span>
                                 </div>
+                                @else
+                                <div class="form-group mt-3 mx-auto">
+                                    <label for="loai_phong_id">Loại Phòng</label><span style="color: red;"> *</span>
+                                    <input type="text" name="loai_phong_ids[{{$i}}][id]" id="loai_phong_id" class="form-control" value="{{$loai_phong_id}}" readonly hidden>
+                                    <input type="text" class="form-control" value="{{$ten_loai_phong[0]}}" readonly>
+
+                                    <span class="text-danger error-loai_phong_id_{{$i}}"></span>
+                                </div>
+                                @endif
 
                                 <div class="form-group mt-3 mx-auto">
                                     <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label><span style="color: red;"> *</span>
@@ -70,11 +66,13 @@
                             </div>
 
                             <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
+
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="so_luong_nguoi">Số Lượng người</label><span style="color: red;"> *</span>
                                 <input type="number" class="form-control" id="so_luong_nguoi" name="so_luong_nguoi">
                                 <span class="text-danger error-so_luong_nguoi"></span>
                             </div>
+                            @if($thoi_gian_den == null || $thoi_gian_di == null)
                             <div>
                                 <div class="form-group mt-3 mx-auto ">
                                     <label for="thoi_gian_den">Thời gian đến</label><span style="color: red;"> *</span>
@@ -87,6 +85,20 @@
                                     <span class="text-danger error-thoi_gian_di"></span>
                                 </div>
                             </div>
+                            @else
+                            <div>
+                                <div class="form-group mt-3 mx-auto ">
+                                    <label for="thoi_gian_den">Thời gian đến</label><span style="color: red;"> *</span>
+                                    <input type="date" class="form-control" id="thoi_gian_den" name="thoi_gian_den" value="{{$thoi_gian_den}}" readonly>
+                                    <span class="text-danger error-thoi_gian_den"></span>
+                                </div>
+                                <div class="form-group mt-3 mx-auto ">
+                                    <label for="thoi_gian_di">Thời gian đi</label><span style="color: red;"> *</span>
+                                    <input type="date" class="form-control" id="thoi_gian_di" name="thoi_gian_di" min="" onchange="setMinDate()" value="{{$thoi_gian_di}}" readonly>
+                                    <span class="text-danger error-thoi_gian_di"></span>
+                                </div>
+                            </div>
+                            @endif
                             <div class="form-group mt-3 mx-auto ">
                                 <label for="khuyen_mai_input">Khuyến mãi</label>
                                 <input list="khuyen_mai" id="khuyen_mai_input" class="form-control">

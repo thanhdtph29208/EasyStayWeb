@@ -36,8 +36,13 @@
                                 </div>
                                 <form action="" id="searchForm">
                                     <div class="modal-body px-2">
-                                        <label for="ten" class="form-label mb-2">Tên loại phòng</label>
-                                        <input type="text" name="ten" id="ten" class="form-control mb-3">
+                                        <label for="startTime" class="form-label mb-2">Thời gian bắt đầu - Thời gian kết
+                                            thúc</label>
+                                        <div class="d-flex align-items-center mb-4">
+                                            <input type="date" name="thoi_gian_den" id="startTime" class="form-control">
+                                            <i class="bi bi-arrow-left-right mx-2"></i>
+                                            <input type="date" name="thoi_gian_di" class="form-control">
+                                        </div>
 
                                         <label for="gia_min" class="form-label mb-2">Giá tối thiểu</label>
                                         <input type="number" name="gia_min" id="gia_min" class="form-control mb-3">
@@ -144,32 +149,28 @@
                                 searchable: true
                             },
                             {
-                                data: "gia_ban_dau",
-                                name: "gia_ban_dau",
-                                title: "Giá ban dầu",
-                                orderable: true,
-                                searchable: true
-                            },
-                            {
                                 data: "so_luong",
                                 name: "so_luong",
                                 title: "Số lượng",
                                 orderable: true,
-                                searchable: true
+                                searchable: true,
+                                width: 90,
                             },
                             {
                                 data: "phong_trong",
                                 name: "phong_trong",
                                 title: "Phòng trống",
                                 orderable: true,
-                                searchable: true
+                                searchable: true,
+                                width: 90
                             },
                             {
                                 data: "trang_thai",
                                 name: "trang_thai",
                                 title: "Trạng thái",
                                 orderable: true,
-                                searchable: true
+                                searchable: true,
+                                width: 150
                             },
                             {
                                 data: "action",
@@ -177,7 +178,7 @@
                                 title: "Action",
                                 orderable: false,
                                 searchable: false,
-                                width: 160,
+                                width: 280,
                                 className: "text-center"
                             }
                         ],

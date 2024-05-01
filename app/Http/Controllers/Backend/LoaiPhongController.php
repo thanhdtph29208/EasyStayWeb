@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Yajra\DataTables\DataTables;
-
+use Carbon\Carbon;
+use function Laravel\Prompts\alert;
 use function Termwind\render;
 use Brian2694\Toastr\Facades\Toastr;
 
@@ -31,6 +32,7 @@ class LoaiPhongController extends Controller
     const PATH_UPLOAD = 'loai_phong';
     public function index(LoaiPhongDataTable $datatable)
     {
+
         $so_luong = Phong::select('Loai_phongs.ten', DB::raw('COUNT(phongs.id) as so_luong'))
             ->join('Loai_phongs', 'Phongs.loai_phong_id', '=', 'Loai_phongs.id')
             ->groupBy('Loai_phongs.ten')
@@ -49,80 +51,101 @@ class LoaiPhongController extends Controller
     public function search(Request $request, LoaiPhongDataTable $datatables)
     {
         $dataTableQuery = Loai_phong::query()->with('loai_phong');
-
-
-        if ($request->filled('ten')) {
-            $dataTableQuery->where('ten', 'like', '%' . $request->ten . '%');
+        $loai_phong = $dataTableQuery->get();
+        $thoi_gian_den = Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00');
+        $thoi_gian_di = Carbon::parse($request->thoi_gian_di)->format('Y-m-d 12:00:00');
+        if ($request->filled('thoi_gian_den')&&$request->filled('thoi_gian_di')) {
+            $loai_phong->each(function ($item) use ($thoi_gian_den, $thoi_gian_di) {
+                $phong_trong =  DB::select("
+                SELECT COUNT(p.id)
+                FROM phongs p
+                WHERE p.loai_phong_id = {$item->id}
+                AND (p.deleted_at IS NULL)
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM dat_phong_noi_phongs dp
+                    LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
+                    WHERE p.id = dp.phong_id
+                    AND (
+                        ('$thoi_gian_di' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                        OR ('$thoi_gian_den' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                        OR (d.thoi_gian_di BETWEEN '$thoi_gian_den' AND '$thoi_gian_di')
+                        OR (d.thoi_gian_den BETWEEN '$thoi_gian_den' AND '$thoi_gian_di')
+                    )
+                    AND (d.deleted_at IS NULL)
+                )
+                ");
+                $phong_trong_json = json_encode($phong_trong);
+                $phong_trong_json = trim($phong_trong_json, '[{"COUNT(p.id)":}]');
+                $item->phong_trong = $phong_trong_json;
+            });
+        }else{
+            alert('Thời gian là trường bắt buộc.');
         }
-
-
-if ($request->filled('gia_min') && $request->filled('gia_max')) {
-
-    $gia_min = (float) $request->gia_min;
-    $gia_max = (float) $request->gia_max;
-
-
-    $dataTableQuery->whereBetween('gia', [$gia_min, $gia_max]);
-} elseif ($request->filled('gia_min')) {
-
-    $gia_min = (float) $request->gia_min;
-    $dataTableQuery->where('gia', '>=', $gia_min);
-} elseif ($request->filled('gia_max')) {
-
-    $gia_max = (float) $request->gia_max;
-    $dataTableQuery->where('gia', '<=', $gia_max);
-}
-
-
-
-
-
-
-
 
 
         if ($request->filled('trang_thai')) {
             $trang_thai = (int) $request->trang_thai;
-
             if ($trang_thai === 0) {
-
-                $dataTableQuery->where('trang_thai', 0);
+                $loai_phong = $loai_phong->where('phong_trong', '=', 0);
             } elseif ($trang_thai === 1) {
-
-                $dataTableQuery->where('trang_thai', 1);
-            } elseif ($trang_thai === 2) {
-
+                $loai_phong = $loai_phong->where('phong_trong', '>', 0);
             }
         }
 
 
 
-        $loai_phong = $dataTableQuery->get();
+        if ($request->filled('gia_min') && $request->filled('gia_max')) {
 
-        $loai_phong->each(function ($item) use ($request) {
-            $phong_trong = Phong::where('loai_phong_id', $item->id)->where('trang_thai', '1')->count();
-            $item->phong_trong = $phong_trong;
-        });
+            $gia_min = (float) $request->gia_min;
+            $gia_max = (float) $request->gia_max;
+
+
+            $loai_phong = $loai_phong->whereBetween('gia', [$gia_min, $gia_max]);
+        } elseif ($request->filled('gia_min')) {
+
+            $gia_min = (float) $request->gia_min;
+            $loai_phong = $loai_phong->where('gia', '>=', $gia_min);
+        } elseif ($request->filled('gia_max')) {
+
+            $gia_max = (float) $request->gia_max;
+            $loai_phong = $loai_phong->where('gia', '<=', $gia_max);
+        }
+
 
 
         return DataTables::of($loai_phong)
             ->addColumn('action', 'loaiphong.action')
 
             ->addColumn('so_luong', function ($query) {
-                $so_luong = Phong::where('loai_phong_id', $query->id)->count();
+                $so_luong = Phong::where('loai_phong_id',$query->id)->count();
                 return $so_luong;
             })
 
             ->addColumn('anh', function ($query) {
                 return "<img src='" . Storage::url($query->anh) . "' width='100px' alt='ảnh phòng'>";
             })
-            ->addColumn('phong_trong', function ($query) {
+            ->addColumn('phong_trong', function ($query){
+
                 return $query->phong_trong;
             })
             ->addColumn('trang_thai', function ($query) {
-                return $query->phong_trong == 0 ? "<span class='badge text-bg-danger'>Hết phòng</span>" : "<span class='badge text-bg-success'>Còn phòng</span>";
+                $phong_trong = $query->phong_trong;
+                if($phong_trong == 0){
+                    $trang_thai = 0;
+                }else{
+                    $trang_thai = 1;
+                }
+                return $trang_thai == 0 ? "<span class='badge text-bg-danger'>Hết phòng</span>" : "<span class='badge text-bg-success'>Còn phòng</span>";
             })
-            ->addColumn('action', function ($query) {
+            ->addColumn('action', function ($query) use ($request) {
+                if($query->phong_trong == 0){
+                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di]) . "' class='btn btn-success' style='margin-right:8px' hidden>Đặt Phòng
+                    </a>";
+                }else{
+                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
+                    </a>";
+                }
                 $editBtn = "<a href='" . route('admin.loai_phong.edit', $query->id) . "' class='btn btn-primary'>
                 <i class='bi bi-pen'></i>
                 </a>";
@@ -165,7 +188,7 @@ if ($request->filled('gia_min') && $request->filled('gia_max')) {
                 </div>
                 ";
 
-                return $editBtn . $deleteBtn . $moreBtn ;
+                return $datPhongBtn . $editBtn . $deleteBtn . $moreBtn ;
             })
 
             ->rawColumns(['so_luong', 'anh', 'phong_trong', 'trang_thai', 'action'])

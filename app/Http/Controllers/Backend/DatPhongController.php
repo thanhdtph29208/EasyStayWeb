@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DatPhongNoiPhong;
 use App\Models\Hotel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
-
 use function Laravel\Prompts\alert;
 use function Livewire\store;
 use Yajra\DataTables\DataTables;
@@ -133,7 +133,7 @@ class DatPhongController extends Controller
         // ->rawColumns(['action'])
         ->make(true);
     }
-    public function create(DatPhong $datPhong)
+    public function create(DatPhong $datPhong, Request $request)
     {
         // $loai_phongs = Loai_phong::where('trang_thai',1)->with('phongs')->get();
         // $loai_phongs = Loai_phong::where('trang_thai',1)->get();
@@ -145,13 +145,19 @@ class DatPhongController extends Controller
         //             ->get();
         // return response()->json(['loai_phongs' => $loai_phongs]);
         // return view(self::PATH_VIEW . __FUNCTION__, ['loai_phongs'=>$loai_phongs]);
+        $loai_phong_id = $request->query('loai_phong_id');
+        // dd($loai_phong_id);
+        $ten_loai_phong = Loai_phong::Where('id',$loai_phong_id)->pluck('ten');
+        $thoi_gian_den = $request->query('thoi_gian_den');
+        $thoi_gian_di = $request->query('thoi_gian_di');
+        // dd($thoi_gian_den,$thoi_gian_di);
         $i=0;
         $so_luong_loai_phong = Loai_phong::count();
         $user = User::query()->pluck('email','id')->toArray();
         $loai_phong = Loai_phong::query()->pluck('ten','id')->toArray();
         $phong = Phong::query()->pluck('ten_phong','id')->toArray();
         $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai','id')->toArray();
-        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong','i'));
+        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong','i','loai_phong_id','ten_loai_phong','thoi_gian_den','thoi_gian_di'));
     }
 
 
@@ -163,8 +169,11 @@ class DatPhongController extends Controller
         if (!Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-        //dd($request);
 
+        // dd(Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00'));
+        // dd($request);
+        // dd(Auth::user()->id);
+        $user = Auth::user();
 
         $rules = [
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
@@ -226,7 +235,7 @@ class DatPhongController extends Controller
         // dd($request);
 
         $datPhong=DatPhong::create([
-            'user_id'=> $request->user_id,
+            'user_id'=> $user->id,
             'email'=> $request->email,
             'ho_ten'=> $request->ho_ten,
             'so_dien_thoai'=>$request->so_dien_thoai,
@@ -238,6 +247,8 @@ class DatPhongController extends Controller
             'trang_thai'=> 1,
             'ghi_chu'=>$request->ghi_chu,
         ]);
+
+
         $datPhongId = $datPhong->id;
         // Thêm dữ liệu vào bảng DatPhongLoaiPhong
         foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
@@ -247,45 +258,43 @@ class DatPhongController extends Controller
             // Thêm dữ liệu vào bảng liên kết
             $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
         }
-        $tong_tien=0;
-        // $thoiGianDenFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_den)->format('Y-m-d');
-        // $thoiGianDiFormatted = Carbon::createFromFormat('Y-m-d', $datPhong->thoi_gian_di)->format('Y-m-d');
+
+
+        $thoi_gian_den = Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00');
+        $thoi_gian_di = Carbon::parse($request->thoi_gian_di)->format('Y-m-d 12:00:00');
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-        // // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-        // $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
-        // // Thêm dữ liệu vào bảng liên kết
-        // $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        // $phongIds = Phong::where('loai_phong_id', $loaiPhongId['id'])
-        // ->whereDoesntHave('dat_phong_noi_phongs.dat_phongs', function ($query) {
-        //     $query->where('thoi_gian_di', '<=', '$datPhong->thoi_gian_di')
-        //         ->where('thoi_gian_den', '>=', '$datPhong->thoi_gian_den');
-        // })
-        // ->limit($request->so_luong_phong[$key]['so_luong_phong'])
-        // ->pluck('p.id');
-        // $datPhong->phongs()->attach($phongIds);
-        $phongIds = DB::select("
-        SELECT p.id
-        FROM phongs p
-        WHERE p.loai_phong_id = {$loaiPhongId['id']}
-        AND NOT EXISTS (
-            SELECT 1
-            FROM dat_phong_noi_phongs dp
-            LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
-            WHERE p.id = dp.phong_id
-            AND (
-                ('$datPhong->thoi_gian_di' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
-                OR ('$datPhong->thoi_gian_den' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
-                OR (d.thoi_gian_di BETWEEN '$datPhong->thoi_gian_den' AND '$datPhong->thoi_gian_di')
-                OR (d.thoi_gian_den BETWEEN '$datPhong->thoi_gian_den' AND '$datPhong->thoi_gian_di')
+            $phongIds = DB::select("
+            SELECT p.id
+            FROM phongs p
+            WHERE p.loai_phong_id = {$loaiPhongId['id']}
+            AND (p.deleted_at IS NULL)
+            AND NOT EXISTS (
+                SELECT 1
+                FROM dat_phong_noi_phongs dp
+                LEFT JOIN dat_phongs d ON dp.dat_phong_id = d.id
+                WHERE p.id = dp.phong_id
+                AND (
+                    ('$thoi_gian_di' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                    OR ('$thoi_gian_den' BETWEEN d.thoi_gian_di AND d.thoi_gian_den)
+                    OR (d.thoi_gian_di BETWEEN '$thoi_gian_den' AND '$thoi_gian_di')
+                    OR (d.thoi_gian_den BETWEEN '$thoi_gian_den' AND '$thoi_gian_di')
+                )
+                AND (d.deleted_at IS NULL)
             )
-        )
-        LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
-        ");
-        foreach($phongIds as $phongId)
-        $datPhong->phongs()->attach($phongId);
+            LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
+            ");
+            if($phongIds == null) {
+                $datPhong->delete();
+                return back();
+            }else {
+                foreach($phongIds as $phongId){
+                    $datPhong->phongs()->attach($phongId);
+                }
+            }
         }
 
 
+        $tong_tien=0;
         foreach ($request->loai_phong_ids as $key => $loaiPhongId){
             $ngay_bat_dau = strtotime($request->thoi_gian_den);
             $ngay_ket_thuc = strtotime($request->thoi_gian_di);
@@ -293,12 +302,12 @@ class DatPhongController extends Controller
             $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
             $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
             foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-            if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 1)
+            if(!$khuyenMai || !$request->khuyen_mai_id){
+                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
+            }else if($khuyenMai->loai_giam_gia == 1)
             {
                 $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
-            }else if($khuyenMai->loai_phong_id != $loaiPhongId['id'] || !$khuyenMai){
-                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
-            }else if($khuyenMai->loai_phong_id == $loaiPhongId['id'] && $khuyenMai->loai_giam_gia == 0){
+            }else if($khuyenMai->loai_giam_gia == 0){
                 $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
             }
             $tong_tien = $tinh_tien+$tong_tien;

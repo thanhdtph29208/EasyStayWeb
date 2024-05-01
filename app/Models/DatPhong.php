@@ -56,12 +56,12 @@ class DatPhong extends Model
     // Mutators
     public function setThoiGianDenAttribute($value)
 {
-    $this->attributes['thoi_gian_den'] = Carbon::parse($value)->startOfDay()->addHours(12);
+    $this->attributes['thoi_gian_den'] = Carbon::parse($value)->startOfDay()->addHours(14);
 }
 
 public function setThoiGianDiAttribute($value)
 {
-    $this->attributes['thoi_gian_di'] = Carbon::parse($value)->startOfDay()->addHours(14);
+    $this->attributes['thoi_gian_di'] = Carbon::parse($value)->startOfDay()->addHours(12);
 }
 
 
