@@ -13,8 +13,8 @@ class Phong extends Model
         SoftDeletes;
     protected $table = 'phongs';
 
-    const CON_PHONG = 1;
-    const HET_PHONG = 0;
+    const HOAT_DONG = 1;
+    const DUNG_HOAT_DONG = 0;
 
     protected $fillable = [
         'id',

@@ -35,11 +35,11 @@
 
                             <label class="mt-3" class="mt-3" for="trang_thai">Trạng thái:</label> <br>
 
-                            <input type="radio" name="trang_thai" id="trang_thai1" value="{{\App\Models\Phong::CON_PHONG}}">
-                            <label for="trang_thai1">CÒN PHÒNG</label>
+                            <input type="radio" name="trang_thai" id="trang_thai1" value="{{\App\Models\Phong::HOAT_DONG}}">
+                            <label for="trang_thai1">HOẠT ĐỘNG</label>
 
-                            <input type="radio" name="trang_thai" id="trang_thai2" value="{{\App\Models\Phong::HET_PHONG}}">
-                            <label for="trang_thai2">HẾT PHÒNG</label> <br><br>
+                            <input type="radio" name="trang_thai" id="trang_thai2" value="{{\App\Models\Phong::DUNG_HOAT_DONG}}">
+                            <label for="trang_thai2">DỪNG HOẠT ĐỘNG</label> <br><br>
                             <!-- <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tải ảnh</label>
                                 <input type="file" class="form-control" multiple name="anh[]">

@@ -129,6 +129,14 @@ class LoaiPhongController extends Controller
 
                 return $query->phong_trong;
             })
+            ->addColumn('tinh_trang', function ($query) {
+                // $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
+                if ($query->trang_thai == 0) {
+                    return "<span class='badge text-bg-danger'>Dừng hoạt động</span>";
+                } else {
+                    return "<span class='badge text-bg-success'>Hoạt động</span>";
+                }
+            })
             ->addColumn('trang_thai', function ($query) {
                 $phong_trong = $query->phong_trong;
                 if($phong_trong == 0){
@@ -139,7 +147,7 @@ class LoaiPhongController extends Controller
                 return $trang_thai == 0 ? "<span class='badge text-bg-danger'>Hết phòng</span>" : "<span class='badge text-bg-success'>Còn phòng</span>";
             })
             ->addColumn('action', function ($query) use ($request) {
-                if($query->phong_trong == 0){
+                if($query->phong_trong == 0||$query->trang_thai == 0){
                     $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di]) . "' class='btn btn-success' style='margin-right:8px' hidden>Đặt Phòng
                     </a>";
                 }else{
@@ -191,7 +199,7 @@ class LoaiPhongController extends Controller
                 return $datPhongBtn . $editBtn . $deleteBtn . $moreBtn ;
             })
 
-            ->rawColumns(['so_luong', 'anh', 'phong_trong', 'trang_thai', 'action'])
+            ->rawColumns(['so_luong', 'anh', 'phong_trong', 'trang_thai', 'action','tinh_trang'])
             ->setRowId('id')
             ->make(true);
         }

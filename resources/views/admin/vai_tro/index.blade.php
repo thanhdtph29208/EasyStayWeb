@@ -5,34 +5,41 @@
     alert("{{ session('error') }}");
 </script>
 @endif
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên Chức vụ</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($data as $item )
-        <tr>
-            <td>{{$item->id}}</td>
-            <td>{{$item->ten_chuc_vu}}</td>
-            <td>{{$item->mo_ta}}</td>
-            <td>{{$item->trang_thai ? 'Hoạt Động' : 'Dừng Hoạt Động'}}</td>
-            <td>
-                <form action="{{route('admin.vai_tro.destroy',$item)}}" method="post">
-                    @csrf
-                    @method('delete')
-                    <a class="btn btn-warning" href="{{route('admin.vai_tro.edit',$item)}}">SỬA</a>
-                    <button  class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không ?')">XÓA</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-<!-- {{$data->Links()}} -->
+<main class="app-main">
+        <div class="app-content-header">
+            @include('admin.layouts.components.content-header', [
+                'name' => 'Vai Trò',
+                'key' => 'EasyStay',
+            ])
+        </div>
+<div class="container">
+        <div class="row justify-content-center">
+            <div class="">
+                <div class="card">
+                <div class="card-header">
+                    <h5>Vai Trò</h5>
+                </div>
+
+                    <div class="card-body">
+                        {{ $dataTable->table() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="container">
+        <div class="card">
+            <div class="card-header">Phòng</div>
+            <div class="card-body">
+                {{ $dataTable->table() }}
+            </div>
+        </div>
+    </div> -->
+</main>
+
 @endsection
+
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush

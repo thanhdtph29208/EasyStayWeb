@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-
+use App\DataTables\VaiTroDataTable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\VaiTro;
@@ -15,10 +15,9 @@ class VaiTroController extends Controller
 {
     //
     const PATH_VIEW = 'admin.vai_tro.';
-    public function index()
+    public function index(VaiTroDataTable $datatable)
     {
-        $data = VaiTro::query()->latest()->paginate(10);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        return $datatable->render('admin.vai_tro.index');
     }
     public function create()
     {
@@ -86,18 +85,18 @@ class VaiTroController extends Controller
             'mo_ta' => 'required|max:255',
             'trang_thai' => 'required',
          ];
- 
+
          $messages = [
              'ten_chu_vu.required' => 'Tên chức vụ không được để trống',
              'ten_chu_vu.max' => 'Tên chức vụ không được vượt quá 255 ký tự',
              'ten_chu_vu.unique' => 'Tên chức vụ đã tồn tại',
- 
+
              'mo_ta.required' => 'Mô tả không được để trống',
              'mo_ta.max' => 'Mô tả không được vượt quá 255 ký tự',
- 
+
              'trang_thai.required' => 'Trạng thái không được để trống',
          ];
- 
+
         $validated = $request->validate($rules, $messages);
         $vai_tro->update($request->all());
         Toastr::success('Cập nhật vai trò thành công', 'Thành công');

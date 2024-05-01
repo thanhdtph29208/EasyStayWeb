@@ -101,8 +101,6 @@
                     <input type="radio" name="trang_thai" id="trang_thai2" value="{{ App\Models\KhuyenMai::DANG_AP_DUNG }}">
                     <label for="trang_thai2">Đang áp dụng</label>
 
-                    <input type="radio" name="trang_thai" id="trang_thai3" value="{{ App\Models\KhuyenMai::KET_THUC }}">
-                    <label for="trang_thai3">Kết thúc</label> <br>
 
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-success my-3">Thêm mới</button>

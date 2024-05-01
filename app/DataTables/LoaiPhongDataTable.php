@@ -49,14 +49,14 @@ class LoaiPhongDataTable extends DataTable
 
             // })
 
-            // ->addColumn('trang_thai', function ($query) {
-            //     $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
-            //     if ($phong_trong == 0) {
-            //         return "<span class='badge text-bg-danger'>Hết phòng</span>";
-            //     } else {
-            //         return "<span class='badge text-bg-success'>Còn phòng</span>";
-            //     }
-            // })
+            ->addColumn('tinh_trang', function ($query) {
+                // $phong_trong = Phong::where('loai_phong_id', $query->id)->where('trang_thai', '1')->count();
+                if ($query->trang_thai == 0) {
+                    return "<span class='badge text-bg-danger'>Dừng hoạt động</span>";
+                } else {
+                    return "<span class='badge text-bg-success'>Hoạt động</span>";
+                }
+            })
 
             ->addColumn('action', function ($query) {
                 // $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
@@ -106,7 +106,7 @@ class LoaiPhongDataTable extends DataTable
                 return  $editBtn . $deleteBtn . $moreBtn ;
             })
 
-            ->rawColumns(['so_luong','anh','phong_trong','trang_thai', 'action'])
+            ->rawColumns(['so_luong','anh','phong_trong','trang_thai', 'action','tinh_trang'])
             ->setRowId('id');
     }
     /**
@@ -157,6 +157,7 @@ class LoaiPhongDataTable extends DataTable
             // Column::make('mo_ta_ngan'),
             // Column::make('mo_ta_dai'),
             Column::make('trang_thai')->hidden(),
+            Column::make('tinh_trang'),
             // Column::make('created_at'),
             // Column::make('updated_at'),
             Column::computed('action')

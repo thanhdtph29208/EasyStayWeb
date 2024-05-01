@@ -91,14 +91,14 @@
                         <div class="mb-3 mx-auto ">
                             <label class="mt-3" for="trang_thai">Trạng thái: </label> <br>
                             <input type="radio" name="trang_thai" id="trang_thai1"
-                                @if ($loai_phong->trang_thai == \App\Models\Loai_phong::CON_PHONG) checked @endif
-                                value="{{ \App\Models\Loai_phong::CON_PHONG }}">
-                            <label for="trang_thai1">CÒN PHÒNG</label>
+                                @if ($loai_phong->trang_thai == \App\Models\Loai_phong::HOAT_DONG) checked @endif
+                                value="{{ \App\Models\Loai_phong::HOAT_DONG }}">
+                            <label for="trang_thai1">HOẠT ĐỘNG</label>
 
                             <input type="radio" name="trang_thai" id="trang_thai2"
-                                @if ($loai_phong->trang_thai == \App\Models\Loai_phong::HET_PHONG) checked @endif
-                                value="{{ \App\Models\Loai_phong::HET_PHONG }}">
-                            <label for="trang_thai2">HẾT PHÒNG</label> <br><br>
+                                @if ($loai_phong->trang_thai == \App\Models\Loai_phong::DUNG_HOAT_DONG) checked @endif
+                                value="{{ \App\Models\Loai_phong::DUNG_HOAT_DONG }}">
+                            <label for="trang_thai2">DỪNG HOẠT ĐỘNG</label> <br><br>
                         </div>
 
                         <div class="d-flex justify-content-center">

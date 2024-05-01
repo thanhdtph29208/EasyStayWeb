@@ -36,7 +36,7 @@
                 <form action="{{ route('admin.loai_phong.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label for="ten">Tên</label>
                         <input type="text" name="ten" id="ten" class="form-control">
@@ -47,44 +47,44 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="anh">Ảnh</label>
                         <input type="file" name="anh" id="anh" class="form-control">
                     </div>
 
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="anh">Giá</label>
                         <input type="text" name="gia" id="gia" class="form-control">
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="gia_ban_dau">Giá ban đầu</label>
                         <input type="text" name="gia_ban_dau" id="gia_ban_dau" class="form-control">
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="gioi_han_nguoi">Giới hạn người</label>
                         <input type="text" name="gioi_han_nguoi" id="gioi_han_nguoi" class="form-control">
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="so_luong">Số lượng</label>
                         <input type="text" name="so_luong" id="so_luong" class="form-control">
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="mo_ta_ngan">Mô tả ngắn</label>
                         <textarea name="mo_ta_ngan" id="mo_ta_ngan" class="form-control" cols="30" rows="5"></textarea>
                     </div>
 
-                    <div class="mb-3 mx-auto 
+                    <div class="mb-3 mx-auto
                     ">
                         <label class="mt-3" for="mo_ta_dai">Mô tả dài</label>
                         <textarea name="mo_ta_dai" id="mo_ta_dai" class="form-control" cols="30" rows="8"></textarea>
@@ -94,11 +94,11 @@
                     <div class="mb-3 mx-auto ">
                         <label class="mt-3" for="trang_thai">Trạng thái:</label> <br>
 
-                        <input type="radio" name="trang_thai" id="trang_thai1" value="{{ App\Models\Loai_phong::CON_PHONG }}">
-                        <label for="trang_thai1">CÒN PHÒNG</label>
+                        <input type="radio" name="trang_thai" id="trang_thai1" value="{{ App\Models\Loai_phong::HOAT_DONG }}">
+                        <label for="trang_thai1">HOẠT ĐỘNG</label>
 
-                        <input type="radio" name="trang_thai" id="trang_thai2" value="{{ App\Models\Loai_phong::HET_PHONG }}">
-                        <label for="trang_thai2">HẾT PHÒNG</label> <br>
+                        <input type="radio" name="trang_thai" id="trang_thai2" value="{{ App\Models\Loai_phong::DUNG_HOAT_DONG }}">
+                        <label for="trang_thai2">DỪNG HOẠT ĐỘNG</label> <br>
                     </div>
 
                     <div class="d-flex justify-content-center">

@@ -60,7 +60,7 @@ class DichVuController extends Controller
             'gia.required' => 'Giá không được để trống',
             'gia.numeric' => 'Giá phải là 1 số',
             'gia.min' => 'Giá phải là 1 số dương',
-            
+
             'so_luong.required' => 'Số lượng không được để trống',
             'so_luong.numeric' => 'Số lượng phải là 1 số',
             'so_luong.min' => 'Số lượng phải là 1 số dương',
@@ -104,7 +104,7 @@ class DichVuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id, User $user, DichVu $dich_vu): RedirectResponse
+    public function update(Request $request, $id, User $user): RedirectResponse
     {
         if (!Gate::allows('update', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
@@ -113,7 +113,7 @@ class DichVuController extends Controller
         $dichVu = DichVu::findOrFail($id);
 
         $rules = [
-            'ten_dich_vu' => 'required|max:255|unique:dich_vus,ten_dich_vu,' . $dich_vu->id,
+            'ten_dich_vu' => 'required|max:255|unique:dich_vus,ten_dich_vu,' . $dichVu->id,
             'gia' => 'required|numeric|min:0',
             'so_luong' => 'required|numeric|min:0',
             'trang_thai' => 'required',
@@ -128,7 +128,7 @@ class DichVuController extends Controller
             'gia.required' => 'Giá không được để trống',
             'gia.numeric' => 'Giá phải là 1 số',
             'gia.min' => 'Giá phải là 1 số dương',
-            
+
             'so_luong.required' => 'Số lượng không được để trống',
             'so_luong.numeric' => 'Số lượng phải là 1 số',
             'so_luong.min' => 'Số lượng phải là 1 số dương',
@@ -137,7 +137,7 @@ class DichVuController extends Controller
         ];
 
         $validated = $request->validate($rules, $messages);
-        
+
         // $data = $request->validate([
         //     'ten_dich_vu' => 'required',
         //     'gia' => 'required|numeric',

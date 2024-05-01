@@ -18,7 +18,7 @@ class ExportController extends Controller
     }
     public function exportHoaDon()
     {
-        return Excel::download(new DatPhongsExport, 'hoadon.pdf');
+        return Excel::download(new DatPhongsExport, 'hoadon.xlsx');
     }
 
 }

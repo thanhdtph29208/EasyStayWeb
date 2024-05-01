@@ -173,6 +173,14 @@
                                 width: 150
                             },
                             {
+                                data: "tinh_trang",
+                                name: "tinh_trang",
+                                title: "Tình trạng",
+                                orderable: true,
+                                searchable: true,
+                                width: 150
+                            },
+                            {
                                 data: "action",
                                 name: "action",
                                 title: "Action",

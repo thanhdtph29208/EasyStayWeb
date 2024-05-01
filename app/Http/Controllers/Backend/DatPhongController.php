@@ -169,7 +169,15 @@ class DatPhongController extends Controller
         if (!Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-
+        $tong_nguoi=0;
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+            $gioi_han_nguoi=Loai_phong::Where('id',$loaiPhongId['id'])->pluck('gioi_han_nguoi');
+            $tong_nguoi = $tong_nguoi + ($gioi_han_nguoi[0] * (int)$request->so_luong_phong[$key]['so_luong_phong']);
+        }
+        if($request->so_luong_nguoi>$tong_nguoi){
+            alert('Số lượng người vượt quá giới hạn người của phòng');
+            return Redirect::back();
+        }
         // dd(Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00'));
         // dd($request);
         // dd(Auth::user()->id);
@@ -251,13 +259,7 @@ class DatPhongController extends Controller
 
         $datPhongId = $datPhong->id;
         // Thêm dữ liệu vào bảng DatPhongLoaiPhong
-        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
-            // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
-            $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
 
-            // Thêm dữ liệu vào bảng liên kết
-            $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
-        }
 
 
         $thoi_gian_den = Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00');
@@ -291,6 +293,15 @@ class DatPhongController extends Controller
                     $datPhong->phongs()->attach($phongId);
                 }
             }
+        }
+
+
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+            // Lấy số lượng phòng từ mảng so_luong_phong theo chỉ số tương ứng
+            $soLuongPhong = $request->so_luong_phong[$key]['so_luong_phong'];
+
+            // Thêm dữ liệu vào bảng liên kết
+            $datPhong->loaiPhongs()->attach($loaiPhongId['id'], ['so_luong_phong' => $soLuongPhong]);
         }
 
 

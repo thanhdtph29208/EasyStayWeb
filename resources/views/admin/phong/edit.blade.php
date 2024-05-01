@@ -54,13 +54,13 @@
 
                     <label class="mt-3" class="mt-3" for="trang_thai">Trạng thái:</label>
 
-                    <input type="radio" name="trang_thai" id="trang_thai1" @if ($phong->trang_thai == \App\Models\Phong::CON_PHONG) checked @endif
-                    value="{{\App\Models\Phong::CON_PHONG}}">
-                    <label for="trang_thai1">CÒN PHÒNG</label>
+                    <input type="radio" name="trang_thai" id="trang_thai1" @if ($phong->trang_thai == \App\Models\Phong::HOAT_DONG) checked @endif
+                    value="{{\App\Models\Phong::HOAT_DONG}}">
+                    <label for="trang_thai1">HOẠT ĐỘNG</label>
 
-                    <input type="radio" name="trang_thai" id="trang_thai2" @if ($phong->trang_thai == \App\Models\Phong::HET_PHONG) checked @endif
-                    value="{{\App\Models\Phong::HET_PHONG}}">
-                    <label for="trang_thai2">HẾT PHÒNG</label> <br><br>
+                    <input type="radio" name="trang_thai" id="trang_thai2" @if ($phong->trang_thai == \App\Models\Phong::DUNG_HOAT_DONG) checked @endif
+                    value="{{\App\Models\Phong::DUNG_HOAT_DONG}}">
+                    <label for="trang_thai2">DỪNG HOẠT ĐỘNG</label> <br><br>
 
                     <button class="btn btn-success">Cập nhật</button>
                     <a class="btn btn-danger ms-3" href="{{route('admin.loai_phong.index')}}">Quay lại</a>

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Phong;
+use App\Models\VaiTro;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PhongDataTable extends DataTable
+class VaiTroDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,7 +22,7 @@ class PhongDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'phong.action')
+            ->addColumn('action', 'vai_tro.action')
 
             // ->addColumn('loai_phong', function($query){
             //     return $query->loai_phong->ten;
@@ -41,34 +41,34 @@ class PhongDataTable extends DataTable
             //     return $button;
             // })
 
-            ->addColumn('trang_thai', function ($query) {
-                if ($query->trang_thai == 0) {
-                    return "<span class='badge text-bg-danger'>Dừng hoạt động</span>";
-                } else {
-                    return "<span class='badge text-bg-success'>Hoạt động</span>";
-                }
-            })
+            // ->addColumn('trang_thai', function ($query) {
+            //     if ($query->trang_thai == 0) {
+            //         return "<span class='badge text-bg-danger'>Dừng hoạt động</span>";
+            //     } else {
+            //         return "<span class='badge text-bg-success'>Hoạt động</span>";
+            //     }
+            // })
 
             ->addColumn('action', function ($query) {
-                $editBtn = "<a href='" . route('admin.phong.edit', $query->id) . "' class='btn btn-primary'>
+                $editBtn = "<a href='" . route('admin.vai_tro.edit', $query->id) . "' class='btn btn-primary'>
                 <i class='bi bi-pen'></i>
                 </a>";
-                $deleteBtn = "<a href='" . route('admin.phong.destroy', $query->id) . "' class='btn btn-danger ms-2 delete-item '>
+                $deleteBtn = "<a href='" . route('admin.vai_tro.destroy', $query->id) . "' class='btn btn-danger ms-2 delete-item '>
                 <i class='bi bi-archive'></i>
                 </a>";
                 return $editBtn . $deleteBtn ;
             })
 
-            ->rawColumns(['ten_phong','loai_phong_id','mo_ta','trang_thai', 'action'])
+            ->rawColumns([])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Phong $model): QueryBuilder
+    public function query(VaiTro $model): QueryBuilder
     {
-        return $model->where('loai_phong_id', request()->loai_phong)->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -101,7 +101,7 @@ class PhongDataTable extends DataTable
         return [
 
             Column::make('id'),
-            Column::make('ten_phong'),
+            Column::make('ten_chuc_vu'),
             // Column::make('loai_phong_id'),
             Column::make('mo_ta'),
             Column::make('trang_thai'),
@@ -120,6 +120,6 @@ class PhongDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Phong_' . date('YmdHis');
+        return 'VaiTro_' . date('YmdHis');
     }
 }
