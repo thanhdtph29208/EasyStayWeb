@@ -136,11 +136,16 @@ Route::middleware(['auth', 'verified', 'block.user'])->prefix('admin')
         Route::post('/bai_viet/upload-image', [BaiVietController::class,"upload"])->name('bai_viet.upload'); // acb
         Route::resource('/user', RegisteredUserController::class); // Registered
         Route::resource('/banners', BannerController::class); // Banner
+        Route::put('admin/banner/change-status', [BannerController::class, 'changeStatus'])->name('banner.change-status');
+
         // Route::resource('danh_gia', DanhGiaController::class);
 
         Route::resource('/vai_tro', VaiTroController::class);
+        
         Route::resource('/dat_phong', DatPhongController::class);
+        Route::put('admin/dat_phong/change-status', [DatPhongController::class, 'changeStatus'])->name('dat_phong.change-status');
         Route::get('/dat_phong_tim_Kiem',[DatPhongController::class,'search'])->name('search_dat_phong');
+
         Route::get('/khuyen_mai_tim_kiem', [KhuyenMaiController::class, 'search'])->name('search_khuyen_mai');
         Route::get('/loai_phong_tim_Kiem',[LoaiPhongController::class,'search'])->name('search_loai_phong');
         Route::resource('/chi_tiet_dat_phong', ChiTietDatPhongController::class);

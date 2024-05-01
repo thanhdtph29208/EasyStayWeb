@@ -489,5 +489,15 @@ class DatPhongController extends Controller
         return response(['trang_thai' => 'success']);
     }
 
+    public function changeStatus(Request $request)
+    {
+        $dat_phong = DatPhong::findOrFail($request->id);
+        // $dat_phong->trang_thai = $request->trang_thai == 'true' ? 0 : 1;
+        $newStatus = $request->trang_thai == 'true' ? 1 : 0;
+		$dat_phong->trang_thai = $newStatus;
+        $dat_phong->save();
+        return response(['message' => 'Xác nhận đơn hàng']);
+    }
+
 }
 

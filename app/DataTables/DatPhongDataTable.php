@@ -49,15 +49,29 @@ class DatPhongDataTable extends DataTable
             // ->addColumn('don_gia', function($query){
             //     return $query->loai_phong->gia;
             // })
+            // ->addColumn('trang_thai', function ($query) {
+            //     $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
+            //     $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
+            //     if ($query->trang_thai == 1) {
+            //         return $active;
+            //     } else {
+            //         return $inActive;
+            //     }
+            // })
+
             ->addColumn('trang_thai', function ($query) {
-                $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
-                $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
-                if ($query->trang_thai == 1) {
-                    return $active;
+                if ($query->status == 1) {
+                    $button = "<div class='form-check form-switch'>
+                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='status' checked>
+                  </div>";
                 } else {
-                    return $inActive;
+                    $button = "<div class='form-check form-switch'>
+                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='status'>
+                  </div>";
                 }
+                return $button;
             })
+
             ->addColumn('action', function ($query) {
                 $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
                 <i class='bi bi-pen'></i>

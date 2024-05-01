@@ -111,7 +111,7 @@ class CartController extends Controller
 {
     // Kiểm tra xem có rowId và số lượng mới được gửi hay không
     if (!$request->has('rowId') || !$request->has('so_luong')) {
-        return response(['status' => 'error', 'message' => 'Invalid request']);
+        return response(['status' => 'error', 'message' => 'Yêu cầu không hợp lệ']);
     }
 
     $rowId = $request->input('rowId');
@@ -119,11 +119,11 @@ class CartController extends Controller
 
     // Kiểm tra xem số lượng mới có lớn hơn 0 không
     if ($so_luong <= 0) {
-        return response(['status' => 'error', 'message' => 'Invalid quantity']);
+        return response(['status' => 'error', 'message' => 'Yêu cầu không hợp lệ']);
     }
 
     // Kiểm tra số lượng phòng còn đủ không
-    $phong = Cart::get($rowId)->id;
+    $phong = Cart::get($request->rowId)->id;
     $loai_phong = Loai_phong::findOrFail($phong);
     if ($loai_phong->qty < $so_luong) {
         return response(['status' => 'error', 'message' => 'Quá số lượng phòng không đủ']);
