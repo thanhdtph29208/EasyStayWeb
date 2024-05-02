@@ -30,7 +30,7 @@ class BaiVietDataTable extends DataTable
             })
             ->addColumn('noi_dung', function ($query) {
                 return  "<div class='text-truncate' style='max-width: 150px;height: 20px;'>
-".$query->noi_dung."
+" . $query->noi_dung . "
 </div>";
             })
 
@@ -54,13 +54,13 @@ class BaiVietDataTable extends DataTable
                 <i class='bi bi-archive'></i>
                 </a>";
 
-                $viewComment = "<a href='" . route('admin.binh_luan_bai_viet.index',['id'=>$query->id] ) . "' class='btn btn-success ms-2'>
+                $viewComment = "<a href='" . route('admin.binh_luan_bai_viet.index', ['id' => $query->id]) . "' class='btn btn-success ms-2'>
                 <i class='bi bi-eye-fill'></i>
                 </a>";
-                return "<div class='d-flex'>" . $editBtn . $deleteBtn.$viewComment . "</div>";
+                return "<div class='d-flex'>" . $editBtn . $deleteBtn . $viewComment . "</div>";
             })
 
-            ->rawColumns(['anh', 'trang_thai', 'action','noi_dung'])
+            ->rawColumns(['anh', 'trang_thai', 'action', 'noi_dung'])
             ->setRowId('id');
     }
 
@@ -84,9 +84,7 @@ class BaiVietDataTable extends DataTable
             //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
-            ->buttons([
-                
-            ]);
+            ->buttons([]);
     }
 
     /**

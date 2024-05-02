@@ -35,8 +35,8 @@ class RegisteredUserController extends Controller
     }
     public function create(): View
     {
-        $vai_tro = VaiTro::query()->pluck('ten_chuc_vu','id')->toArray();
-        return view('auth.register',compact('vai_tro'));
+        $vai_tro = VaiTro::query()->pluck('ten_chuc_vu', 'id')->toArray();
+        return view('auth.register', compact('vai_tro'));
     }
 
     /**
@@ -48,13 +48,13 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'ten_nguoi_dung' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'dia_chi' => ['nullable'],
             'gioi_tinh' => ['nullable'],
             'ngay_sinh' => ['nullable'],
-            'anh'=>['nullable'],
-            'so_dien_thoai'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
+            'anh' => ['nullable'],
+            'so_dien_thoai' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
         ]);
 
         $user = User::create([
@@ -64,7 +64,7 @@ class RegisteredUserController extends Controller
             'dia_chi' => null,
             'gioi_tinh' => null,
             'ngay_sinh' => null,
-            'anh'=>null,
+            'anh' => null,
             'so_dien_thoai' => $request->so_dien_thoai,
             'id_vai_tro' => 1,
         ]);
@@ -78,17 +78,18 @@ class RegisteredUserController extends Controller
 
     public function edit(User $user)
     {
-        $vaitro = VaiTro::query()->pluck('ten_chuc_vu','id')->toArray();
-        return view('admin.user.'. __FUNCTION__,compact('vaitro','user'));
+        $vaitro = VaiTro::query()->pluck('ten_chuc_vu', 'id')->toArray();
+        return view('admin.user.' . __FUNCTION__, compact('vaitro', 'user'));
     }
+
     public function update(Request $request, User $user): RedirectResponse
     {
-        if (! Gate::allows('update', $user)) {
-                return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
+        if (!Gate::allows('update', $user)) {
+            return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $request->validate([
             'ten_nguoi_dung' => ['required', 'string', 'max:255'],
-            'email' =>[
+            'email' => [
                 'required',
                 'string',
                 'lowercase',
@@ -96,30 +97,40 @@ class RegisteredUserController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')->ignore($user->id)
             ],
-            'dia_chi'=>['nullable', 'string'],
-            'so_dien_thoai'=> ['string', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            'gioi_tinh'=>['nullable', 'string'],
-            'ngay_sinh'=>['nullable', 'date', 'before:today'],
-            'anh'=>['nullable', 'image', 'max:2048'],
+            'dia_chi' => ['nullable', 'string'],
+            'so_dien_thoai' => ['string', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            'gioi_tinh' => ['nullable', 'string'],
+            'ngay_sinh' => ['nullable', 'date', 'before:today'],
+            'anh' => ['nullable', 'image', 'max:2048'],
         ]);
         $data = $request->except('anh');
+
+        $oldAnh = $user->anh;
         if ($request->hasFile('anh')) {
             $data['anh'] = Storage::put('user', $request->file('anh'));
-            User::query()->update([
-                'anh' => $request->anh,
-                'ten_nguoi_dung' => $request->ten_nguoi_dung,
-                'so_dien_thoai' => $request->so_dien_thoai,
-                'dia_chi'=>$request->dia_chi,
-                'gioi_tinh'=>$request->gioi_tinh,
-                'ngay_sinh'=>$request->ngay_sinh,
-                'id_vai_tro'=>$request->id_vai_tro,
-            ]);
-            $oldAnh = $user->anh;
-            if($request->hasFile('anh') && (Storage::exists($oldAnh))){
-                Storage::delete($oldAnh);
-            }
         }
+
         $user->update($data);
+        // if ($request->hasFile('anh')) {
+        //     User::query()->update([
+        //         'anh' => $request->anh,
+        //         'ten_nguoi_dung' => $request->ten_nguoi_dung,
+        //         'so_dien_thoai' => $request->so_dien_thoai,
+        //         'dia_chi'=>$request->dia_chi,
+        //         'gioi_tinh'=>$request->gioi_tinh,
+        //         'ngay_sinh'=>$request->ngay_sinh,
+        //         'id_vai_tro'=>$request->id_vai_tro,
+        //     ]);
+
+
+        if ($request->hasFile('anh') && Storage::exists($oldAnh)) {
+            Storage::delete($oldAnh);
+        }
+
+
+        // }
+
+
 
         // Chuyển hướng trở lại trang trước với thông báo thành công
         return back()->with('msg', 'Sửa thành công');
@@ -130,14 +141,13 @@ class RegisteredUserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        if (! Gate::allows('delete', $user)) {
-                return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
-            }
+        if (!Gate::allows('delete', $user)) {
+            return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
+        }
         $user->delete();
-        if(Storage::exists($user->anh)){
+        if (Storage::exists($user->anh)) {
             Storage::delete($user->anh);
         }
         return response(['trang_thai' => 'success']);
     }
-
 }
