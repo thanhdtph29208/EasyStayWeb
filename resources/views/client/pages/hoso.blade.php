@@ -10,6 +10,7 @@
             </div><!--end grid-->
         </div><!--end container-->
 
+
         <div class="absolute text-center z-10 bottom-5 start-0 end-0 mx-3">
             <ul class="tracking-[0.5px] mb-0 inline-block">
                 <li
@@ -56,6 +57,7 @@
                                 <span class="font-medium mb-2">Hình ảnh: </span>
                                 <img class="w-20 h-20 rounded" src="{{ asset(Auth::user()->anh) }}" alt="" />
                             </div>
+
 
                             <div class="mt-6 w-full">
                                 <input type="file" name="anh"

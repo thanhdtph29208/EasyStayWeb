@@ -44,7 +44,8 @@ class ProfileController extends Controller
     
         $user->update($request->all());
     
-        Session::flash('success', 'Profile updated successfully!');
+        Session::flash('success', 'Cập nhật thông tin thành công');
+        // toastr()->success('Thành công !','Cập nhật thành công');
     
         return redirect()->back();
     }
