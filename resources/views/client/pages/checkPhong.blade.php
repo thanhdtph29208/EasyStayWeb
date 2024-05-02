@@ -67,6 +67,7 @@
                             </ul>
                             <!-- <div class="grid grid-cols-2 gap-4"> -->
                             <div class="flex flex-col items-start mb-4">
+
     <label for="qty_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng phòng muốn đặt:</label>
     <input type="number" id="qty_{{ $loaiPhong->id }}" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" class="form-input border border-gray-300 rounded-md w-full" onchange="updateSoLuongNguoi('{{ $loaiPhong->id }}')">
 </div>
@@ -101,6 +102,7 @@ function updateSoLuongNguoi(loaiPhongId) {
     inputSoLuongNguoi.setAttribute("max", maxSoLuongNguoi);
 }
 </script>
+
 
                             <!-- </div> -->
 
