@@ -42,12 +42,6 @@
                     <!-- </div> -->
 
                     <!-- <div class="form-group"> -->
-                    <label class="mt-3" for="loai_phong_id">Loại phòng áp dụng</label>
-                    <select class="form-control" id="loai_phong_id" name="loai_phong_id" required>
-                        @foreach ($loai_phongs as $loai_phong)
-                        <option value="{{ $loai_phong->id }}">{{ $loai_phong->ten }}</option>
-                        @endforeach
-                    </select>
                     <!-- </div> -->
 
                     <!-- <div class="form-group"> -->

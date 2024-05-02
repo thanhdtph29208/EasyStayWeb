@@ -115,7 +115,6 @@ class KhuyenMaiController extends Controller
         $data = $request->all();
         $rules = [
             'ten_khuyen_mai' => 'required|string|max:255',
-            'loai_phong_id' => 'required|integer|exists:phongs,id',
             'ma_giam_gia' => 'required|string|max:255|unique:khuyen_mais,ma_giam_gia',
             'loai_giam_gia' => 'required|boolean',
             'gia_tri_giam' => 'required|numeric|min:0',
@@ -129,8 +128,6 @@ class KhuyenMaiController extends Controller
         $messages = [
             'ten_khuyen_mai.required' => 'Tên khuyến mãi không được bỏ trống',
             'ten_khuyen_mai.max' => 'Tên khuyến mãi không được quá 255 ký tự',
-
-            'loai_phong_id.required' => 'Loại phòng không được bỏ trống',
 
             'ma_giam_gia.required' => 'Mã giảm giá không được bỏ trống',
             'ma_giam_gia.max' => 'Mã giảm giá không được quá 255 ký tự',
@@ -211,7 +208,6 @@ class KhuyenMaiController extends Controller
 
         $rules = [
             'ten_khuyen_mai' => 'required|string|max:255',
-            'loai_phong_id' => 'required|integer|exists:phongs,id',
             'ma_giam_gia' => 'required|string|max:255|unique:khuyen_mais,ma_giam_gia,' . $khuyenMai->id,
             'loai_giam_gia' => 'required|boolean',
             'gia_tri_giam' => 'required|numeric|min:0',
@@ -226,7 +222,6 @@ class KhuyenMaiController extends Controller
             'ten_khuyen_mai.required' => 'Tên khuyến mãi không được bỏ trống',
             'ten_khuyen_mai.max' => 'Tên khuyến mãi không được quá 255 ký tự',
 
-            'loai_phong_id.required' => 'Loại phòng không được bỏ trống',
 
             'ma_giam_gia.required' => 'Mã giảm giá không được bỏ trống',
             'ma_giam_gia.max' => 'Mã giảm giá không được quá 255 ký tự',

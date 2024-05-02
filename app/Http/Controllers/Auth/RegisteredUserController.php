@@ -114,10 +114,10 @@ class RegisteredUserController extends Controller
                 'ngay_sinh'=>$request->ngay_sinh,
                 'id_vai_tro'=>$request->id_vai_tro,
             ]);
-            $oldAnh = $user->anh;
-            if($request->hasFile('anh') && (Storage::exists($oldAnh))){
-                Storage::delete($oldAnh);
-            }
+            // $oldAnh = $user->anh;
+            // if($request->hasFile('anh') && (Storage::exists($oldAnh))){
+            //     Storage::delete($oldAnh);
+            // }
         }
         $user->update($data);
 

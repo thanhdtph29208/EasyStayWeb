@@ -68,14 +68,6 @@
                     </div>
 
 
-                    <div class="form-group mt-3">
-                        <label for="loai_phong_id">Loại phòng áp dụng</label>
-                        <select class="form-control" id="loai_phong_id" name="loai_phong_id" value="{{$khuyenMai->loai_phong_id}}" required>
-                            @foreach ($loai_phongs as $loai_phong)
-                            <option value="{{ $loai_phong->id }}" {{ $khuyenMai->loai_phong_id == $loai_phong->id ? 'selected' : '' }}>{{ $loai_phong->ten }}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
                     <div class="row">
                         <div class="col-6">

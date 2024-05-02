@@ -54,10 +54,7 @@ class BaiVietDataTable extends DataTable
                 <i class='bi bi-archive'></i>
                 </a>";
 
-                $viewComment = "<a href='" . route('admin.binh_luan_bai_viet.index',['id'=>$query->id] ) . "' class='btn btn-success ms-2'>
-                <i class='bi bi-eye-fill'></i>
-                </a>";
-                return "<div class='d-flex'>" . $editBtn . $deleteBtn.$viewComment . "</div>";
+                return "<div class='d-flex'>" . $editBtn . $deleteBtn . "</div>";
             })
 
             ->rawColumns(['anh', 'trang_thai', 'action','noi_dung'])
