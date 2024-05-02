@@ -259,7 +259,7 @@ class DatPhongController extends Controller
             'thoi_gian_di' => $request->thoi_gian_di,
             'khuyen_mai_id' => $request->khuyen_mai_id,
             'payment' => $request->payment,
-            'trang_thai' => 1,
+            'trang_thai' => 0,
             'ghi_chu' => $request->ghi_chu,
         ]);
 
