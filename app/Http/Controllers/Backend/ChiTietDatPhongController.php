@@ -37,17 +37,7 @@ class ChiTietDatPhongController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'ten_phong' => 'required|unique::phongs',
-        //     'loai_phong_id' => [
-        //         Rule::exists('phongs','id')
-        //     ],
-        //     'mo_ta' => 'required',
-        //     'trang_thai' => 'required',
-        //     // 'trang_thai' => [
-        //     //     Rule::in([1,0])
-        //     // ],
-        // ]);
+        
         ChiTietDatPhong::query()->create($request->all());
         return back()->with('msg','Thêm thành công');
     }
@@ -75,17 +65,7 @@ class ChiTietDatPhongController extends Controller
      */
     public function update(Request $request, ChiTietDatPhong $chiTietDatPhong)
     {
-        // $request->validate([
-        //     'ten_phong' => 'required|unique::phongs,ten_phong,' . $phong->id,
-        //     'loai_phong_id' => [
-        //         Rule::exists('phongs','id')
-        //     ],
-        //     'mo_ta' => 'required',
-        //     'trang_thai' => 'required',
-        //     'trang_thai' => [
-        //         Rule::in([1,0])
-        //     ],
-        // ]);
+    
         $chiTietDatPhong->update($request->all());
         return back()->with('msg','Cập nhật thành công');
     }

@@ -21,8 +21,7 @@ class BinhLuanController extends Controller
     public function index( Request $request, BinhLuanDataTable $datatable )
     {
         return $datatable->with('id', $request->id)->render('admin.binh_luan.index');
-        // $data = Bai_viet::latest()->paginate(5);
-        // return view(self::PATH_VIEW . 'index', compact('data'));
+    
     }
 
     public function delete($id){

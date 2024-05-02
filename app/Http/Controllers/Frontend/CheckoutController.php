@@ -27,10 +27,7 @@ class CheckoutController extends Controller
     public function index(Request $request)
     {
         $cartItems = Cart::content();
-        // dd($cartItems);
-        // $ngayBatDau = $cartItems->ngay_bat_dau();
-        // $ngayKetThuc = $cartItems->ngay_ket_thuc();
-        // $soNgay = Carbon\Carbon::parse($ngayKetThuc)->diffInDays(Carbon\Carbon::parse($ngayBatDau));
+        
         $cartTotal = $request['cart_total'];
         $totalQty = 0;
         foreach ($cartItems as $item) {
@@ -159,10 +156,7 @@ class CheckoutController extends Controller
 
         $jsonResult = json_decode($result, true);  // decode json
 
-        // if($jsonResult = json_decode($result, true)){
-        //     // return view('admin.layouts.master');
-        //     return redirect()->to($jsonResult['payUrl']);
-        // }
+    
 
         return redirect()->to($jsonResult['payUrl']);
     }
@@ -213,9 +207,7 @@ class CheckoutController extends Controller
         if (isset($vnp_BankCode) && $vnp_BankCode != "") {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
         }
-        // if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-        //     $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-        // }
+        
 
         //var_dump($inputData);
         ksort($inputData);

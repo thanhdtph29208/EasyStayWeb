@@ -82,26 +82,7 @@ class BannerController extends Controller
         return redirect()->back();
 
 
-		//Lưu hình ảnh vào thư mục storage
-
-		// $anh = $request->file('anh');
-		// $tenAnh = time() . '.' . $anh->getClientOriginalExtension();
-
-		// // Kiểm tra xem ảnh có tồn tại trong hệ thống không
-		// if (Storage::exists('banners/' . $tenAnh)) {
-		// 	return redirect()->back()->with('error', 'Hình ảnh đã tồn tại.');
-		// }
-
-		// $anh->storeAs('banners', $tenAnh);
-
-		// // Tạo bản ghi mới
-		// Banner::create([
-		// 	'anh' => $tenAnh,
-		// 	'mo_ta' => $request->mo_ta,
-		// 	'trang_thai' => $request->trang_thai,
-		// ]);
-
-		// return redirect(route('admin.banners.index'))->with('success', 'Đã tạo bản ghi thành công.');
+		
 	}
 
 
@@ -162,10 +143,6 @@ class BannerController extends Controller
 		return response(['trang_ thai' => 'success']);
 
 
-		// $deleteData = Banner::find($id);
-		// $deleteData->delete();
-
-		// return redirect(route('admin.banners.index'))->with('success', 'Xoá bản ghi thành công.');
 	}
 
 	public function changeStatus(Request $request)

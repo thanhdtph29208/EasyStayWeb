@@ -114,12 +114,7 @@ class DatPhongController extends Controller
             $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
             <i class='bi bi-archive'></i>
             </a>";
-            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
-            // <i class='bi bi-houses-fill'></i>
-            // </a>";
-            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
-            // <i class='bi bi-chat-dots'></i>
-            // </a>";
+            
             $detailBtn = "<a href='" . route('admin.dat_phong.show', ['dat_phong' => $query->id]) . "' class='btn btn-secondary ms-2'>
             <i class='bi bi-list-ul'></i>
             </a>";
@@ -135,16 +130,7 @@ class DatPhongController extends Controller
     }
     public function create(DatPhong $datPhong, Request $request)
     {
-        // $loai_phongs = Loai_phong::where('trang_thai',1)->with('phongs')->get();
-        // $loai_phongs = Loai_phong::where('trang_thai',1)->get();
-
-        // $phongs = Phong::where('trang_thai',1)->get();
-        // $loai_phongs = $request->input('loai_phongs', []);
-        // $loai_phongs = Phong::whereIn('loai_phong_id', $loai_phongs)
-        //             ->where('trang_thai', 1)
-        //             ->get();
-        // return response()->json(['loai_phongs' => $loai_phongs]);
-        // return view(self::PATH_VIEW . __FUNCTION__, ['loai_phongs'=>$loai_phongs]);
+    
         $loai_phong_id = $request->query('loai_phong_id');
         // dd($loai_phong_id);
         $ten_loai_phong = Loai_phong::Where('id',$loai_phong_id)->pluck('ten');
@@ -180,9 +166,7 @@ class DatPhongController extends Controller
             return Redirect::back();
         }
 
-        // dd(Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00'));
-        // dd($request);
-        // dd(Auth::user()->id);
+        
         $user = Auth::user();
 
         $rules = [
