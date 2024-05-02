@@ -148,16 +148,15 @@
                 <div class="grid grid-cols-12 gap-4">
                     <div class="md:col-span-8 col-span-8">
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active thumbnail border rounded shadow-lg" aria-current="true" aria-label="Slide 1">
-                            <img src="{{ Storage::url($detail->anh) }}" alt="..." class="d-block">
+                            <img src="{{ Storage::url($detail->anh) }}" alt="..." class="d-block w-[600px]">
                         </button>
                         @foreach ($detail->anhPhong as $key => $item)
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ ++$key }}" class="thumbnail border rounded shadow-lg" aria-label="Slide {{ ++$key }}">
-                            <img src="{{ asset($item->anh) }}" class="d-block" alt="...">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ ++$key }}" class="thumbnail border rounded shadow-lg " aria-label="Slide {{ ++$key }}">
+                            <img src="{{ asset($item->anh) }}" class="d-block w-[600px]" alt="...">
                         </button>
                         @endforeach
                     </div>
                 </div>
-
 
                 <!-- <div class="carousel-inner">
                                                     <div class="carousel-item active">
@@ -204,7 +203,7 @@
 
                         <div class="ms-3">
                             <p class="font-medium">Trạng Thái Loại Phòng:</p>
-                            <span class="text-slate-400 font-medium text-sm">{{ $detail->trang_thai ? 'Còn phòng' : 'Hết phòng'}}</span>
+                            <span class="text-slate-400 font-medium text-sm">{{ $detail->trang_thai ? 'Hoạt động' : 'Tạm dừng họat động'}}</span>
                         </div>
                     </li>
                 </ul>
@@ -237,7 +236,6 @@
                                             <li>{{ $item['noi_dung'] }}</li>
                                             <li class="text-xs text-gray-600">{{ $item['created_at'] }}</li>
                                         </ul>
-
                                     </td>
                                 </tr>
                             </table>
@@ -280,7 +278,7 @@
                     </div> -->
 
                     <div class="mt-6">
-<!-- 
+                        <!-- 
                         <form method="post" action="{{ route('kiem_tra_loai_phong', ['id' => $detail->id]) }}">
                             @csrf
                             <meta name="csrf-token" content="{{ csrf_token() }}">

@@ -23,11 +23,11 @@
                                             chuyến đi? Chúng tôi sẽ mang đến cho các bạn nơi nghỉ dưỡng với những trải
                                             nghiệm tốt nhất!</p>
 
-                                        <div class="mt-6">
+                                        <!-- <div class="mt-6">
                                             <a href="#"
                                                 class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Xem
                                                 thêm</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div><!--end grid-->
                             </div><!--end container-->

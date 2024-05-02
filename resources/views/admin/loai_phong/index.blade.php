@@ -39,9 +39,9 @@
                                         <label for="startTime" class="form-label mb-2">Thời gian bắt đầu - Thời gian kết
                                             thúc</label>
                                         <div class="d-flex align-items-center mb-4">
-                                            <input type="date" name="thoi_gian_den" id="startTime" class="form-control">
+                                            <input type="date" name="thoi_gian_den" id="startTime" class="form-control"  min="{{ date('Y-m-d') }}">
                                             <i class="bi bi-arrow-left-right mx-2"></i>
-                                            <input type="date" name="thoi_gian_di" class="form-control">
+                                            <input type="date" name="thoi_gian_di" class="form-control"  min="{{ date('Y-m-d') }}">
                                         </div>
 
                                         <label for="gia_min" class="form-label mb-2">Giá tối thiểu</label>
