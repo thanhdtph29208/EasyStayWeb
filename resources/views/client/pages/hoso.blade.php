@@ -54,8 +54,9 @@
 
                         <label class="block grid grid-cols-[100px_minmax(300px,_1fr)]">
                             <div>
-                                <span class="font-medium mb-2">Hình ảnh: </span>
-                                <img class="w-20 h-20 rounded" src="{{ asset(Auth::user()->anh) }}" alt="" />
+                                <span class="font-medium mb-2">Hình ảnh: </span>      
+                                <!-- <img class="w-20 h-20 rounded" src="{{ asset(Auth::user()->anh) }}" alt="" /> -->
+                                <img class="w-20 h-20 rounded" src="{{ Storage::url(auth()->user()->anh)}}" alt="" />
                             </div>
 
 

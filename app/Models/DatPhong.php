@@ -31,6 +31,7 @@ class DatPhong extends Model
         'thoi_gian_di',
         'dich_vu_id',
         'khuyen_mai_id',
+        'invoice',
         'tong_tien',
         'payment',
         'trang_thai',

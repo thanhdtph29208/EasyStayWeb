@@ -171,12 +171,13 @@ class BannerController extends Controller
 	public function changeStatus(Request $request)
     {
         $banner = Banner::findOrFail($request->id);
-		// alert($banner->trang_thai);
-        $banner->trang_thai = $request->trang_thai == 'true' ? 1 : 0;
+
+        $banner->trang_thai = $request->status == 'true' ? 1 : 0;
+		
 		// $newStatus = $request->trang_thai == 'true' ? 1 : 0;
 		// $banner->trang_thai = $newStatus;
 		// alert($newStatus);
         $banner->save();
-        return response(['message' => 'Cập nhật trạng thái thành công']);
+        return response(['message' =>$request->status ]);
     }
 }
