@@ -23,13 +23,7 @@
     <!-- Grid with Two Columns -->
     <div class="mt-28">
         <!-- First Column -->
-        <div class="bg-white rounded-lg overflow-hidden shadow-md mb-4">
-            <div class="p-6">
-                <div class="avatar size-24">
-                    <img class="rounded-full" src="{{ Auth::user()->anh }}" alt="" />
-                </div>
-            </div>
-        </div>
+   
         <!-- Second Column -->
         <div class="bg-white rounded-lg overflow-hidden shadow-md">
             <p class="text-2xl font-semibold mt-4 ms-3">Thông tin cá nhân</p>
@@ -51,6 +45,13 @@
                 @csrf
                 @method('PUT')
                 <div class="p-6 grid grid-cols-2 gap-4">
+
+                <label class="block">
+            <span >Hình ảnh:</span>
+            <img class="w-20 h-20 rounded	" src="{{ asset(Auth::user()->anh) }}" alt="" />
+            <input type="file" name="anh" class="form-input mt-3" accept="image/*">
+        </label>
+
                     <label class="block">
                         <span>Họ và Tên:</span>
                         <input name="ten_nguoi_dung" class="form-input mt-3 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" type="text" value="{{ old('ten_nguoi_dung', Auth::user()->ten_nguoi_dung) }}" required />

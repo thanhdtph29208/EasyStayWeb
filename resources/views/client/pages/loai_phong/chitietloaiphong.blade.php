@@ -271,20 +271,16 @@
             <div class="lg:col-span-4 md:col-span-5">
 
                 <div class="p-4 rounded-md shadow dark:shadow-gray-700 sticky top-20">
-                    <div class="">
+                    <!-- <div class="">
                         <h3 class="text-xl font-semibold">Thông tin phòng</h3>
 
                         <div>
 
                         </div>
-
-
-
-                    </div>
-
-
+                    </div> -->
 
                     <div class="mt-6">
+<!-- 
                         <form method="post" action="{{ route('kiem_tra_loai_phong', ['id' => $detail->id]) }}">
                             @csrf
                             <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -298,14 +294,13 @@
                             </div>
 
                             <div id="result">
-                                <!-- Danh sách phòng trống sẽ được hiển thị ở đây -->
                             </div>
 
 
                             <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
                             <button type="button" id="bookRooms">Đặt phòng</button>
 
-                        </form>
+                        </form> -->
 
 
                         <h5 class="text-lg font-medium">Google Map</h5>

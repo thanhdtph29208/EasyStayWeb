@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -35,7 +36,12 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = $request->user();
-        
+    
+        if ($request->hasFile('anh')) {
+            $anhPath = $request->anh->store('public/anh');
+            $user->anh = str_replace('public', 'storage', $anhPath);
+        }
+    
         $user->update($request->all());
     
         Session::flash('success', 'Profile updated successfully!');

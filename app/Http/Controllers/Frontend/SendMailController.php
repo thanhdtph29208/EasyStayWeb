@@ -30,6 +30,10 @@ class SendMailController extends Controller
             $email->to($datPhong->email, $ttNguoiDung->ten_nguoi_dung);
             $email->subject('Xác nhận đặt phòng khách sạn ' . $ttKhachSan[0]->ten . ' thành công.');
         });
-        return redirect()->route('home');
+        return view('client.payment_success');
+
     }
+
+
+    
 }

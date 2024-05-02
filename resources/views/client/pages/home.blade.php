@@ -1,6 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
     <!-- Start Hero -->
+
+  
     <section class="swiper-slider-hero relative block h-screen">
 
         <div class="swiper-container absolute end-0 top-0 w-full h-full">
