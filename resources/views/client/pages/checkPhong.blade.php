@@ -74,15 +74,16 @@
 
                             <div class="flex flex-col items-start mb-4">
                                 <label for="so_luong_nguoi_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng người:</label>
-                                <input type="number" name="so_luong_nguoi" id="so_luong_nguoi_{{ $loaiPhong->id }}" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi }}" class="form-input border border-gray-300 rounded-md w-full">
+                                <input type="number" name="so_luong_nguoi" id="so_luong_nguoi_{{ $loaiPhong->id }}" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi }}" data-max="{{ $phong['loai_phong']->gioi_han_nguoi }}" class="form-input border border-gray-300 rounded-md w-full">
                             </div>
 
                             <script>
                                 function updateSoLuongNguoi(loaiPhongId) {
                                     var qty = parseInt(document.getElementById("qty_" + loaiPhongId).value);
-                                    var gioiHanNguoi = parseInt(document.getElementById("so_luong_nguoi_" + loaiPhongId).getAttribute("max"));
+                                    var gioiHanNguoi = parseInt(document.getElementById("so_luong_nguoi_" + loaiPhongId).dataset.max);
                                     var inputSoLuongNguoi = document.getElementById("so_luong_nguoi_" + loaiPhongId);
 
+                                    console.log(qty);
                                     // Tính toán số lượng người tối đa dựa trên số lượng phòng muốn đặt và giới hạn người của mỗi phòng
                                     var maxSoLuongNguoi = qty * gioiHanNguoi;
 
@@ -100,6 +101,7 @@
 
                                     // Cập nhật thuộc tính max của ô số lượng người
                                     inputSoLuongNguoi.setAttribute("max", maxSoLuongNguoi);
+                                    console.log(inputSoLuongNguoi.getAttribute('max'));
                                 }
                             </script>
 

@@ -199,7 +199,7 @@
             let csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url: "{{ route('admin.dat_phong.change-status') }}",
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
@@ -207,11 +207,13 @@
                 //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 // },
                 data: {
+                    _method: 'PUT',
                     status: isChecked,
                     id: id
                 },
                 success: function(data) {
                     toastr.success(data.message);
+                    console.log(data.message);
                 }
             })
         })

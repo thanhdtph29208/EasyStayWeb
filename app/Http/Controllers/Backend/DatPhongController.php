@@ -22,7 +22,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DatPhongNoiPhong;
 use App\Models\Hotel;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 use function Laravel\Prompts\alert;
 use function Livewire\store;
@@ -40,7 +42,8 @@ class DatPhongController extends Controller
         return $datatables->render(self::PATH_VIEW . __FUNCTION__);
     }
 
-    public function search(Request $request, DatPhongDataTable $datatables){
+    public function search(Request $request, DatPhongDataTable $datatables)
+    {
         $dataTableQuery = DatPhong::query()->with(['user']);
         if ($request->filled('startTime') && $request->filled('startHour')) {
             $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('startTime') . ' ' . $request->input('startHour'));
@@ -51,99 +54,104 @@ class DatPhongController extends Controller
             $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('endTime') . ' ' . $request->input('endHour'));
             $dataTableQuery->where('thoi_gian_den', '<=', $endDateTime);
         }
-       if ($request->has('startTime') || $request->has('endTime')) {
-        // Nếu ngày bắt đầu đã được điền
-        if ($request->filled('startTime')) {
-            $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
-            $dataTableQuery->where('thoi_gian_den', '>=', $from);
-        }
+        if ($request->has('startTime') || $request->has('endTime')) {
+            // Nếu ngày bắt đầu đã được điền
+            if ($request->filled('startTime')) {
+                $from = Carbon::createFromFormat('Y-m-d', $request->get('startTime'));
+                $dataTableQuery->where('thoi_gian_den', '>=', $from);
+            }
 
-        // Nếu ngày kết thúc đã được điền
-        if ($request->filled('endTime')) {
-            $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
-            $dataTableQuery->where('thoi_gian_den', '<=', $to);
+            // Nếu ngày kết thúc đã được điền
+            if ($request->filled('endTime')) {
+                $to = Carbon::createFromFormat('Y-m-d', $request->get('endTime'));
+                $dataTableQuery->where('thoi_gian_den', '<=', $to);
+            }
         }
-    }
 
 
 
         if ($request->has('status') && $request->status != 2) {
-            $dataTableQuery->where('trang_thai','=',$request->status);
+            $dataTableQuery->where('trang_thai', '=', $request->status);
         }
 
         if ($request->has('create_date_time') && $request->filled('create_date_time')) {
             $create_date_time = Carbon::createFromFormat('Y-m-d', $request->get('create_date_time'));
-            $dataTableQuery->where('created_at','>=',$create_date_time);
+            $dataTableQuery->where('created_at', '>=', $create_date_time);
         }
         $datphong = $dataTableQuery->get();
 
         return Datatables::of($datphong)
-        ->addColumn('action', 'datphong.action')
-        ->addColumn('ten_khach_hang', function($query){
-            return $query->user->ten_nguoi_dung;
-        })
-        ->addColumn('email', function($query){
-            return $query->user->email;
-        })
-        ->addColumn('so_dien_thoai', function($query){
-            return $query->user->so_dien_thoai;
-        })
-        // ->addColumn('don_gia', function($query){
-        //     return $query->loai_phong->gia;
-        // })
-        ->addColumn('trang_thai', function ($query) {
-            $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
-            $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
-            if ($query->trang_thai == 1) {
-                return $active;
-            } else {
-                return $inActive;
-            }
-        })
-        ->addColumn('action', function ($query) {
-            $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
+            ->addColumn('action', 'datphong.action')
+            ->addColumn('ten_khach_hang', function ($query) {
+                return $query->user->ten_nguoi_dung;
+            })
+            ->addColumn('email', function ($query) {
+                return $query->user->email;
+            })
+            ->addColumn('so_dien_thoai', function ($query) {
+                return $query->user->so_dien_thoai;
+            })
+            // ->addColumn('don_gia', function($query){
+            //     return $query->loai_phong->gia;
+            // })
+            ->addColumn('trang_thai', function ($query) {
+                $active = "<span class='badge text-bg-success'>Đã xác nhận</span>";
+                $inActive = "<span class='badge text-bg-danger'>Chờ xác nhận</span>";
+                if ($query->trang_thai == 1) {
+                    return $active;
+                } else {
+                    return $inActive;
+                }
+            })
+            ->addColumn('action', function ($query) {
+                $editBtn = "<a href='" . route('admin.dat_phong.edit', $query->id) . "' class='btn btn-primary'>
             <i class='bi bi-pen'></i>
             </a>";
-            // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
-            // <i class='bi bi-image'></i>
-            // </a>";
+                // $anhBtn = "<a href='" . route('admin.anh_phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-info ms-2'>
+                // <i class='bi bi-image'></i>
+                // </a>";
 
-            // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
-            // <i class='bi bi-card-list'></i>
-            // </a>";
-            $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
+                // $detailBtn = "<a href='" . route('admin.loai_phong.show', $query->id) . "' class='btn btn-secondary ms-2'>
+                // <i class='bi bi-card-list'></i>
+                // </a>";
+                $deleteBtn = "<a href='" . route('admin.dat_phong.destroy', $query->id) . "' class='btn btn-danger delete-item ms-2'>
             <i class='bi bi-archive'></i>
             </a>";
-            
+            // $phongBtn = "<a href='" . route('admin.phong.index',['loai_phong' =>  $query->id]) . "' class='btn btn-warning ms-2'>
+            // <i class='bi bi-houses-fill'></i>
+            // </a>";
+            // $cmBtn =  "<a href='" . route('admin.danh_gia.index',['loai_phong' => $query->id]) . "' class='btn btn-dark ms-2'>
+            // <i class='bi bi-chat-dots'></i>
+            // </a>";
             $detailBtn = "<a href='" . route('admin.dat_phong.show', ['dat_phong' => $query->id]) . "' class='btn btn-secondary ms-2'>
             <i class='bi bi-list-ul'></i>
             </a>";
 
 
 
-            return $editBtn . $deleteBtn . $detailBtn ;
-        })
-        ->rawColumns(['ten_khach_hang','loai_phong_id','email','so_dien_thoai', 'phong_id','trang_thai','action'])
-        ->setRowId('id')
-        // ->rawColumns(['action'])
-        ->make(true);
+                return $editBtn . $deleteBtn . $detailBtn;
+            })
+            ->rawColumns(['ten_khach_hang', 'loai_phong_id', 'email', 'so_dien_thoai', 'phong_id', 'trang_thai', 'action'])
+            ->setRowId('id')
+            // ->rawColumns(['action'])
+            ->make(true);
     }
     public function create(DatPhong $datPhong, Request $request)
     {
     
         $loai_phong_id = $request->query('loai_phong_id');
         // dd($loai_phong_id);
-        $ten_loai_phong = Loai_phong::Where('id',$loai_phong_id)->pluck('ten');
+        $ten_loai_phong = Loai_phong::Where('id', $loai_phong_id)->pluck('ten');
         $thoi_gian_den = $request->query('thoi_gian_den');
         $thoi_gian_di = $request->query('thoi_gian_di');
         // dd($thoi_gian_den,$thoi_gian_di);
-        $i=0;
+        $i = 0;
         $so_luong_loai_phong = Loai_phong::count();
-        $user = User::query()->pluck('email','id')->toArray();
-        $loai_phong = Loai_phong::query()->pluck('ten','id')->toArray();
-        $phong = Phong::query()->pluck('ten_phong','id')->toArray();
-        $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai','id')->toArray();
-        return view(self::PATH_VIEW . __FUNCTION__,compact('user','datPhong','loai_phong','phong','khuyen_mai','so_luong_loai_phong','i','loai_phong_id','ten_loai_phong','thoi_gian_den','thoi_gian_di'));
+        $user = User::query()->pluck('email', 'id')->toArray();
+        $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
+        $phong = Phong::query()->pluck('ten_phong', 'id')->toArray();
+        $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai', 'id')->toArray();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('user', 'datPhong', 'loai_phong', 'phong', 'khuyen_mai', 'so_luong_loai_phong', 'i', 'loai_phong_id', 'ten_loai_phong', 'thoi_gian_den', 'thoi_gian_di'));
     }
 
 
@@ -155,12 +163,12 @@ class DatPhongController extends Controller
         if (!Gate::allows('create-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
-        $tong_nguoi=0;
-        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-            $gioi_han_nguoi=Loai_phong::Where('id',$loaiPhongId['id'])->pluck('gioi_han_nguoi');
+        $tong_nguoi = 0;
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+            $gioi_han_nguoi = Loai_phong::Where('id', $loaiPhongId['id'])->pluck('gioi_han_nguoi');
             $tong_nguoi = $tong_nguoi + ($gioi_han_nguoi[0] * (int)$request->so_luong_phong[$key]['so_luong_phong']);
         }
-        if($request->so_luong_nguoi>$tong_nguoi){
+        if ($request->so_luong_nguoi > $tong_nguoi) {
             alert('Số lượng người vượt quá giới hạn người của phòng');
             // return response(['status' => 'error', 'message' => 'Số lượng người vượt quá giới hạn người của phòng']);
             return Redirect::back();
@@ -171,7 +179,7 @@ class DatPhongController extends Controller
 
         $rules = [
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-            'ho_ten' =>'nullable|string|max:255',
+            'ho_ten' => 'nullable|string|max:255',
             'so_dien_thoai' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
             'so_luong_phong' => 'min:0',
             'so_luong_nguoi' => 'numeric|min:0',
@@ -228,18 +236,18 @@ class DatPhongController extends Controller
         // ]);
         // dd($request);
 
-        $datPhong=DatPhong::create([
-            'user_id'=> $user->id,
-            'email'=> $request->email,
-            'ho_ten'=> $request->ho_ten,
-            'so_dien_thoai'=>$request->so_dien_thoai,
-            'so_luong_nguoi'=>$request->so_luong_nguoi,
-            'thoi_gian_den'=>$request->thoi_gian_den,
-            'thoi_gian_di'=>$request->thoi_gian_di,
-            'khuyen_mai_id'=>$request->khuyen_mai_id,
-            'payment'=>$request->payment,
-            'trang_thai'=> 1,
-            'ghi_chu'=>$request->ghi_chu,
+        $datPhong = DatPhong::create([
+            'user_id' => $user->id,
+            'email' => $request->email,
+            'ho_ten' => $request->ho_ten,
+            'so_dien_thoai' => $request->so_dien_thoai,
+            'so_luong_nguoi' => $request->so_luong_nguoi,
+            'thoi_gian_den' => $request->thoi_gian_den,
+            'thoi_gian_di' => $request->thoi_gian_di,
+            'khuyen_mai_id' => $request->khuyen_mai_id,
+            'payment' => $request->payment,
+            'trang_thai' => 1,
+            'ghi_chu' => $request->ghi_chu,
         ]);
 
 
@@ -250,7 +258,7 @@ class DatPhongController extends Controller
 
         $thoi_gian_den = Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00');
         $thoi_gian_di = Carbon::parse($request->thoi_gian_di)->format('Y-m-d 12:00:00');
-        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
             $phongIds = DB::select("
             SELECT p.id
             FROM phongs p
@@ -271,11 +279,11 @@ class DatPhongController extends Controller
             )
             LIMIT {$request->so_luong_phong[$key]['so_luong_phong']};
             ");
-            if($phongIds == null) {
+            if ($phongIds == null) {
                 $datPhong->delete();
                 return back();
-            }else {
-                foreach($phongIds as $phongId){
+            } else {
+                foreach ($phongIds as $phongId) {
                     $datPhong->phongs()->attach($phongId);
                 }
             }
@@ -291,23 +299,22 @@ class DatPhongController extends Controller
         }
 
 
-        $tong_tien=0;
-        foreach ($request->loai_phong_ids as $key => $loaiPhongId){
+        $tong_tien = 0;
+        foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
             $ngay_bat_dau = strtotime($request->thoi_gian_den);
             $ngay_ket_thuc = strtotime($request->thoi_gian_di);
             $loaiPhong = Loai_phong::find($loaiPhongId['id']);
             $khuyenMai = KhuyenMai::find($request->khuyen_mai_id);
-            $thoi_gian_o= round(($ngay_ket_thuc-$ngay_bat_dau)/ (60 * 60 * 24));
-            foreach ($request->loai_phong_ids as $key => $loaiPhongId){
-            if(!$khuyenMai || !$request->khuyen_mai_id){
-                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
-            }else if($khuyenMai->loai_giam_gia == 1)
-            {
-                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-(($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)*$khuyenMai->gia_tri_giam/100);
-            }else if($khuyenMai->loai_giam_gia == 0){
-                $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o)-$khuyenMai->gia_tri_giam;
-            }
-            $tong_tien = $tinh_tien+$tong_tien;
+            $thoi_gian_o = round(($ngay_ket_thuc - $ngay_bat_dau) / (60 * 60 * 24));
+            foreach ($request->loai_phong_ids as $key => $loaiPhongId) {
+                if (!$khuyenMai || !$request->khuyen_mai_id) {
+                    $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o);
+                } else if ($khuyenMai->loai_giam_gia == 1) {
+                    $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o) - (($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o) * $khuyenMai->gia_tri_giam / 100);
+                } else if ($khuyenMai->loai_giam_gia == 0) {
+                    $tinh_tien = ($loaiPhong->gia * $request->so_luong_phong[$key]['so_luong_phong'] * $thoi_gian_o) - $khuyenMai->gia_tri_giam;
+                }
+                $tong_tien = $tinh_tien + $tong_tien;
             }
             $datPhong->update([
                 'tong_tien' => $tong_tien
@@ -358,19 +365,19 @@ class DatPhongController extends Controller
         $thongTinHotel = Hotel::all();
         $giaLoaiPhongs = collect();
         $datPhong = DatPhong::findOrFail($id);
-        $loai_phong_ids =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('loai_phong_id');
-        $so_luong_phong =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
+        $loai_phong_ids = DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('loai_phong_id');
+        $so_luong_phong = DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
         $tenLoaiPhongs = collect();
-        foreach($loai_phong_ids as $loai_phong_id){
+        foreach ($loai_phong_ids as $loai_phong_id) {
             $tenLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('ten');
             $tenLoaiPhongs = $tenLoaiPhongs->merge($tenLoaiPhong);
             $giaLoaiPhong = Loai_phong::where('id', $loai_phong_id)->pluck('gia');
             $giaLoaiPhongs = $giaLoaiPhongs->merge($giaLoaiPhong);
         };
-        $loaiPhong = $tenLoaiPhongs -> zip($giaLoaiPhongs,$so_luong_phong);
+        $loaiPhong = $tenLoaiPhongs->zip($giaLoaiPhongs, $so_luong_phong);
         $phong_ids = DatPhongNoiPhong::where('dat_phong_id', $datPhong->id)->pluck('phong_id');
         $tenPhongs = collect();
-        foreach($phong_ids as $phong_id){
+        foreach ($phong_ids as $phong_id) {
             $tenPhong = Phong::where('id', $phong_id)->pluck('ten_phong');
             $tenPhongs = $tenPhongs->merge($tenPhong);
         }
@@ -378,15 +385,15 @@ class DatPhongController extends Controller
         $giaDichVus = collect();
         $dich_vu_ids = DatPhongDichVu::where('dat_phong_id', $id)->pluck('dich_vu_id');
         $so_luong_dich_vu = DatPhongDichVu::where('dat_phong_id', $id)->pluck('so_luong');
-        foreach($dich_vu_ids as $dich_vu_id){
+        foreach ($dich_vu_ids as $dich_vu_id) {
             $tenDichVu = DichVu::where('id', $dich_vu_id)->pluck('ten_dich_vu');
             $tenDichVus = $tenDichVus->merge($tenDichVu);
             $giaDichVu = DichVu::Where('id', $dich_vu_id)->pluck('gia');
             $giaDichVus = $giaDichVus->merge($giaDichVu);
         };
-        $dichVu = $tenDichVus->zip($giaDichVus,$so_luong_dich_vu);
+        $dichVu = $tenDichVus->zip($giaDichVus, $so_luong_dich_vu);
         $thanhTien = ChiTietDatPhong::where('dat_phong_id', $datPhong['id'])->pluck('thanh_tien')->first();
-        return $datatables->render('admin.dat_phong.show', compact('datPhong','loai_phong_ids','loaiPhong','dichVu','thongTinHotel','thanhTien','tenPhongs'));
+        return $datatables->render('admin.dat_phong.show', compact('datPhong', 'loai_phong_ids', 'loaiPhong', 'dichVu', 'thongTinHotel', 'thanhTien', 'tenPhongs'));
     }
 
     /**
@@ -400,7 +407,7 @@ class DatPhongController extends Controller
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
         $user = User::query()->pluck('ten_nguoi_dung', 'id')->toArray();
         $dich_vus = DichVu::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu','j'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('loai_phong', 'datPhong', 'user', 'dich_vus', 'so_luong_dich_vu', 'j'));
     }
 
     /**
@@ -477,13 +484,20 @@ class DatPhongController extends Controller
 
     public function changeStatus(Request $request)
     {
+        // try{
+
         $dat_phong = DatPhong::findOrFail($request->id);
-        // $dat_phong->trang_thai = $request->trang_thai == 'true' ? 0 : 1;
-        $newStatus = $request->trang_thai == 'true' ? 1 : 0;
-		$dat_phong->trang_thai = $newStatus;
+        $dat_phong->trang_thai = $request->status == 'true' ? 1 : 0;
         $dat_phong->save();
-        return response(['message' => 'Xác nhận đơn hàng']);
+        // DB::table('dat_phongs')
+        //     ->where('dat_phongs.trang_thai', '=', Request::input('trang_thai'))
+        //     ->update([
+        //         'dat_phongs.trang_thai' => $dat_phong->trang_thai
+        //     ]);
+        return response(['message' =>  $dat_phong]);
+        // }catch(Exception $e){
+        //     return $e;
+
+        // }
     }
-
 }
-
