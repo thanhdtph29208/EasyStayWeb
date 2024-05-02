@@ -151,7 +151,7 @@
                 <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
                 <h2>{{ $loaiPhong->ten }}</h2>
                 <h5 class="text-lg font-medium text-red-500"> {{ number_format($loaiPhong->gia, 0, ',', '.') }}₫</h5>
-                <p class="text-slate-400">{{ $loaiPhong->mo_ta_ngan }}</p>
+                <p class="text-slate-400">{{ $loaiPhong->mo_ta_dai }}</p>
 
                 @foreach ($phongs as $phong)
                 @if ($phong['loai_phong']->id == $loaiPhong->id)
