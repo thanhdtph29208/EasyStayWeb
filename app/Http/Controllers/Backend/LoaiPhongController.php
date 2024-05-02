@@ -148,10 +148,10 @@ class LoaiPhongController extends Controller
             })
             ->addColumn('action', function ($query) use ($request) {
                 if($query->phong_trong == 0||$query->trang_thai == 0){
-                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di]) . "' class='btn btn-success' style='margin-right:8px' hidden>Đặt Phòng
+                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di, 'phong_trong' => $query->phong_trong]) . "' class='btn btn-success' style='margin-right:8px' hidden>Đặt Phòng
                     </a>";
                 }else{
-                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
+                    $datPhongBtn = "<a href='" . route('admin.dat_phong.create', ['loai_phong_id' => $query->id,'thoi_gian_den' => $request->thoi_gian_den,'thoi_gian_di' => $request->thoi_gian_di, 'phong_trong' => $query->phong_trong]) . "' class='btn btn-success' style='margin-right:8px'>Đặt Phòng
                     </a>";
                 }
                 $editBtn = "<a href='" . route('admin.loai_phong.edit', $query->id) . "' class='btn btn-primary'>

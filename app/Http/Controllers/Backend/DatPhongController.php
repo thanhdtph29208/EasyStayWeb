@@ -153,6 +153,8 @@ class DatPhongController extends Controller
         $ten_loai_phong = Loai_phong::Where('id', $loai_phong_id)->pluck('ten');
         $thoi_gian_den = $request->query('thoi_gian_den');
         $thoi_gian_di = $request->query('thoi_gian_di');
+        $phong_trong = $request->query('phong_trong');
+        // dd($phong_trong);
         // dd($thoi_gian_den,$thoi_gian_di);
         $i = 0;
         $so_luong_loai_phong = Loai_phong::count();
@@ -160,7 +162,7 @@ class DatPhongController extends Controller
         $loai_phong = Loai_phong::query()->pluck('ten', 'id')->toArray();
         $phong = Phong::query()->pluck('ten_phong', 'id')->toArray();
         $khuyen_mai = KhuyenMai::query()->pluck('ten_khuyen_mai', 'id')->toArray();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('user', 'datPhong', 'loai_phong', 'phong', 'khuyen_mai', 'so_luong_loai_phong', 'i', 'loai_phong_id', 'ten_loai_phong', 'thoi_gian_den', 'thoi_gian_di'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('user', 'datPhong', 'loai_phong', 'phong', 'khuyen_mai', 'so_luong_loai_phong', 'i', 'loai_phong_id', 'ten_loai_phong', 'thoi_gian_den', 'thoi_gian_di','phong_trong'));
     }
 
 
@@ -484,7 +486,7 @@ class DatPhongController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DatPhong $datPhong, User $user): RedirectResponse
+    public function destroy(DatPhong $datPhong, User $user)
     {
         if (!Gate::allows('delete-A&NV', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
