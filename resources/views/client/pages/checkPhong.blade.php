@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <div class="cd-quick-view mt-[150px]" data-id="{{ $loaiPhong->id }}">
+        <div class="cd-quick-view " data-id="{{ $loaiPhong->id }}">
             <div class="cd-slider-wrapper ">
                 <ul class="cd-slider">
                     <li class="selected"><img src="{{ Storage::url($loaiPhong->anh) }}"></li>
