@@ -69,10 +69,10 @@
                             <div class="flex flex-col items-start mb-4">
                                 <label for="qty" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng phòng muốn đặt:</label>
                                 <input type="number" id="qty" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" class="form-input border border-gray-300 rounded-md w-full">
-                                <p class="text-red-700">(Vui lòng chọn số lượng phòng trước khi thêm vào giỏ hàng)</p>
+                                <!-- <p class="text-red-700">(Vui lòng chọn số lượng phòng trước khi thêm vào giỏ hàng)</p> -->
                             </div>
 
-                            <div class="flex flex-col items-start mb-4 hidden">
+                            <div class="flex flex-col items-start mb-4">
                                 <label for="so_luong_nguoi" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng người:</label>
                                 <input type="number" name="so_luong_nguoi" id="so_luong_nguoi" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi }}" class="form-input border border-gray-300 rounded-md w-full">
                             </div>

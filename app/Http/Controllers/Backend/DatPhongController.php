@@ -176,8 +176,10 @@ class DatPhongController extends Controller
         }
         if($request->so_luong_nguoi>$tong_nguoi){
             alert('Số lượng người vượt quá giới hạn người của phòng');
+            // return response(['status' => 'error', 'message' => 'Số lượng người vượt quá giới hạn người của phòng']);
             return Redirect::back();
         }
+
         // dd(Carbon::parse($request->thoi_gian_den)->format('Y-m-d 14:00:00'));
         // dd($request);
         // dd(Auth::user()->id);
