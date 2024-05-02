@@ -422,22 +422,7 @@
 
                         </form>
                     </li>
-                    <li>
-                        <form action="{{ route('client.pages.loai_phong.filter') }}" id="filterFormtrangthai" method="GET"
-                            class="flex items-center justify-between mb-6 mr-4">
-                            <div class="flex items-center space-x-4">
-                                <!-- Dropdown để lọc theo trạng thái -->
-                                <select required name="trang_thai" class="px-4 py-2 border border-gray-300 rounded-md">
-                                    <option value="">Chọn trạng thái</option>
-                                    <option value="1">Còn phòng</option>
-                                    <option value="0">Hết phòng</option>
-                                </select>
-                                <!-- Nút submit để thực hiện lọc -->
-                                <button type="submit"
-                                    class="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ">Lọc</button>
-                            </div>
-                        </form>
-                    </li>
+                    <!--  -->
                     <li>
                         <button id="clearFiltersButton"
                             class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Xóa bộ lọc</button>

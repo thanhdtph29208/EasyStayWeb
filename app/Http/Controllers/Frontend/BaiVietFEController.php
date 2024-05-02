@@ -20,23 +20,23 @@ class BaiVietFEController extends Controller
         $detail = Bai_viet::where('trang_thai',1)->where('id',$id)->first();
         $khach_sans = Hotel::all();
         $bai_viets = Bai_viet::all();
-        $comments = comments::with(['user','bai_viet'])->where('bai_viet_id',$id)->get();
-        return view('client.pages.bai_viet.show', compact('detail','khach_sans','bai_viets','comments','id'));
+        // $comments = comments::with(['user','bai_viet'])->where('bai_viet_id',$id)->get();
+        return view('client.pages.bai_viet.show', compact('detail','khach_sans','bai_viets','id'));
     }
 
-    public function comment(Request $request){
-        $request->validate([
-            "content" => 'required'
-        ],[
-            'content.required' => "Không để trống nội dung comment"
-        ]);
+    // public function comment(Request $request){
+    //     $request->validate([
+    //         "content" => 'required'
+    //     ],[
+    //         'content.required' => "Không để trống nội dung comment"
+    //     ]);
 
-        comments::create([
-            "user_id" => $request->id_user,
-            "bai_viet_id" => $request->id_post,
-            "content" => $request->input('content'),
-            "created_at" => Carbon::now()
-        ]);
-        return redirect()->back();
-    }
+    //     comments::create([
+    //         "user_id" => $request->id_user,
+    //         "bai_viet_id" => $request->id_post,
+    //         "content" => $request->input('content'),
+    //         "created_at" => Carbon::now()
+    //     ]);
+    //     return redirect()->back();
+    // }
 }
