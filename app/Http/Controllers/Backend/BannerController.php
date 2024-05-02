@@ -178,6 +178,6 @@ class BannerController extends Controller
 		// $banner->trang_thai = $newStatus;
 		// alert($newStatus);
         $banner->save();
-        return response(['message' =>$request->status ]);
+        return response(['message' => 'Thay đổi trạng thái thành công' ]);
     }
 }
