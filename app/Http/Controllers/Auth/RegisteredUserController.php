@@ -83,12 +83,12 @@ class RegisteredUserController extends Controller
     }
     public function update(Request $request, User $user): RedirectResponse
     {
-        if (! Gate::allows('update', $user)) {
-                return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
+        if (!Gate::allows('update', $user)) {
+            return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
         }
         $request->validate([
             'ten_nguoi_dung' => ['required', 'string', 'max:255'],
-            'email' =>[
+            'email' => [
                 'required',
                 'string',
                 'lowercase',
@@ -96,30 +96,40 @@ class RegisteredUserController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')->ignore($user->id)
             ],
-            'dia_chi'=>['nullable', 'string'],
-            'so_dien_thoai'=> ['string', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            'gioi_tinh'=>['nullable', 'string'],
-            'ngay_sinh'=>['nullable', 'date', 'before:today'],
-            'anh'=>['nullable', 'image', 'max:2048'],
+            'dia_chi' => ['nullable', 'string'],
+            'so_dien_thoai' => ['string', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            'gioi_tinh' => ['nullable', 'string'],
+            'ngay_sinh' => ['nullable', 'date', 'before:today'],
+            'anh' => ['nullable', 'image', 'max:2048'],
         ]);
         $data = $request->except('anh');
+
+        $oldAnh = $user->anh;
         if ($request->hasFile('anh')) {
             $data['anh'] = Storage::put('user', $request->file('anh'));
-            User::query()->update([
-                'anh' => $request->anh,
-                'ten_nguoi_dung' => $request->ten_nguoi_dung,
-                'so_dien_thoai' => $request->so_dien_thoai,
-                'dia_chi'=>$request->dia_chi,
-                'gioi_tinh'=>$request->gioi_tinh,
-                'ngay_sinh'=>$request->ngay_sinh,
-                'id_vai_tro'=>$request->id_vai_tro,
-            ]);
-            // $oldAnh = $user->anh;
-            // if($request->hasFile('anh') && (Storage::exists($oldAnh))){
-            //     Storage::delete($oldAnh);
-            // }
         }
+
         $user->update($data);
+        // if ($request->hasFile('anh')) {
+        //     User::query()->update([
+        //         'anh' => $request->anh,
+        //         'ten_nguoi_dung' => $request->ten_nguoi_dung,
+        //         'so_dien_thoai' => $request->so_dien_thoai,
+        //         'dia_chi'=>$request->dia_chi,
+        //         'gioi_tinh'=>$request->gioi_tinh,
+        //         'ngay_sinh'=>$request->ngay_sinh,
+        //         'id_vai_tro'=>$request->id_vai_tro,
+        //     ]);
+
+
+        if ($request->hasFile('anh') && Storage::exists($oldAnh)) {
+            Storage::delete($oldAnh);
+        }
+
+
+        // }
+
+
 
         // Chuyển hướng trở lại trang trước với thông báo thành công
         return back()->with('msg', 'Sửa thành công');
