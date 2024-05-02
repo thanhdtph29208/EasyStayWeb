@@ -22,7 +22,7 @@
             <div class="group rounded-md shadow dark:shadow-gray-700">
                 <div class="md:flex md:items-center">
                     <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
-                        <img src="${room.anh}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
+                    <img src="/storage/${room.anh}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
                         <div class="absolute top-0 end-0 p-4">
                             <a href="javascript:void(0)" class="size-8 inline-flex justify-center items-center bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 rounded-full text-slate-100 dark:text-slate-700 focus:text-red-500 dark:focus:text-red-500 hover:text-red-500 dark:hover:text-red-500"><i class="mdi mdi-heart text-[20px] align-middle"></i></a>
                         </div>
@@ -144,7 +144,7 @@
                                 <div class="group rounded-md shadow dark:shadow-gray-700">
                                     <div class="md:flex md:items-center">
                                         <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
-                                            <img src="${room.anh}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
+                                        <img src="/storage/${room.anh}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
                                             <div class="absolute top-0 end-0 p-4">
                                                 <a href="javascript:void(0)" class="size-8 inline-flex justify-center items-center bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 rounded-full text-slate-100 dark:text-slate-700 focus:text-red-500 dark:focus:text-red-500 hover:text-red-500 dark:hover:text-red-500"><i class="mdi mdi-heart text-[20px] align-middle"></i></a>
                                             </div>
@@ -186,70 +186,7 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#filterFormtrangthai').submit(function(event) {
-                event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định
-                var formData = $(this).serialize(); // Thu thập dữ liệu biểu mẫu
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'GET',
-                    data: formData,
-                    success: function(data) {
-                        // Xóa nội dung hiện tại của phần tử để chuẩn bị hiển thị dữ liệu mới
-                        $('#room-info-container').empty();
-
-                        // Hiển thị thông tin của mỗi loại phòng
-                        data.rooms.forEach(function(room) {
-                            var statusText = room.trang_thai == 0 ? 'Hết phòng' :
-                                'Còn phòng';
-                            var statusClass = room.trang_thai == 0 ?
-                                'bg-gray-500 text-white' : 'bg-green-500 text-white';
-
-                            var roomHtml = `
-                            <div class="group rounded-md shadow dark:shadow-gray-700">
-                                <div class="md:flex md:items-center">
-                                    <div class="relative overflow-hidden md:shrink-0 md:rounded-md rounded-t-md shadow dark:shadow-gray-700 md:m-3 mx-3 mt-3">
-                                        <img src="${room.anh}" class="h-full w-full object-cover md:w-48 md:h-56 scale-125 group-hover:scale-100 duration-500" alt="">
-                                        <div class="absolute top-0 end-0 p-4">
-                                            <a href="javascript:void(0)" class="size-8 inline-flex justify-center items-center bg-white dark:bg-slate-900 shadow dark:shadow-gray-800 rounded-full text-slate-100 dark:text-slate-700 focus:text-red-500 dark:focus:text-red-500 hover:text-red-500 dark:hover:text-red-500"><i class="mdi mdi-heart text-[20px] align-middle"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="p-4 w-full">
-                                        <p class="flex items-center text-slate-400 font-medium mb-2"><i data-feather="map-pin" class="text-red-500 size-4 me-1"></i> Hà Nội, Việt Nam</p>
-                                        <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
-                                        <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                        <h5 class="text-lg font-medium text-red-500">
-    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-</h5>                                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
-                                        </div>
-                                        <div class="mt-3">
-                                            <button class="py-1 px-3 inline-block tracking-wide align-middle duration-500 text-base text-center rounded-md ${statusClass}">${statusText}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end content-->
-                        `;
-                            $('#room-info-container').append(roomHtml);
-                        });
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        // Xử lý lỗi nếu có
-                        console.error('Error:', errorThrown);
-                        // Hiển thị thông báo lỗi
-                        Toastify({
-                            text: "Đã xảy ra lỗi khi lọc dữ liệu.",
-                            duration: 3000,
-                            gravity: "top",
-                            position: 'right',
-                            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
-                            className: "info",
-                        }).showToast();
-                    }
-                });
-            });
-        });
-    </script>
+    
     <script>
         $(document).ready(function() {
             // Hiển thị menu dropdown khi nhấp vào nút

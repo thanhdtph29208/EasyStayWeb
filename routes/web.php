@@ -72,7 +72,10 @@ Route::get('/chi_tiet_tin_tuc/{id}', [App\Http\Controllers\Frontend\BaiVietFECon
 Route::post('comments', [App\Http\Controllers\Frontend\BaiVietFEController::class, 'comment'])->name('client.pages.bai_viet.comment');
 
 Route::get('lien_he', [LienHeController::class, 'contact'])->name('client.pages.lien_he');
-
+Route::get('/storage/{path}', function ($path) {
+    $file = storage_path('app/public/' . $path);
+    return response()->file($file);
+});
 // Route::post('kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_phong', [KiemTraPhongController::class, 'checkPhong'])->name('kiem_tra_phong');
 Route::match(['get', 'post'], 'kiem_tra_loai_phong/{id}', [ChiTietLoaiPhongController::class, 'checkLoaiPhong'])->name('kiem_tra_loai_phong');
