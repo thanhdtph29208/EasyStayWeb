@@ -52,7 +52,11 @@
         <p style="color: #333;">Chúng tôi sẽ gọi để xác nhận đơn đặt!</p>
 
         <br>
-        <p style="color: #333;">Trân trọng,</p>
+       <p class="mt-3 text-gray-500 dark:text-gray-400">   EasyStayWeb - Liên hệ với chúng tôi qua thông tin: <br>
+      <span>Số điện thoại:0343942726</span> <br>
+      <span>Email:longphph29186@fpt.edu.vn</span> <br>
+      <span>Địa chỉ: Số 1, Trịnh Văn Bô</span> <br>
+      </p>
     </div>
 
 </body>
