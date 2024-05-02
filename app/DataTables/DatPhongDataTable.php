@@ -125,12 +125,7 @@ class DatPhongDataTable extends DataTable
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
-                        // Button::make('excel'),
-                        // Button::make('csv'),
-                        // Button::make('pdf'),
-                        // Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
+                        
                     ]);
     }
 
@@ -145,16 +140,6 @@ class DatPhongDataTable extends DataTable
             Column::make('ten_khach_hang'),
             Column::make('email'),
             Column::make('so_dien_thoai'),
-            // Column::make('phong_id'),
-            // Column::make('don_gia'),
-            // Column::make('so_luong_nguoi'),
-            // Column::make('so_luong_phong'),
-            // Column::make('thoi_gian_den'),
-            // Column::make('thoi_gian_di'),
-            // Column::make('dich_vu_id'),
-            // Column::make('tong_tien'),
-            // Column::make('payment'),
-            // Column::make('ghi_chu'),
             Column::make('trang_thai'),
             Column::computed('action')
             ->exportable(false)

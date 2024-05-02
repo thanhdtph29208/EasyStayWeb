@@ -98,11 +98,7 @@ class ChiTietDatPhongDataTable extends DataTable
             Column::make('thanh_tien'),
             Column::make('invoice'),
             Column::make('ghi_chu'),
-            // Column::computed('action')
-            // ->exportable(false)
-            // ->printable(false)
-            // ->width(128)
-            // ->addClass('text-center'),
+        
         ];
     }
 
