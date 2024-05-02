@@ -52,6 +52,7 @@
                                 <th scope="col" class="px-6 py-3">
                                     Số lượng Phòng
                                 </th>
+                                
                                 <th scope="col" class="px-6 py-3">
                                     Đánh giá phòng
                                 </th>
@@ -69,6 +70,7 @@
                                 <td class="px-6 py-4">
                                     {{ $phong[2] }}
                                 </td>
+                                
                                 <td class="px-6 py-4">
                                     <a href="{{ route('danh_gia_loai_phong', $phong[0]) }}" class="text-blue-500 hover:text-blue-700">Đánh giá phòng</a>
                                 </td>

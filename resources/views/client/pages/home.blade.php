@@ -182,15 +182,10 @@
                                 <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/<?= $loai_phong->id ?>"
                                     class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{ $loai_phong->ten }}</a>
 
-
-
                                 <div
-                                    class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                                    <h5 class="text-lg font-medium text-red-500">
-                                        <h5 class="text-lg font-medium text-red-500">
-                                            {{ number_format($loai_phong->gia, 0, ',', '.') }} đ</h5>
-
-
+                                    class="mt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
+                               
+                                        <h5 class="text-lg font-medium text-red-500">{{ number_format($loai_phong->gia, 0, ',', '.') }} VNĐ</h5>
 
                                         <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/<?= $loai_phong->id ?>"
                                             class="text-slate-400 hover:text-red-500">Khám phá ngay<i

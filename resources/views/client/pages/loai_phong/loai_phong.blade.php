@@ -32,7 +32,7 @@
                         <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                         <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                         <h5 class="text-lg font-medium text-red-500">
-    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+    ${parseFloat(room.gia).toLocaleString('vi-VN')} VNĐ
 </h5>                            <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                         </div>
                         <div class="mt-3">
@@ -154,7 +154,8 @@
                                             <a href="#" class="font-medium hover:text-red-500 duration-500 ease-in-out">${room.ten}</a>
                                             <div class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                                             <h5 class="text-lg font-medium text-red-500">
-    ${parseFloat(room.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                            ${parseFloat(room.gia).toLocaleString('vi-VN')} VNĐ
+
 </h5>                                                <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/${room.id}" class="text-slate-400 hover:text-red-500">Khám phá ngay<i class="mdi mdi-arrow-right"></i></a>
                                             </div>
                                             <div class="mt-3">
@@ -477,7 +478,7 @@
                         <div
                             class="mt-4 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
                             <h5 class="text-lg font-medium text-red-500">
-                                {{ number_format($room->gia, 0, ',', '.') }}₫
+                                {{ number_format($room->gia, 0, ',', '.') }} VNĐ
                             </h5>
                             <a href="<?= env('APP_URL') ?>/chi_tiet_loai_phong/<?= $room->id ?>"
                                 class="text-slate-400 hover:text-red-500">Khám phá ngay<i

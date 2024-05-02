@@ -54,7 +54,7 @@
                         <input type="hidden" name="id" value="{{ $loaiPhong->id }}">
                         <a href="#" class="text-lg font-medium hover:text-red-500 duration-500 ease-in-out">{{ $loaiPhong->ten }}</a>
                         <div class="mt-2 pt-4 flex justify-between items-center border-t border-slate-100 dark:border-gray-800">
-                            <h5 class="text-lg font-medium text-red-500">{{ number_format($loaiPhong->gia, 0, ',', '.') }}₫</h5> <br>
+                            <h5 class="text-lg font-medium text-red-500">{{ number_format($loaiPhong->gia, 0, ',', '.') }} VNĐ</h5> <br>
                         </div>
                         <div>
                             @foreach ($phongs as $phong)

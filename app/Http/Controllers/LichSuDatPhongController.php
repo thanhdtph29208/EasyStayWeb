@@ -51,6 +51,7 @@ class LichSuDatPhongController extends Controller
         }
         $so_luong_phong =DatPhongLoaiPhong::where('dat_phong_id', $id)->pluck('so_luong_phong');
         $loaiPhong = $loaiPhongId->zip($ten_loai_phongs,$so_luong_phong);
+        
         $khuyen_mai = KhuyenMai::where('id', $userBooking->khuyen_mai_id)->get();
         // dd($khuyen_mai[0]);
         $thanh_tien = ChiTietDatPhong::where('dat_phong_id', $userBooking->id)->pluck('thanh_tien');
