@@ -56,12 +56,14 @@
             let id = $(this).data('id')
             $.ajax({
                 url: "{{ route('admin.banner.change-status') }}",
-                method: 'PUT',
+                method: 'POST',
                 data: {
+                    _method: 'PUT',
                     status: isChecked,
                     id: id
                 },
                 success: function(data) {
+                    console.log(data);
                     toastr.success(data.message);
                     // alert("Trạng thái của đối tượng sau khi click: " + data.id); // Hiển thị trạng thái của đối tượng
                 }
