@@ -48,6 +48,11 @@
                                     </select>
                                     <span class="text-danger error-loai_phong_id_{{$i}}"></span>
                                 </div>
+                                <div class="form-group mt-3 mx-auto">
+                                    <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label><span style="color: red;"> *</span>
+                                    <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="1" min="1" inputmode="none">
+                                    <span class="text-danger error-so_luong_phong"></span>
+                                </div>
                                 @else
                                 <div class="form-group mt-3 mx-auto">
                                     <label for="loai_phong_id">Loại Phòng</label><span style="color: red;"> *</span>
@@ -56,13 +61,12 @@
 
                                     <span class="text-danger error-loai_phong_id_{{$i}}"></span>
                                 </div>
-                                @endif
-
                                 <div class="form-group mt-3 mx-auto">
                                     <label for="so_luong_phong_{{$i}}">Số Lượng phòng</label><span style="color: red;"> *</span>
-                                    <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="0" min="0">
+                                    <input type="number" class="form-control" name="so_luong_phong[{{$i}}][so_luong_phong]" id="so_luong_phong_{{$i}}" value="1" min="1" max="{{$phong_trong}}" inputmode="none">
                                     <span class="text-danger error-so_luong_phong"></span>
                                 </div>
+                                @endif
                             </div>
 
                             <button type="button" id="add-button" class="btn btn-primary">Thêm</button>
@@ -153,7 +157,7 @@
 
              <div class="form-group mt-3 mx-auto">
                  <label for="so_luong_phong_${i}">Số Lượng phòng</label><span style="color: red;"> *</span>
-                 <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="0" min="0">
+                 <input type="number" class="form-control" name="so_luong_phong[${i}][so_luong_phong]" id="so_luong_phong_${i}" value="1" min="1" inputmode="none"  >
                  <span class="text-danger error-so_luong_phong"></span>
              </div>
          `;

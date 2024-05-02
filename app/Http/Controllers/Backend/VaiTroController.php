@@ -106,7 +106,7 @@ class VaiTroController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VaiTro $vai_tro, User $user): RedirectResponse
+    public function destroy(VaiTro $vai_tro, User $user)
     {
         if (! Gate::allows('delete', $user)) {
             return Redirect::back()->with('error', 'Bạn không có quyền thực hiện thao tác này.');
