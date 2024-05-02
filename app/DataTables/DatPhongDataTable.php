@@ -60,13 +60,13 @@ class DatPhongDataTable extends DataTable
             // })
 
             ->addColumn('trang_thai', function ($query) {
-                if ($query->status == 1) {
+                if ($query->trang_thai == 1) {
                     $button = "<div class='form-check form-switch'>
-                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='status' checked>
+                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='trang_thai' checked>
                   </div>";
                 } else {
                     $button = "<div class='form-check form-switch'>
-                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='status'>
+                    <input class='form-check-input change-status' data-id='" . $query->id . "'  type='checkbox' role='switch' id='flexSwitchCheckDefault' name='trang_thai'>
                   </div>";
                 }
                 return $button;
