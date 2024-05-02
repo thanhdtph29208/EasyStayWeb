@@ -108,7 +108,7 @@
         <!-- <form action="{{ url('/vnpay_payment') }}" method="POST">
         @csrf -->
         <div>
-            <input type="" name="cart_total" value="{{ $cartTotal }}">
+            <input type="hidden" name="cart_total" value="{{ $cartTotal }}">
             <button type="submit" name="redirect" class="bg-blue-500 text-white hover:bg-red-700 font-bold py-2 px-4 rounded w-full mt-4">Thanh
                 toán</button>
         </div>

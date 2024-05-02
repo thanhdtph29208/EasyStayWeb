@@ -67,40 +67,42 @@
                             </ul>
                             <!-- <div class="grid grid-cols-2 gap-4"> -->
                             <div class="flex flex-col items-start mb-4">
-    <label for="qty_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng phòng muốn đặt:</label>
-    <input type="number" id="qty_{{ $loaiPhong->id }}" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" class="form-input border border-gray-300 rounded-md w-full" onchange="updateSoLuongNguoi('{{ $loaiPhong->id }}')">
-</div>
 
-<div class="flex flex-col items-start mb-4">
-    <label for="so_luong_nguoi_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng người:</label>
-    <input type="number" name="so_luong_nguoi" id="so_luong_nguoi_{{ $loaiPhong->id }}" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi }}" class="form-input border border-gray-300 rounded-md w-full">
-</div>
+                                <label for="qty_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng phòng muốn đặt:</label>
+                                <input type="number" id="qty_{{ $loaiPhong->id }}" name="so_luong" min="1" value="1" max="{{ $phong['available_rooms']->count() }}" class="form-input border border-gray-300 rounded-md w-full" onchange="updateSoLuongNguoi('{{ $loaiPhong->id }}')">
+                            </div>
 
-<script>
-function updateSoLuongNguoi(loaiPhongId) {
-    var qty = parseInt(document.getElementById("qty_" + loaiPhongId).value);
-    var gioiHanNguoi = parseInt(document.getElementById("so_luong_nguoi_" + loaiPhongId).getAttribute("max"));
-    var inputSoLuongNguoi = document.getElementById("so_luong_nguoi_" + loaiPhongId);
+                            <div class="flex flex-col items-start mb-4">
+                                <label for="so_luong_nguoi_{{ $loaiPhong->id }}" class="inline-block mb-1 text-sm font-medium text-gray-700">Số lượng người:</label>
+                                <input type="number" name="so_luong_nguoi" id="so_luong_nguoi_{{ $loaiPhong->id }}" value="1" min="1" max="{{ $phong['loai_phong']->gioi_han_nguoi }}" class="form-input border border-gray-300 rounded-md w-full">
+                            </div>
 
-    // Tính toán số lượng người tối đa dựa trên số lượng phòng muốn đặt và giới hạn người của mỗi phòng
-    var maxSoLuongNguoi = qty * gioiHanNguoi;
+                            <script>
+                                function updateSoLuongNguoi(loaiPhongId) {
+                                    var qty = parseInt(document.getElementById("qty_" + loaiPhongId).value);
+                                    var gioiHanNguoi = parseInt(document.getElementById("so_luong_nguoi_" + loaiPhongId).getAttribute("max"));
+                                    var inputSoLuongNguoi = document.getElementById("so_luong_nguoi_" + loaiPhongId);
 
-    // Lấy giá trị hiện tại của ô nhập số lượng người
-    var currentSoLuongNguoi = parseInt(inputSoLuongNguoi.value);
+                                    // Tính toán số lượng người tối đa dựa trên số lượng phòng muốn đặt và giới hạn người của mỗi phòng
+                                    var maxSoLuongNguoi = qty * gioiHanNguoi;
 
-    // Kiểm tra xem số lượng người hiện tại có vượt quá số lượng người tối đa không
-    if (currentSoLuongNguoi > maxSoLuongNguoi) {
-        // Nếu vượt quá, giảm số lượng người hiện tại xuống số lượng người tối đa
-        inputSoLuongNguoi.value = maxSoLuongNguoi;
-    } else if (currentSoLuongNguoi < 1) {
-        // Nếu số lượng người hiện tại là số âm hoặc bằng 0, đặt lại thành 1
-        inputSoLuongNguoi.value = 1;
-    }
+                                    // Lấy giá trị hiện tại của ô nhập số lượng người
+                                    var currentSoLuongNguoi = parseInt(inputSoLuongNguoi.value);
 
-    // Cập nhật thuộc tính max của ô số lượng người
-    inputSoLuongNguoi.setAttribute("max", maxSoLuongNguoi);
-}
-</script>
+                                    // Kiểm tra xem số lượng người hiện tại có vượt quá số lượng người tối đa không
+                                    if (currentSoLuongNguoi > maxSoLuongNguoi) {
+                                        // Nếu vượt quá, giảm số lượng người hiện tại xuống số lượng người tối đa
+                                        inputSoLuongNguoi.value = maxSoLuongNguoi;
+                                    } else if (currentSoLuongNguoi < 1) {
+                                        // Nếu số lượng người hiện tại là số âm hoặc bằng 0, đặt lại thành 1
+                                        inputSoLuongNguoi.value = 1;
+                                    }
+
+                                    // Cập nhật thuộc tính max của ô số lượng người
+                                    inputSoLuongNguoi.setAttribute("max", maxSoLuongNguoi);
+                                }
+                            </script>
+
 
                             <!-- </div> -->
 

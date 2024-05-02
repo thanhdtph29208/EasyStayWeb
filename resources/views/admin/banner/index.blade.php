@@ -49,6 +49,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         $('body').on('click', '.change-status', function() {
+           
             let isChecked = $(this).is(':checked')
             console.log(isChecked);
 
@@ -62,6 +63,7 @@
                 },
                 success: function(data) {
                     toastr.success(data.message);
+                    // alert("Trạng thái của đối tượng sau khi click: " + data.id); // Hiển thị trạng thái của đối tượng
                 }
             })
         })

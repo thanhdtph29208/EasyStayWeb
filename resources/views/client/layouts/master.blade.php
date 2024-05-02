@@ -170,11 +170,11 @@
                                     <i data-feather="help-circle" class="size-4 me-2"></i>Lịch sử đặt phòng
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="" class="flex no-underline items-center font-medium py-2 px-4 dark:text-white/70 hover:text-red-500 dark:hover:text-white">
                                     <i data-feather="settings" class="size-4 me-2"></i>Cài đặt
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="border-t border-gray-100 dark:border-gray-800 my-2"></li>
 
                             <li>

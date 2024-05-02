@@ -87,13 +87,13 @@
                                     <!-- <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'decrease')" class="mr-2 focus:outline-none text-gray-500 hover:text-red-500 hover:bg-gray-200 dark:hover:text-red-400 dark:hover:bg-gray-700 rounded-full p-1">
                                         <i class="bi bi-dash"></i>
                                     </button> -->
-                                    <button class="btn btn-warning room-decrement">
+                                    <!-- <button class="btn btn-warning room-decrement">
                                         <i class="bi bi-dash"></i>
-                                    </button>
+                                    </button> -->
                                     <input type="text" class="form-control w-16 px-2 py-1 text-center phong-qty border border-gray-300 dark:border-gray-600 rounded-md" value="{{ $item->qty }}" readonly data-rowid="{{ $item->rowId }}" data-price="{{ $item->price }}">
-                                    <button class="btn btn-success room-increment">
+                                    <!-- <button class="btn btn-success room-increment">
                                         <i class="bi bi-plus-lg"></i>
-                                    </button>
+                                    </button> -->
                                     <!-- <button type="button" onclick="changeQuantity('{{ $item->rowId }}', 'increase')" class="ml-2 focus:outline-none text-gray-500 hover:text-green-500 hover:bg-gray-200 dark:hover:text-green-400 dark:hover:bg-gray-700 rounded-full p-1">
                                         <i class="bi bi-plus-lg"></i>
                                     </button> -->
