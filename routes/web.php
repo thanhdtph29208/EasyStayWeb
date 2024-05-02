@@ -111,7 +111,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/momo_callback', [CheckoutController::class, 'momoCallBack'])->name('momo_callback'); // thanh toán bằng momo
     // Route::post('pay', [CheckoutController::class, 'bookOnline'])->name('pay');
     Route::get('pay', [CheckoutController::class, 'pay'])->name('pay');
-    Route::get('thanh_toan_thanh_cong', [CheckoutController::class, 'checkoutSuccess'])->name('thanh_toan_thanh_cong');
+    Route::get('payment_success', [CheckoutController::class, 'checkoutSuccess'])->name('payment.success');
     Route::get('thanh_toan/thanh_cong1', [CheckoutController::class, 'checkoutSuccess1'])->name('pay-success1');
 });
 

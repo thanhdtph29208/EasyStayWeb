@@ -80,12 +80,10 @@ class KiemTraPhongController extends Controller
     });
 
     // Trả về view 'client.pages.checkPhong' với thông tin về các loại phòng và các phòng có sẵn
-    return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc', 'loaiPhongs'));
+    return view('client.pages.checkPhong', compact('availableLoaiPhongs', 'phongs', 'ngayBatDau', 'ngayKetThuc', 'loaiPhongs',));
 }
 
    
-
-
 
 
 

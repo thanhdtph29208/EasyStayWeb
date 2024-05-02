@@ -254,6 +254,8 @@ class CheckoutController extends Controller
             $this->bookOnline($request);
             Cart::destroy();
             return redirect()->route('sendMail');
+            
+
         }
     }
 
