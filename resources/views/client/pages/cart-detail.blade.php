@@ -274,43 +274,53 @@
 
 
 
-
         $('#coupon_form').on('submit', function(e) {
-            e.preventDefault();
-            let formData = $(this).serialize();
-            console.log(formData);
-            $.ajax({
-                type: 'GET',
-                url: "{{ route('apply-coupon') }}",
-                data: formData,
-                success: function(data) {
-                    console.log(data);
-                    if (data.status == 'error') {
-                        toastr.error(data.message)
-                    } else if (data.status == 'success') {
-                        calcCouponDiscount()
-                        toastr.success(data.message)
-                    }
-                }
-            })
-        });
-
-        function calcCouponDiscount() {
-            $.ajax({
-                type: 'GET',
-                url: "{{ route('coupon-calc') }}",
-                success: function(data) {
-                    console.log(data);
-                    if (data.status == 'error') {
-                        toastr.error(data.message)
-                    } else if (data.status == 'success') {
-                        $('#discount').text(data.discount + 'VNĐ');
-                        $('#cart_total').text(data.cart_total + 'VNĐ');
-                        $('#input_cart_total').val(data.cart_total);
-                    }
-                }
-            })
+    e.preventDefault();
+    let formData = $(this).serialize();
+    console.log(formData);
+    $.ajax({
+        type: 'GET',
+        url: "{{ route('apply-coupon') }}",
+        data: formData,
+        success: function(data) {
+            console.log(data);
+            if (data.status == 'error') {
+                toastr.error(data.message)
+            } else if (data.status == 'success') {
+                // Gọi hàm tính toán giảm giá sau khi áp dụng mã
+                calcCouponDiscount();
+                toastr.success(data.message)
+            }
         }
+    })
+});
+
+function calcCouponDiscount() {
+    $.ajax({
+        type: 'GET',
+        url: "{{ route('coupon-calc') }}",
+        success: function(data) {
+            console.log(data);
+            if (data.status == 'error') {
+                toastr.error(data.message)
+            } else if (data.status == 'success') {
+                // Định dạng lại giá trị giảm giá và tổng giá trị đặt phòng
+                let formattedDiscount = formatNumber(data.gia_tri_giam) + 'VNĐ';
+                let formattedTotal = formatNumber(data.cart_total) + 'VNĐ';
+                
+                // Hiển thị giá trị đã định dạng
+                $('#discount').text(formattedDiscount);
+                $('#cart_total').text(formattedTotal);
+                $('#input_cart_total').val(data.cart_total);
+            }
+        }
+    })
+}
+
+// Hàm định dạng số thành chuỗi có dấu phân cách
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
     })
 </script>
 
