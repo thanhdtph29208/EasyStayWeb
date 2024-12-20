@@ -37,7 +37,7 @@
         </thead>
         <tbody>
 
-        @foreach($userBookings->sortByDesc('id') as $DatPhong)
+        @foreach($userBookings->sortByDesc('id') as $DatPhong) 
         @if($DatPhong->ho_ten !== null && $DatPhong->email !== null && $DatPhong->so_dien_thoai !== null)
         <tr>
             <td>{{ $DatPhong->ho_ten }}</td>
