@@ -48,7 +48,6 @@ class CheckoutController extends Controller
     public function pay(Request $request)
     {
         $request['cart_total'] = (float)$request->cart_total;
-        // var_dump($request->cart_total);
         $request->validate([
             'ho_ten' => ['required'],
             'so_dien_thoai' => ['required', 'min:10'],
@@ -129,6 +128,7 @@ class CheckoutController extends Controller
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = $request->ho_ten . "~" . $request->so_dien_thoai . "~" . $request->email;
         $amount = (float)$request['cart_total'];
+        // dd($amount);
         $orderId = time() . "";
         $redirectUrl = "http://easystayweb.test/momo_callback";
         $ipnUrl = "http://easystayweb.test/momo_callback";
@@ -156,6 +156,7 @@ class CheckoutController extends Controller
             'signature' => $signature
         );
         $result = $this->execPostRequest($endpoint, json_encode($data));
+        // dd($result);
 
         $jsonResult = json_decode($result, true);  // decode json
 
